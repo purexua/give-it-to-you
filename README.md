@@ -19,4 +19,24 @@ logo：![give-it-to-give-it-to-you](image/logo-min-min.png)
 
 本项目作为科技金融课程的应用实践，由 purehub 公司的五个人，对整个项目进行全过程开发。
 公司成员如下：钟俊博 （purezhong）、龚圆康（puregong）、龚安（puregong2）、张炳洋（purezhang）、徐健豪（purexu）
-123456
+
+## 数据库
+
+1. user表
+
+```
+CREATE TABLE user
+(
+    user_id      INT AUTO_INCREMENT PRIMARY KEY,
+    user_name    VARCHAR(255) NOT NULL,
+    password     VARCHAR(255) NOT NULL,
+    real_name    VARCHAR(255) NOT NULL,
+    id_cart      VARCHAR(255) NOT NULL,
+    email        VARCHAR(100),
+    address      VARCHAR(255),
+    phone_number VARCHAR(20),
+    balance DECIMAL(10, 2) NOT NULL
+);
+```
+
+2. 
