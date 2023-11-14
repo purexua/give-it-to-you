@@ -19,3 +19,4 @@ logo：![give-it-to-give-it-to-you](image/logo-min-min.png)
 
 本项目作为科技金融课程的应用实践，由 purehub 公司的五个人，对整个项目进行全过程开发。
 公司成员如下：钟俊博 （purezhong）、龚圆康（puregong）、龚安（puregong2）、张炳洋（purezhang）、徐健豪（purexu）
+123456
