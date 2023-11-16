@@ -1,9 +1,30 @@
 // 该文件专门用于创建整个应用的路由器
+import Vue from 'vue'
 import VueRouter from 'vue-router'
+import HomePage from '../views/HomePageView.vue'
+import Test from '@/components/Test.vue'
+
+Vue.use(VueRouter)
 
 const router = new VueRouter({
    mode: 'hash',
    routes: [
+      {
+         name:'Home',
+         path:'/',
+         component:HomePage,
+         meta:{
+            title:'给你呗官网首页'
+         }
+      },
+      {
+         name:'test',
+         path:'/test',
+         component:Test,
+         meta:{
+            title:'测试页面'
+         }
+      }
    ]
 }
 )
