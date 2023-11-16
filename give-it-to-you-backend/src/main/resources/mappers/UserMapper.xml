@@ -9,7 +9,7 @@
   </select>
   
   <insert id="insertUser">
-    insert into user(user_name, password, real_name, id_card, email, address, phone_number, balance)
-    values(#{userName}, #{password}, #{realName}, #{idCard}, #{email}, #{address}, #{phoneNumber}, #{balance})
+    insert into user(user_name, password, real_name, id_card, email, address, phone_number)
+    values(#{userName}, #{password}, #{realName}, #{idCard}, #{email}, #{address}, #{phoneNumber})
   </insert>
 </mapper>
