@@ -15,7 +15,7 @@
           <div>
             <el-form :model="ruleForm" :rules="rules" ref="ruleForm" label-width="70px" class="demo-ruleForm">
                 <el-form-item label="用户名" prop="name">
-                  <el-input v-model="ruleForm.id"></el-input>
+                  <el-input v-model="ruleForm.name"></el-input>
                 </el-form-item>
                 <el-form-item label="密码" prop="password">
                   <el-input v-model="ruleForm.password" type="password"></el-input>
@@ -28,17 +28,28 @@
               title="用户注册"
               :visible.sync="innerVisible"
               append-to-body>
+              <div>
+              <el-form :model="ruleForm" :rules="rules" ref="ruleForm" label-width="70px" class="demo-ruleForm">
+                  <el-form-item label="用户名" prop="name">
+                    <el-input v-model="ruleForm.name"></el-input>
+                  </el-form-item>
+                  <el-form-item label="密码" prop="password">
+                    <el-input v-model="ruleForm.password" type="password"></el-input>
+                  </el-form-item>
+              </el-form>
+          </div>
           </el-dialog>
         </div>
           <span slot="footer" class="dialog-footer" style="display: flex;flex-direction: column;margin-top: -40px;">
             <el-button type="text" @click="innerVisible = true">没有账号去注册</el-button>
-            <el-button type="danger" @click="dialogVisible = false" style="position: relative;left: 35%;width: 100px;">登 录</el-button>
+            <el-button type="danger" @click="userAdmin()" style="position: relative;left: 35%;width: 100px;">登 录</el-button>
         </span>
         </el-dialog>
     </div>
 </div>
 </template>
 <script>
+import axios from 'axios';
 import MenuList from './MenuList.vue'
 export default {
     name:'NavigationBar',
@@ -49,19 +60,19 @@ export default {
             name:'',
             password:'',
             ruleForm: {
-                id: '',
+                name: '',
                 password:''
                 },
-                rules: {
-                name: [
-                    { required: true, message: '请输入用户名', trigger: 'blur' },
-                    { min: 3, max: 5, message: '长度在 3 到 5 个字符', trigger: 'blur' }
-                ],
-                password: [
-                    { required: true, message: '请输入密码', trigger: 'blur' },
-                    { min: 3, max: 5, message: '长度在 3 到 5 个字符', trigger: 'blur' }
-                ],
-                }
+            rules: {
+            name: [
+                { required: true, message: '请输入用户名', trigger: 'blur' },
+                { min: 3, max: 10, message: '长度在 3 到 10 个字符', trigger: 'blur' }
+            ],
+            password: [
+                { required: true, message: '请输入密码', trigger: 'blur' },
+                { min: 3, max: 10, message: '长度在 3 到 10 个字符', trigger: 'blur' }
+            ],
+            }
         }
     },
     components:{
@@ -72,14 +83,28 @@ export default {
         this.outerVisible = true;
       },
         userAdmin(){
-          const userName = this.name;
-          axios.get('http://localhost:3919/serve8080/login', userName)
-            .then(response => {
-               console.log(response.data);
-              const token = response.data;
+          const userName = this.ruleForm.name;
+          axios({
+            method: 'get',
+            url: 'http://localhost:3919/serve8080/login',
+            params:{
+              userName : userName,
+            }
+          }).then(response => {
+              console.log(response.data.data);
+              const token = response.data.data;
+              const user = response.data.userInfo;
+              if(user.password === this.ruleForm.password)
+              {
+                this.$message({ message: '登录成功', type: 'success' });
+                this.outerVisible = false;
+              }else{
+                this.$message.error('密码错误~');
+                this.ruleForm.name = '';
+                this.ruleForm.password = '';
+              }
               localStorage.setItem('token', token);
-              this.$message({ message: '登录成功', type: 'success' });
-              localStorage.setItem('userName', userName);
+              localStorage.setItem('user', user);
             })
             .catch(()=> {
               this.$message.error('哎呦~出错啦');

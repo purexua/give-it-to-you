@@ -26,7 +26,7 @@ public class UserController {
       Map<String, Object> claims = new HashMap<>();
       claims.put("id",user.getUserId());
       String jwt = JwtUtils.generateJwt(claims);
-      return Result.success(jwt);
+      return Result.success(jwt,user);
     }
     return Result.error("未查找到用户");
   }
