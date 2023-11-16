@@ -24,18 +24,37 @@
           </div>
           <div>
           <el-dialog
-              width="30%"
+              width="44%"
               title="用户注册"
               :visible.sync="innerVisible"
               append-to-body>
               <div>
-              <el-form :model="ruleForm" :rules="rules" ref="ruleForm" label-width="70px" class="demo-ruleForm">
-                  <el-form-item label="用户名" prop="name">
-                    <el-input v-model="ruleForm.name"></el-input>
+              <el-form :model="ruleForm_sign" :rules="rules" ref="ruleForm_sign" label-width="100px" class="demo-ruleForm" :inline="true">
+                  <el-form-item label="用户名" prop="name_sign">
+                    <el-input v-model="ruleForm_sign.name_sign"></el-input>
                   </el-form-item>
-                  <el-form-item label="密码" prop="password">
-                    <el-input v-model="ruleForm.password" type="password"></el-input>
+                  <el-form-item label="密码" prop="password_sign">
+                    <el-input v-model="ruleForm_sign.password_sign" type="password"></el-input>
                   </el-form-item>
+                  <el-form-item label="确认密码" prop="password_sign_check">
+                    <el-input type="password" v-model="ruleForm_sign.password_sign_check"></el-input>
+                  </el-form-item>
+                  <el-form-item label="真实姓名" prop="real_name_sign">
+                    <el-input v-model="ruleForm_sign.real_name_sign"></el-input>
+                  </el-form-item>
+                  <el-form-item label="身份证" prop="id_card_sign">
+                    <el-input v-model="ruleForm_sign.id_card_sign"></el-input>
+                  </el-form-item>
+                  <el-form-item label="邮箱" prop="email_sign">
+                    <el-input v-model="ruleForm_sign.email_sign"></el-input>
+                  </el-form-item>
+                  <el-form-item label="地址" prop="address_sign">
+                    <el-input v-model="ruleForm_sign.address_sign"></el-input>
+                  </el-form-item>
+                  <el-form-item label="电话号码" prop="phon_number_sign">
+                    <el-input v-model="ruleForm_sign.phon_number_sign"></el-input>
+                  </el-form-item>
+                  <el-button type="success" @click="userSign()" style="position: relative;left: 80%;width: 120px;">登 录</el-button>
               </el-form>
           </div>
           </el-dialog>
@@ -54,11 +73,40 @@ import MenuList from './MenuList.vue'
 export default {
     name:'NavigationBar',
     data(){
+          var validatePass = (rule, value, callback) => {
+            if (value === '') {
+              callback(new Error('请输入密码'));
+            } else {
+              if (this.ruleForm_sign.password_sign_check !== '') {
+                this.$refs.ruleForm_sign.validateField('password_sign_check');
+              }
+              callback();
+            }
+          };
+          var validatePass2 = (rule, value, callback) => {
+            if (value === '') {
+              callback(new Error('请再次输入密码'));
+            } else if (value !== this.ruleForm_sign.password_sign) {
+              callback(new Error('两次输入密码不一致!'));
+            } else {
+              callback();
+            }
+          };
         return {
             outerVisible: false,
             innerVisible: false,
             name:'',
             password:'',
+            ruleForm_sign:{
+                name_sign: '',
+                password_sign: '',
+                password_sign_check:'',
+                real_name_sign: '',
+                id_card_sign: '',
+                email_sign: '',
+                address_sign: '',
+                phon_number_sign: '',
+            },
             ruleForm: {
                 name: '',
                 password:''
@@ -71,6 +119,36 @@ export default {
             password: [
                 { required: true, message: '请输入密码', trigger: 'blur' },
                 { min: 3, max: 10, message: '长度在 3 到 10 个字符', trigger: 'blur' }
+            ],
+            name_sign: [
+                { required: true, message: '请输入用户名', trigger: 'blur' },
+                { min: 3, max: 10, message: '长度在 3 到 10 个字符', trigger: 'blur' }
+            ],
+            password_sign: [
+                  { validator: validatePass, trigger: 'blur' }
+            ],
+            password_sign_check: [
+                  { validator: validatePass2, trigger: 'blur' }
+            ],
+            real_name_sign: [
+                { required: true, message: '请输入真实姓名', trigger: 'blur' },
+                { min: 3, max: 10, message: '长度在 3 到 10 个字符', trigger: 'blur' }
+            ],
+            id_card_sign: [
+                { required: true, message: '请输入身份证号', trigger: 'blur' },
+                { min: 3, max: 10, message: '长度为十八位', trigger: 'blur' }
+            ],
+            email_sign: [
+                { required: true, message: '请输入邮箱地址', trigger: 'blur' },
+                { type: 'email', message: '请输入正确的邮箱地址', trigger: ['blur', 'change'] }
+            ],
+            address_sign: [
+                { required: true, message: '请输入真实地址', trigger: 'blur' },
+                { min: 3, max: 10, message: '长度在 5 到 10 个字符', trigger: 'blur' }
+            ],
+            phon_number_sign: [
+                { required: true, message: '请输入电话号码', trigger: 'blur' },
+                { min: 5, max: 10, message: '长度在 5 到 10 个字符', trigger: 'blur' }
             ],
             }
         }
@@ -108,6 +186,35 @@ export default {
             })
             .catch(()=> {
               this.$message.error('哎呦~出错啦');
+            })
+            .finally(() => {
+              
+            });
+        },
+        userSign(){
+          const user ={
+            userName : this.ruleForm_sign.name_sign,
+            password : this.ruleForm_sign.password_sign,
+            realName: this.ruleForm_sign.real_name_sign,
+            idCard: this.ruleForm_sign.id_card_sign,
+            email: this.ruleForm_sign.email_sign,
+            address: this.ruleForm_sign.address_sign,
+            phoneNumber: this.ruleForm_sign.phon_number_sign,
+          }
+          axios.post('http://localhost:3919/serve8080/register', user)
+          .then(response => {
+              console.log(response.data);
+              if(response.data === 'success')
+              {
+                this.$message({ message: '注册成功', type: 'success' });
+                this.outerVisible = false;
+                this.innerVisible = false;
+              }else{
+                this.$message.error('用户已存在~请重新注册或登录');
+              }
+            })
+            .catch(()=> {
+              this.$message.error('哎呀~出错啦');
             })
             .finally(() => {
               
