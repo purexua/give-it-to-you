@@ -12,5 +12,6 @@ public class User {
   String email;
   String address;
   String phoneNumber;
-  Double balance;
+  Integer balance;
+  String role;
 }
