@@ -1,5 +1,7 @@
 package com.purehub.config;
 
+import com.purehub.interceptor.LoginCheckInterceptor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
@@ -11,7 +13,12 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 @Configuration
 @ComponentScan(basePackages = "com.purehub.controller")
 public class WebMvcConfig implements WebMvcConfigurer {
+  @Autowired
+  private LoginCheckInterceptor loginCheckInterceptor;
   @Override
   public void addInterceptors(InterceptorRegistry registry) {
+    registry.addInterceptor(loginCheckInterceptor)
+            .addPathPatterns("/**")//拦截所有请求
+            .excludePathPatterns("/login");//忽略登录拦截操作
   }
 }
