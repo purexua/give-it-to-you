@@ -48,22 +48,6 @@ logo：![give-it-to-give-it-to-you](image/logo-min-min.png)
 | balance      | INT          | NO   |      | 0       |                |
 | role         | VARCHAR(20)  | NO   |      | client  |                |
 
-```mysql
-CREATE TABLE user
-(
-    user_id      INT AUTO_INCREMENT PRIMARY KEY,
-    user_name    VARCHAR(255) NOT NULL,
-    password     VARCHAR(255) NOT NULL,
-    real_name    VARCHAR(255) NOT NULL,
-    id_card      VARCHAR(255) NOT NULL,
-    email        VARCHAR(100),
-    address      VARCHAR(255),
-    phone_number VARCHAR(20),
-    balance      INT         DEFAULT 0,
-    role         VARCHAR(20) DEFAULT 'client'
-);
-```
-
 2. **借款申请表（Loan_Application）**
 
 - 借款申请ID (`application_id`): 主键。
@@ -86,23 +70,7 @@ CREATE TABLE user
 | approval_date  | DATETIME      | YES  |      | NULL    |                |
 | approver_id    | INT           | YES  | MUL  | NULL    |                |
 
-```mysql
-CREATE TABLE loan_application
-(
-    application_id INT AUTO_INCREMENT PRIMARY KEY,
-    user_id        INT,
-    amount         DECIMAL(10, 2),
-    term           INT,
-    interest_rate  INT,
-    status         VARCHAR(20),
-    approval_date  DATETIME,
-    approver_id    INT,
-    FOREIGN KEY (user_id) REFERENCES user(user_id),
-    FOREIGN KEY (approver_id) REFERENCES user(user_id)
-);
-```
-
-3. **还款计划表（Repayment_Schedule）:**
+3. **还款计划表（Repayment_Schedule）**
 
 - 还款计划ID (`schedule_id`): 主键。
 - 借款申请ID (`application_id`): 外键关联到借款申请表的借款申请ID。
@@ -121,20 +89,6 @@ CREATE TABLE loan_application
 | principal          | DECIMAL(10,2) | NO   |      | NULL    |                |
 | interest           | DECIMAL(10,2) | NO   |      | NULL    |                |
 | status             | VARCHAR(20)   | NO   |      | NULL    |                |
-
-```mysql
-CREATE TABLE repayment_schedule
-(
-    schedule_id         INT AUTO_INCREMENT PRIMARY KEY,
-    application_id      INT,
-    installment_number  INT,
-    due_date            DATETIME,
-    principal           DECIMAL(10, 2),
-    interest            DECIMAL(10, 2),
-    status              VARCHAR(20),
-    FOREIGN KEY (application_id) REFERENCES loan_application(application_id)
-);
-```
 
 4. **贷款合同表（Loan_Contract）**
 
@@ -162,24 +116,6 @@ CREATE TABLE repayment_schedule
 | contract_number | VARCHAR(50)   | NO   | UNI  | NULL    |                |
 | attachment_path | VARCHAR(255)  | YES  |      | NULL    |                |
 
-```mysql
-CREATE TABLE loan_contract
-(
-    contract_id        INT AUTO_INCREMENT PRIMARY KEY,
-    application_id     INT,
-    user_id            INT,
-    amount             DECIMAL(10, 2),
-    term               INT,
-    interest_rate      INT,
-    start_date         DATETIME,
-    end_date           DATETIME,
-    contract_number    VARCHAR(50) UNIQUE,
-    attachment_path    VARCHAR(255),
-    FOREIGN KEY (application_id) REFERENCES loan_application(application_id),
-    FOREIGN KEY (user_id) REFERENCES user(user_id)
-);
-```
-
 5. **还款记录表（Repayment_Record）**
 
 - 还款记录ID (`record_id`): 主键。
@@ -190,22 +126,6 @@ CREATE TABLE loan_contract
 - 剩余本金 (`remaining_principal`): 十进制数。
 - 已还利息 (`repaid_interest`): 十进制数。
 - 还款状态 (`repayment_flag`): 字符串。
-
-```mysql
-CREATE TABLE repayment_record
-(
-    record_id           INT AUTO_INCREMENT PRIMARY KEY,
-    user_id             INT,
-    application_id      INT,
-    repayment_date      DATETIME,
-    repayment_amount    DECIMAL(10, 2),
-    remaining_principal DECIMAL(10, 2),
-    repaid_interest     DECIMAL(10, 2),
-    repayment_flag      VARCHAR(20),
-    FOREIGN KEY (user_id) REFERENCES user(user_id),
-    FOREIGN KEY (application_id) REFERENCES loan_application(application_id)
-);
-```
 
 6. **用户信用评分表（Credit_Score）**
 
@@ -218,16 +138,6 @@ CREATE TABLE repayment_record
 | score_id     | INT  | NO   | PRI  | NULL    | AUTO_INCREMENT |
 | user_id      | INT  | NO   | MUL  | NULL    |                |
 | credit_score | INT  | NO   |      | NULL    |                |
-
-```mysql
-CREATE TABLE credit_score
-(
-    score_id    INT AUTO_INCREMENT PRIMARY KEY,
-    user_id     INT,
-    credit_score INT,
-    FOREIGN KEY (user_id) REFERENCES user(user_id)
-);
-```
 
 7. **利率表（Interest_Rate）**
 
@@ -243,13 +153,84 @@ CREATE TABLE credit_score
 | term          | INT         | NO   |      | NULL    |                |
 | interest_rate | INT         | NO   |      | NULL    |                |
 
-```mysql
-CREATE TABLE interest_rate
-(
-    rate_id       INT AUTO_INCREMENT PRIMARY KEY,
-    product_type  VARCHAR(50),
-    term          INT,
-    interest_rate INT
-);
-```
+## 模块
 
+1.
+
+|     名称     |         描述         |
+| :----------: | :------------------: |
+|   模块名称   |         登录         |
+|  模块负责人  | 龚安、徐健豪、龚圆康 |
+| 文档提交日期 |      2023/11/16      |
+
+修改记录
+
+|  No  | 版本号 |       修改内容意见        |  修改日期  | 修改人 |
+| :--: | :----: | :-----------------------: | :--------: | :----: |
+|  1   | v1.0.0 |         初始版本          | 2023/11/16 | 徐健豪 |
+|  2   | v1.1.0 | 加入 jwt 令牌进行登录校验 | 2023/11/16 | 龚圆康 |
+
+2.
+
+|     名称     |         描述         |
+| :----------: | :------------------: |
+|   模块名称   |         注册         |
+|  模块负责人  | 龚安、徐健豪、龚圆康 |
+| 文档提交日期 |      2023/11/16      |
+
+修改记录
+
+|  No  | 版本号 | 修改内容意见 |  修改日期  | 修改人 |
+| :--: | :----: | :----------: | :--------: | :----: |
+|  1   | v1.0.0 |   初始版本   | 2023/11/16 | 徐健豪 |
+
+3.
+
+|     名称     |    描述    |
+| :----------: | :--------: |
+|   模块名称   |    首页    |
+|  模块负责人  |    龚安    |
+| 文档提交日期 | 2023/11/16 |
+
+修改记录
+
+|  No  | 版本号 |         修改内容意见         |  修改日期  | 修改人 |
+| :--: | :----: | :--------------------------: | :--------: | :----: |
+|  1   | v1.0.0 |           初始版本           | 2023/11/16 |  龚安  |
+|  2   | v2.0.0 | 首页2.0（符合 Vue 项目格式） | 2023/11/16 |  龚安  |
+
+## 接口说明
+
+### 用户登录
+
+url: `http://localhost:3919/login`
+
+method: `GET`
+
+type: `params`
+
+|  参数名  | 参数含义 | 类型/必须 |       备注       |
+| :------: | :------: | :-------: | :--------------: |
+| userName |  用户名  | String/Y  | 按用户名查询用户 |
+
+接口流程：
+
+输出结果：
+
+### 用户注册
+
+url: `http://localhost:3919/register`
+
+method: `POST`
+
+type: `params`
+
+|   参数名    |   参数含义    | 类型/必须 |       备注       |
+| :---------: | :-----------: | :-------: | :--------------: |
+|  userName   |    用户名     | String/Y  | 按用户名查询用户 |
+|  password   |     密码      | String/Y  |       加密       |
+|  realName   | 用户真实姓名  | String/Y  |       加密       |
+|   idCard    |   身份证号    | String/Y  |       加密       |
+|    email    |     邮箱      |  String   |                  |
+|   address   |     地址      |  String   |                  |
+| phoneNumber | 电话/联系方式 |  String   |                  |

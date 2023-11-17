@@ -1,0 +1,100 @@
+#创建数据库 give_it_to_you
+create database give_it_to_you;
+
+#使用数据库
+use give_it_to_you;
+
+#创建 用户表（User）
+CREATE TABLE user
+(
+    user_id      INT AUTO_INCREMENT PRIMARY KEY,
+    user_name    VARCHAR(255) NOT NULL,
+    password     VARCHAR(255) NOT NULL,
+    real_name    VARCHAR(255) NOT NULL,
+    id_card      VARCHAR(255) NOT NULL,
+    email        VARCHAR(100),
+    address      VARCHAR(255),
+    phone_number VARCHAR(20),
+    balance      INT         DEFAULT 0,
+    role         VARCHAR(20) DEFAULT 'client'
+);
+
+#创建 借款申请表（Loan_Application）
+CREATE TABLE loan_application
+(
+    application_id INT AUTO_INCREMENT PRIMARY KEY,
+    user_id        INT,
+    amount         DECIMAL(10, 2),
+    term           INT,
+    interest_rate  INT,
+    status         VARCHAR(20),
+    approval_date  DATETIME,
+    approver_id    INT,
+    FOREIGN KEY (user_id) REFERENCES user(user_id),
+    FOREIGN KEY (approver_id) REFERENCES user(user_id)
+);
+
+#创建 还款计划表（Repayment_Schedule）
+CREATE TABLE repayment_schedule
+(
+    schedule_id         INT AUTO_INCREMENT PRIMARY KEY,
+    application_id      INT,
+    installment_number  INT,
+    due_date            DATETIME,
+    principal           DECIMAL(10, 2),
+    interest            DECIMAL(10, 2),
+    status              VARCHAR(20),
+    FOREIGN KEY (application_id) REFERENCES loan_application(application_id)
+);
+
+#创建 贷款合同表（Loan_Contract）
+CREATE TABLE loan_contract
+(
+    contract_id        INT AUTO_INCREMENT PRIMARY KEY,
+    application_id     INT,
+    user_id            INT,
+    amount             DECIMAL(10, 2),
+    term               INT,
+    interest_rate      INT,
+    start_date         DATETIME,
+    end_date           DATETIME,
+    contract_number    VARCHAR(50) UNIQUE,
+    attachment_path    VARCHAR(255),
+    FOREIGN KEY (application_id) REFERENCES loan_application(application_id),
+    FOREIGN KEY (user_id) REFERENCES user(user_id)
+);
+
+#创建 还款记录表（Repayment_Record）
+CREATE TABLE repayment_record
+(
+    record_id           INT AUTO_INCREMENT PRIMARY KEY,
+    user_id             INT,
+    application_id      INT,
+    repayment_date      DATETIME,
+    repayment_amount    DECIMAL(10, 2),
+    remaining_principal DECIMAL(10, 2),
+    repaid_interest     DECIMAL(10, 2),
+    repayment_flag      VARCHAR(20),
+    FOREIGN KEY (user_id) REFERENCES user(user_id),
+    FOREIGN KEY (application_id) REFERENCES loan_application(application_id)
+);
+
+#创建 用户信用评分表（Credit_Score）
+CREATE TABLE credit_score
+(
+    score_id    INT AUTO_INCREMENT PRIMARY KEY,
+    user_id     INT,
+    credit_score INT,
+    FOREIGN KEY (user_id) REFERENCES user(user_id)
+);
+
+#创建 利率表（Interest_Rate）
+CREATE TABLE interest_rate
+(
+    rate_id       INT AUTO_INCREMENT PRIMARY KEY,
+    product_type  VARCHAR(50),
+    term          INT,
+    interest_rate INT
+);
+
+#end
