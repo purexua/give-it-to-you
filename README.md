@@ -207,13 +207,3 @@ type: `params`
 |    email    |     邮箱      |  String   |                  |
 |   address   |     地址      |  String   |                  |
 | phoneNumber | 电话/联系方式 |  String   |                  |
-
-|      |      |      |      |
-| :--: | :--: | :--: | :--: |
-|      |      |      |      |
-|      |      |      |      |
-|      |      |      |      |
-|      |      |      |      |
-|      |      |      |      |
-|      |      |      |      |
-|      |      |      |      |
