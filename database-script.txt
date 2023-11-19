@@ -1,10 +1,10 @@
-#创建数据库 give_it_to_you_p
-create database give_it_to_you_p;
+#创建数据库 give_it_to_you
+create database give_it_to_you;
 
 #使用数据库
-use give_it_to_you_p;
+use give_it_to_you;
 
-#创建 用户表（user）
+#创建 用户表(user)
 CREATE TABLE user
 (
     user_id      INT AUTO_INCREMENT PRIMARY KEY,
@@ -19,96 +19,17 @@ CREATE TABLE user
     role         VARCHAR(20) DEFAULT 'client'
 );
 
-#创建 借款申请表，与产品利率表关联 (Product_Loan_Application)
-CREATE TABLE product_loan_application
-(
-    application_id   INT AUTO_INCREMENT PRIMARY KEY,
-    user_id          INT,
-    product_category VARCHAR(50),
-    term             INT,
-    requested_amount DECIMAL(10, 2),
-    interest_rate    INT,
-    PRIMARY KEY (application_id),
-    FOREIGN KEY (user_id) REFERENCES user(user_id),
-    FOREIGN KEY (product_category) REFERENCES product_interest_rate(product_category),
-    CHECK (requested_amount > 0)
-);
-
-#创建 借款申请表，与利率表关联 (Generic_Loan_Application)
-CREATE TABLE generic_loan_application
-(
-    application_id   INT AUTO_INCREMENT PRIMARY KEY,
-    user_id          INT,
-    product_type     VARCHAR(50),
-    term             INT,
-    requested_amount DECIMAL(10, 2),
-    interest_rate    INT,
-    PRIMARY KEY (application_id),
-    FOREIGN KEY (user_id) REFERENCES user(user_id),
-    FOREIGN KEY (product_type) REFERENCES interest_rate(product_type),
-    CHECK (requested_amount > 0)
-);
-
-#创建 还款计划表（Repayment_Schedule）
-CREATE TABLE repayment_plan
-(
-    plan_id         INT AUTO_INCREMENT PRIMARY KEY,
-    application_id  INT,
-    installment     INT,
-    due_date        DATE,
-    amount_due      DECIMAL(10, 2),
-    payment_status  VARCHAR(20) DEFAULT 'Pending',
-    PRIMARY KEY (plan_id),
-    FOREIGN KEY (application_id) REFERENCES product_loan_application(application_id)
-);
-
-#创建 还款记录表（Repayment_Record）
-CREATE TABLE repayment_record
-(
-    record_id       INT AUTO_INCREMENT PRIMARY KEY,
-    plan_id         INT,
-    payment_date    DATE,
-    actual_amount   DECIMAL(10, 2),
-    PRIMARY KEY (record_id),
-    FOREIGN KEY (plan_id) REFERENCES repayment_plan(plan_id)
-);
-
-
-#创建 贷款合同表（Loan_Contract）
-CREATE TABLE loan_contract
-(
-    contract_id     INT AUTO_INCREMENT PRIMARY KEY,
-    user_id         INT,
-    application_id  INT,
-    contract_number VARCHAR(50),
-    signing_date    DATE,
-    loan_purpose    VARCHAR(255),
-    PRIMARY KEY (contract_id),
-    FOREIGN KEY (user_id) REFERENCES user(user_id),
-    FOREIGN KEY (application_id) REFERENCES product_loan_application(application_id)
-);
-
-
-#创建 用户信用评分表（Credit_Score）
-CREATE TABLE credit_score
-(
-    score_id    INT AUTO_INCREMENT PRIMARY KEY,
-    user_id     INT,
-    credit_score INT,
-    FOREIGN KEY (user_id) REFERENCES user(user_id)
-);
-
 #创建 产品利率表 (Product_Interest_Rate)
 CREATE TABLE product_interest_rate
 (
-    p_rate_id         INT AUTO_INCREMENT PRIMARY KEY,
-    product_category  VARCHAR(50),
-    term              INT,
-    interest_rate     INT,
-    loan_amount       DECIMAL(10, 2) -- 金额字段，DECIMAL(总位数, 小数位数)
+    p_rate_id        INT AUTO_INCREMENT PRIMARY KEY,
+    product_category VARCHAR(50),
+    term             INT,
+    interest_rate    INT,
+    loan_amount      DECIMAL(10, 2) -- 金额字段，DECIMAL(总位数, 小数位数)
 );
 
-#创建 利率表（Interest_Rate）
+#创建 利率表(Interest_Rate)
 CREATE TABLE interest_rate
 (
     rate_id       INT AUTO_INCREMENT PRIMARY KEY,
@@ -117,15 +38,102 @@ CREATE TABLE interest_rate
     interest_rate INT
 );
 
+-- 在 product_interest_rate 表的 product_category 字段上创建索引
+CREATE INDEX idx_product_category ON product_interest_rate (product_category);
+
+
+#创建 借款申请表，与产品利率表关联 (Product_Loan_Application)
+CREATE TABLE product_loan_application
+(
+    application_id   INT AUTO_INCREMENT,
+    user_id          INT,
+    product_category VARCHAR(50),
+    term             INT,
+    requested_amount DECIMAL(10, 2),
+    interest_rate    INT,
+    PRIMARY KEY (application_id),
+    FOREIGN KEY (user_id) REFERENCES user (user_id),
+    FOREIGN KEY (product_category) REFERENCES product_interest_rate (product_category),
+    CHECK (requested_amount > 0)
+);
+
+-- 在 interest_rate 表的 product_type 字段上创建索引
+CREATE INDEX idx_product_type ON interest_rate (product_type);
+
+#创建 借款申请表，与利率表关联 (Generic_Loan_Application)
+CREATE TABLE generic_loan_application
+(
+    application_id   INT AUTO_INCREMENT,
+    user_id          INT,
+    product_type     VARCHAR(50),
+    term             INT,
+    requested_amount DECIMAL(10, 2),
+    interest_rate    INT,
+    PRIMARY KEY (application_id),
+    FOREIGN KEY (user_id) REFERENCES user (user_id),
+    FOREIGN KEY (product_type) REFERENCES interest_rate (product_type),
+    CHECK (requested_amount > 0)
+);
+
+#创建 还款计划表(Repayment_Schedule)
+CREATE TABLE repayment_plan
+(
+    plan_id        INT AUTO_INCREMENT,
+    application_id INT,
+    installment    INT,
+    due_date       DATE,
+    amount_due     DECIMAL(10, 2),
+    payment_status VARCHAR(20) DEFAULT 'Pending',
+    PRIMARY KEY (plan_id),
+    FOREIGN KEY (application_id) REFERENCES product_loan_application (application_id)
+);
+
+#创建 还款记录表(Repayment_Record)
+CREATE TABLE repayment_record
+(
+    record_id     INT AUTO_INCREMENT,
+    plan_id       INT,
+    payment_date  DATE,
+    actual_amount DECIMAL(10, 2),
+    PRIMARY KEY (record_id),
+    FOREIGN KEY (plan_id) REFERENCES repayment_plan (plan_id)
+);
+
+
+#创建 贷款合同表(Loan_Contract)
+CREATE TABLE loan_contract
+(
+    contract_id     INT AUTO_INCREMENT,
+    user_id         INT,
+    application_id  INT,
+    contract_number VARCHAR(50),
+    signing_date    DATE,
+    loan_purpose    VARCHAR(255),
+    PRIMARY KEY (contract_id),
+    FOREIGN KEY (user_id) REFERENCES user (user_id),
+    FOREIGN KEY (application_id) REFERENCES product_loan_application (application_id)
+);
+
+
+#创建 用户信用评分表(Credit_Score)
+CREATE TABLE credit_score
+(
+    score_id     INT AUTO_INCREMENT PRIMARY KEY,
+    user_id      INT,
+    credit_score INT,
+    FOREIGN KEY (user_id) REFERENCES user (user_id)
+);
+
+
 #创建 系统日志表 (System_Log)
 CREATE TABLE system_log
 (
-    log_id      INT AUTO_INCREMENT PRIMARY KEY,
-    user_id     INT,
-    log_date    DATETIME,
-    action      VARCHAR(255),
+    log_id   INT AUTO_INCREMENT,
+    user_id  INT,
+    log_date DATETIME,
+    action   VARCHAR(255),
     PRIMARY KEY (log_id),
-    FOREIGN KEY (user_id) REFERENCES user(user_id)
+    FOREIGN KEY (user_id) REFERENCES user (user_id)
 );
 
 
