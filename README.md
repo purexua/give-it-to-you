@@ -1,4 +1,4 @@
-![](F:\git\github\give-it-to-you\image\logo-plus.png)
+![](.\image\logo-plus.png)
 
 公司：purehub
 
