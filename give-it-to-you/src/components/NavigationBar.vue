@@ -13,6 +13,10 @@
           :visible.sync="outerVisible"
           width="25%">
           <div>
+            <div>
+            <span style="position: relative;margin-left: 46%; color: red;">{{ whetherAdmin }}</span>
+            <el-button type="text" v-show ="isAdmin" @click="outUser()" style="position: relative; margin-left: 20px;">退出</el-button>
+            </div>
             <el-form :model="ruleForm" :rules="rules" ref="ruleForm" label-width="70px" class="demo-ruleForm">
                 <el-form-item label="用户名" prop="name">
                   <el-input v-model="ruleForm.name"></el-input>
@@ -93,6 +97,8 @@ export default {
             }
           };
         return {
+            isAdmin:false,
+            whetherAdmin:'未登录',
             outerVisible: false,
             innerVisible: false,
             name:'',
@@ -157,6 +163,27 @@ export default {
         MenuList
     },
     methods:{
+      outUser(){
+        this.$confirm('是否退出当前用户?', '温馨提醒', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }).then(() => {
+          localStorage.removeItem('token'); 
+          localStorage.removeItem('user'); 
+          this.isAdmin = false;
+          this.whetherAdmin = '未登录';
+          this.$message({
+            type: 'success',
+            message: '已退出!'
+          });
+        }).catch(() => {
+          this.$message({
+            type: 'info',
+            message: '已取消退出操作'
+          });          
+        });
+      },
         show(){
         this.outerVisible = true;
       },
@@ -178,6 +205,8 @@ export default {
                 this.$message({ message: '登录成功', type: 'success' });
                 this.$store.commit('userInfo/SAVEUSERINFO', user);
                 this.outerVisible = false;
+                this.whetherAdmin = '已登录';
+                this.isAdmin = true;
               }else{
                 this.$message.error('密码错误~');
                 this.ruleForm.name = '';
@@ -223,6 +252,13 @@ export default {
             });
         }
     },
+    mounted(){
+      if(localStorage.getItem('user') !== null)
+      {
+          this.whetherAdmin = '已登录';
+          this.isAdmin = true;
+      }
+    }
 
 }
 </script>

@@ -20,7 +20,11 @@ export default {
   methods: {
   },
   mounted(){
-    this.$router.push('/');
+    
+  },
+  beforeDestroy() {
+    localStorage.removeItem('user');
+    localStorage.removeItem('token');
   }
 }
 </script>
