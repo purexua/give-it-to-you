@@ -1,2 +1,4 @@
-package com.purehub.mapper;public interface LoanApplicationMapper {
+package com.purehub.mapper;
+
+public interface LoanApplicationMapper {
 }

@@ -108,8 +108,8 @@ export default {
                 phon_number_sign: '',
             },
             ruleForm: {
-                name: '',
-                password:''
+                name: 'purexu',
+                password:'123456'
                 },
             rules: {
             name: [
@@ -172,9 +172,11 @@ export default {
               console.log(response.data.data);
               const token = response.data.data;
               const user = response.data.userInfo;
+              console.log(user);
               if(user.password === this.ruleForm.password)
               {
                 this.$message({ message: '登录成功', type: 'success' });
+                this.$store.commit('userInfo/SAVEUSERINFO', user);
                 this.outerVisible = false;
               }else{
                 this.$message.error('密码错误~');

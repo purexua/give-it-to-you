@@ -3,6 +3,7 @@ import Vue from 'vue'
 import VueRouter from 'vue-router'
 import HomePage from '../views/HomePageView.vue'
 import Test from '@/components/Test.vue'
+import LoanApplication from '@/views/LoanApplication.vue'
 
 Vue.use(VueRouter)
 
@@ -23,6 +24,14 @@ const router = new VueRouter({
          component:Test,
          meta:{
             title:'测试页面'
+         }
+      },
+      {
+         name:'application',
+         path:'/application',
+         component:LoanApplication,
+         meta:{
+            title:'贷款申请'
          }
       }
    ]

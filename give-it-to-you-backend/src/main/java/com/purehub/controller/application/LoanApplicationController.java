@@ -1,2 +1,8 @@
-package com.purehub.controller.application;public class LoanApplicationController {
+package com.purehub.controller.application;
+
+import org.springframework.web.bind.annotation.RestController;
+
+@RestController
+public interface LoanApplicationController {
+
 }
