@@ -1,6 +1,5 @@
 <template>
   <div id="app">
-    <NavigationBar/>
     <router-view/>
     <el-backtop></el-backtop>
   </div>

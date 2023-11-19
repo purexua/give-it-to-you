@@ -1,4 +1,6 @@
 <template>
+    <div>
+        <el-page-header @back="goBack" ></el-page-header>
     <div class="container">
         <el-form :model="ruleForm" status-icon :rules="rules" ref="ruleForm" label-width="100px" class="demo-ruleForm">
             <el-form-item label="用户 Id" prop="userId">
@@ -28,6 +30,7 @@
             </el-form-item>
         </el-form>
     </div>
+</div>
 </template>
 
 <script>
@@ -78,6 +81,9 @@ export default {
         };
     },
     methods: {
+        goBack() {
+        this.$router.go(-1);
+        },
         submitForm(formName) {
             this.$refs[formName].validate((valid) => {
                 if (valid) {
@@ -107,6 +113,6 @@ export default {
 
 <style scoped>
 .container {
-    margin-top: 20%;
+    margin-top: 2%;
 }
 </style>

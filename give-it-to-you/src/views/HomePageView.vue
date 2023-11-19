@@ -1,5 +1,6 @@
 <template>
     <div>
+      <NavigationBar/>
         <div>
         <el-carousel  style="width: 100%;height: 700px;" class="custom-carousel">
         <el-carousel-item v-for="(item,index) in imageList" :key="index" style="width: 100%;height: 700px;">
@@ -82,8 +83,12 @@
     </div>
 </template>
 <script>
+import  NavigationBar from '../components/NavigationBar.vue'
  export default{
     name:'HomePage',
+    components:{
+        NavigationBar
+    },
     data(){
         return {
             imageList:[

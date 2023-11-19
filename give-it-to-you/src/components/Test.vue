@@ -1,6 +1,6 @@
 <template>
     <div>
-        <el-empty description="测试页面"></el-empty>
+        <el-page-header @back="goBack" ></el-page-header>
     </div>
 </template>
 <script>
@@ -9,6 +9,11 @@ export default{
     data(){
         return{
 
+        }
+    },
+    methods:{
+        goBack() {
+        this.$router.go(-1);
         }
     }
 }
