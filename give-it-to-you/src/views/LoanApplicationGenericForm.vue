@@ -97,7 +97,7 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
 .demo-ruleForm{
     position: absolute;
     text-align: left;
