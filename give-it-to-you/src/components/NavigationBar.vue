@@ -4,7 +4,7 @@
       <img src="../assets/logo-plus.png" style="height: 75px; position: relative; left: 100px; margin-right: 230px;">
       <MenuList/>
       <el-button  icon="el-icon-service" type = "text" class="button-onlie">在线客服</el-button>
-      <el-button  icon="el-icon-download" type = "text" class="button-download">下载</el-button>
+      <el-button  icon="el-icon-download" type = "text" class="button-download" @click="downloadFile">下载</el-button>
       <el-button  icon="el-icon-user-solid" type = "text" class="button-admin" @click="show">登录</el-button>
     </div>
     <div>
@@ -163,6 +163,30 @@ export default {
         MenuList
     },
     methods:{
+      async downloadFile() {
+      try {
+        const response = await axios.get('http://localhost:3919/serve8080/download', {
+          responseType: 'blob', // 告诉axios响应类型为二进制数据
+          headers: {
+          Authorization: localStorage.getItem('token'),
+          Accept: 'application/octet-stream'
+        },
+        });
+        
+        this.handleDownload(response.data);
+      } catch (error) {
+        console.error('文件下载失败', error);
+      }
+    },
+    handleDownload(blob) {
+      const url = window.URL.createObjectURL(new Blob([blob]));
+      const link = document.createElement('a');
+      link.href = url;
+      link.setAttribute('download', 'purexu.jpg'); // 设置下载文件的文件名
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+    },
       outUser(){
         this.$confirm('是否退出当前用户?', '温馨提醒', {
           confirmButtonText: '确定',
