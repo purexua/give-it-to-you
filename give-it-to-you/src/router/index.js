@@ -1,10 +1,10 @@
 // 该文件专门用于创建整个应用的路由器
 import Vue from 'vue'
 import VueRouter from 'vue-router'
-import HomePage from '../views/HomePageView.vue'
+import HomePageView from '../views/HomePageView.vue'
 import LoginView from '../views/LoginView.vue'
 import Index from '../views/Index.vue'
-
+import Home from '../views/index/Home.vue'
 
 Vue.use(VueRouter)
 
@@ -14,7 +14,7 @@ const router = new VueRouter({
       {
          name: 'Home',
          path: '/',
-         component: HomePage,
+         component: HomePageView,
          meta: {
             title: '给你呗官网'
          }
@@ -33,7 +33,17 @@ const router = new VueRouter({
          component: Index,
          meta:{
             title:'给你呗首页'
-         }
+         },
+         children:[
+            {
+               name:'home',
+               path:'home',
+               component:Home,
+               meta:{
+                  title:'主页'
+               }
+            }
+         ]
       }
    ]
 }

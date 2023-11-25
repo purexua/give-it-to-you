@@ -190,7 +190,7 @@ export default {
                     if (res.data.password === this.loginForm.password) {
                         // 保存用户信息到 vuex 的 user
                         this.$store.commit('userInfo/SAVEUSERINFO', res.data)
-                        this.$router.push('/home')
+                        this.$router.push('/index/home')
                     } else {
                         this.$message({
                             message: '密码错误',

@@ -1,7 +1,6 @@
 export default {
 	namespaced: true,
 	actions: {
-		
 	},
 	mutations: {
 		SAVEUSERINFO(state, user) {
@@ -22,7 +21,6 @@ export default {
 			role: '',
 		}
 	},
-	getters: {
-
+	getters: {		
 	},
 }
