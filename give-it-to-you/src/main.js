@@ -20,7 +20,7 @@ Vue.use(ElementUI)
 //使用路由器
 Vue.use(VueRouter)
 
-axios.defaults.headers.common['Authorization'] = localStorage.getItem('token');
+// axios.defaults.headers.common['Authorization'] = localStorage.getItem('token');
 
 new Vue({
   render: h => h(App),
