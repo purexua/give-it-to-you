@@ -50,3 +50,12 @@ mybatis-plus:
 #    db-config:
 #      table-prefix: t_ #设置表名前缀
 #      id-type: auto #设置主键生成策略
+
+server:
+  servlet:
+    context-path: /
+  port: 8080
+
+logging:
+  level:
+    root: INFO
