@@ -2,10 +2,9 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 import HomePage from '../views/HomePageView.vue'
-import Test from '@/components/Test.vue'
-import LoanApplication from '@/views/LoanApplication.vue'
-import LoanApplicationProductForm from '@/views/LoanApplicationProductForm.vue'
-import LoanApplicationGenericForm from '@/views/LoanApplicationGenericForm.vue'
+import LoginView from '../views/LoginView.vue'
+import Index from '../views/Index.vue'
+
 
 Vue.use(VueRouter)
 
@@ -17,36 +16,24 @@ const router = new VueRouter({
          path: '/',
          component: HomePage,
          meta: {
-            title: '给你呗官网首页'
+            title: '给你呗官网'
          }
       },
       {
-         name: 'test',
-         path: '/test',
-         component: Test,
+         name: 'login',
+         path: '/login',
+         component: LoginView,
          meta: {
-            title: '测试页面'
+            title: '登录'
          }
       },
       {
-         name: 'application',
-         path: '/application',
-         component: LoanApplication,
-         meta: {
-            title: '贷款申请'
-         },
-         children: [
-            {
-               name: 'applicationProductForm',
-               path: 'applicationProductForm',
-               component: LoanApplicationProductForm
-            },
-            {
-               name: 'applicationGenericForm',
-               path: 'applicationGenericForm',
-               component: LoanApplicationGenericForm
-            }
-         ]
+         name:'index',
+         path:'/index',
+         component: Index,
+         meta:{
+            title:'给你呗首页'
+         }
       }
    ]
 }

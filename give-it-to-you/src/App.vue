@@ -1,6 +1,6 @@
 <template>
   <div id="app">
-    <router-view/>
+    <router-view></router-view>
     <el-backtop></el-backtop>
   </div>
 </template>
@@ -12,23 +12,8 @@ export default {
   name: 'App',
   components: {
     NavigationBar,
-},
-  data(){
-      return {
-      }
   },
-  methods: {
-  },
-  mounted(){
-    
-  },
-  beforeDestroy() {
-    localStorage.removeItem('user');
-    localStorage.removeItem('token');
-  }
 }
 </script>
 
-<style>
-
-</style>
+<style></style>

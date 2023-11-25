@@ -27,7 +27,7 @@ CREATE TABLE product_interest_rate
     p_rate_id        INT AUTO_INCREMENT PRIMARY KEY,
     product_category VARCHAR(50),
     term             INT,
-    interest_rate    INT,
+    interest_rate    DECIMAL(5, 2),
     loan_amount      DECIMAL(10, 2) -- 金额字段，DECIMAL(总位数, 小数位数)
 );
 
@@ -37,7 +37,7 @@ CREATE TABLE interest_rate
     rate_id       INT AUTO_INCREMENT PRIMARY KEY,
     product_type  VARCHAR(50),
     term          INT,
-    interest_rate INT
+    interest_rate    DECIMAL(5, 2),
 );
 
 -- 在 product_interest_rate 表的 product_category 字段上创建索引

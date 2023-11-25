@@ -46,7 +46,7 @@ logo：![give-it-to-give-it-to-you](./image/logo-min-min.png)
 | product_category | 产品类别    | VARCHAR(50)   | NO   | MUL  | NULL    |                |
 | term             | 期限        | INT           | NO   |      | NULL    |                |
 | requested_amount | 申请金额    | DECIMAL(10,2) | NO   |      | NULL    |                |
-| interest_rate    | 利率        | INT           | NO   |      | NULL    |                |
+| interest_rate    | 利率        | DECIMAL(5,2） | NO   |      | NULL    |                |
 
 ### 借款申请表，与利率表关联 (Generic_Loan_Application)
 
@@ -57,7 +57,7 @@ logo：![give-it-to-give-it-to-you](./image/logo-min-min.png)
 | product_type     | 产品类型    | VARCHAR(50)   | NO   | MUL  | NULL    |                |
 | term             | 期限        | INT           | NO   |      | NULL    |                |
 | requested_amount | 申请金额    | DECIMAL(10,2) | NO   |      | NULL    |                |
-| interest_rate    | 利率        | INT           | NO   |      | NULL    |                |
+| interest_rate    | 利率        | DECIMAL(5,2） | NO   |      | NULL    |                |
 
 ### 还款计划表（Repayment_Schedule）
 
@@ -142,6 +142,7 @@ logo：![give-it-to-give-it-to-you](./image/logo-min-min.png)
 | :--: | :----: | :-----------------------: | :--------: | :----: |
 |  1   | v1.0.0 |         初始版本          | 2023/11/16 | 徐健豪 |
 |  2   | v1.1.0 | 加入 jwt 令牌进行登录校验 | 2023/11/16 | 龚圆康 |
+|  3   | v2.0.0 |         重构布局          | 2023/11/21 | 徐健豪 |
 
 2.
 
@@ -157,6 +158,7 @@ logo：![give-it-to-give-it-to-you](./image/logo-min-min.png)
 | :--: | :----: | :----------------------: | :--------: | :----: |
 |  1   | v1.0.0 |         初始版本         | 2023/11/16 | 徐健豪 |
 |  2   | v1.1.0 | 优化接口使用Mybatis-Plus | 2023/11/20 | 徐健豪 |
+|  3   | v2.0.0 |         重构布局         | 2023/11/21 | 徐健豪 |
 
 3.
 
