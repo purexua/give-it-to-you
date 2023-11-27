@@ -2,6 +2,7 @@ package com.purehub.service.rate.impl;
 
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.purehub.mapper.ProductInterestRateMapper;
+import com.purehub.pojo.GenericLoanApplication;
 import com.purehub.pojo.PersonalProductInterestRate;
 import com.purehub.pojo.ProductInterestRate;
 import com.purehub.service.rate.ProductInterestRateService;
@@ -19,5 +20,11 @@ public class ProductInterestRateServiceImpl extends ServiceImpl<ProductInterestR
     @Override
     public List<PersonalProductInterestRate> getPersonalProductRate() {
         return productInterestRateMapper.selectPersonalProductRate();
+    }
+
+    @Override
+    public Boolean InsertGenericLoan(GenericLoanApplication loanApplication) {
+        int row = productInterestRateMapper.InsetGenericLoan(loanApplication);
+        return row==1? true:false;
     }
 }

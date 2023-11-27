@@ -4,12 +4,12 @@
         <span>你的额度：{{ userLimit }} 元</span>
 
         <el-form :model="loanForm" ref="loanForm" label-position="top">
-            <el-form-item label="贷款金额" prop="loanAmount">
-                <el-input v-model="loanForm.loanAmount" placeholder="请输入贷款金额" @input="updateLoanDetails" />
+            <el-form-item label="贷款金额" prop="requestedAmount">
+                <el-input v-model="loanForm.requestedAmount" placeholder="请输入贷款金额" @input="updateLoanDetails" />
             </el-form-item>
 
-            <el-form-item label="分期期数" prop="installments">
-                <el-select v-model="loanForm.installments" placeholder="请选择分期期数" @change="handleSelectChange">
+            <el-form-item label="分期期数" prop="term">
+                <el-select v-model="loanForm.term" placeholder="请选择分期期数" @change="handleSelectChange">
                     <el-option label="3期" value="3" />
                     <el-option label="6期" value="6" />
                     <el-option label="12期" value="12" />
@@ -44,9 +44,9 @@ export default {
     data() {
         return {
             loanForm: {
-                loanAmount: null,
-                installments: '3',
-                interestRate: '0.01',
+                requestedAmount: null,  //贷款金额
+                term: '3',  //贷款期数
+                interestRate: '0.01',  //期数利率
             },
             installmentRates: {}, // 存放后端返回的分期利率数据
             loanDetails: {
@@ -67,11 +67,43 @@ export default {
             this.updateLoanDetails();
         },
         submitForm() {
-            // Check if the loan amount exceeds the user limit
-            const loanAmount = parseFloat(this.loanForm.loanAmount);
+            // 检查是否超出用户额度
+            const loanAmount = parseFloat(this.loanForm.requestedAmount);
             if (!isNaN(loanAmount) && loanAmount > this.userLimit) {
                 this.$message.error('贷款金额超过用户额度，无法提交。');
                 return;
+            } else {
+                console.log('前端发送的数据:', {
+                    userId: this.user.userId,
+                    productType: this.productRates.productType,
+                    term: this.loanForm.term,
+                    requestedAmount: this.loanForm.requestedAmount,
+                    interestRate: this.loanForm.interestRate
+                });
+                axios({
+                    method: 'post',
+                    url: 'http://localhost:3919/serve8080/rate/insertPersonal',
+                    data: {
+                        userId: this.user.userId,
+                        productType: this.productRates.type,
+                        term: this.loanForm.term,
+                        requestedAmount: this.loanForm.requestedAmount,
+                        interestRate: this.loanForm.interestRate
+                    }
+                }).then(res => {
+                    if (res.data.code == 1) {
+                        this.$message({
+                            type: 'success',
+                            message: '贷款成功'
+                        })
+                    }
+                    else {
+                        this.$message({
+                            type: 'waring',
+                            message: '贷款失败'
+                        })
+                    }
+                })
             }
 
             // Add logic to handle form submission
@@ -84,9 +116,9 @@ export default {
             this.updateLoanDetails();
         },
         updateLoanDetails() {
-            const loanAmount = parseFloat(this.loanForm.loanAmount);
+            const loanAmount = parseFloat(this.loanForm.requestedAmount);
             const interestRate = parseFloat(this.loanForm.interestRate);
-            const selectedInstallments = parseFloat(this.loanForm.installments);
+            const selectedInstallments = parseFloat(this.loanForm.term);
 
             if (!isNaN(loanAmount) && !isNaN(interestRate) && !isNaN(selectedInstallments)) {
                 const monthlyInterestRate = interestRate / 12;
@@ -106,7 +138,7 @@ export default {
         updateInterestRate() {
             const installmentRates = this.installmentRates
 
-            const selectedInstallments = this.loanForm.installments;
+            const selectedInstallments = this.loanForm.term;
             this.loanForm.interestRate = installmentRates[selectedInstallments];
         },
     },
