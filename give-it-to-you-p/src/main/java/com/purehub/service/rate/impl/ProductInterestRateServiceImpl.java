@@ -16,15 +16,4 @@ public class ProductInterestRateServiceImpl extends ServiceImpl<ProductInterestR
 
     @Autowired
     private ProductInterestRateMapper productInterestRateMapper;
-
-    @Override
-    public List<PersonalProductInterestRate> getPersonalProductRate() {
-        return productInterestRateMapper.selectPersonalProductRate();
-    }
-
-    @Override
-    public Boolean InsertGenericLoan(GenericLoanApplication loanApplication) {
-        int row = productInterestRateMapper.InsetGenericLoan(loanApplication);
-        return row==1? true:false;
-    }
 }

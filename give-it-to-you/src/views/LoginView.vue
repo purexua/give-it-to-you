@@ -190,6 +190,7 @@ export default {
                     if (res.data.password === this.loginForm.password) {
                         // 保存用户信息到 vuex 的 user
                         this.$store.commit('userInfo/SAVEUSERINFO', res.data)
+                        this.$store.dispatch('creditInfo/getUserCreditScoreByUserId', res.data.userId)
                         this.$router.push('/index/home')
                     } else {
                         this.$message({
