@@ -199,7 +199,7 @@ export default {
                     }
                 }
             }).catch(err => {
-                this.$message.error('哎呦~出错啦');
+                this.$message.error('哎呦~出错啦'+err);
             }).finally(() => {
                 this.loading = false
             })

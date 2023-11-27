@@ -5,11 +5,11 @@
 
         <el-form :model="loanForm" ref="loanForm" label-position="top">
             <el-form-item label="贷款金额" prop="loanAmount">
-                <el-input v-model="loanForm.loanAmount" placeholder="请输入贷款金额" />
+                <el-input v-model="loanForm.loanAmount" placeholder="请输入贷款金额" @input="updateLoanDetails" />
             </el-form-item>
 
             <el-form-item label="分期期数" prop="installments">
-                <el-select v-model="loanForm.installments" placeholder="请选择分期期数" @change="updateLoanDetails">
+                <el-select v-model="loanForm.installments" placeholder="请选择分期期数" @change="handleSelectChange">
                     <el-option label="3期" value="3" />
                     <el-option label="6期" value="6" />
                     <el-option label="12期" value="12" />
@@ -23,6 +23,7 @@
 
             <el-form-item label="每期需还金额" prop="installmentAmount">
                 <span>{{ loanDetails.installmentAmount }}</span>
+                <span v-if="loanDetails.interestPerInstallment">（每期利息：{{ loanDetails.interestPerInstallment }}）</span>
             </el-form-item>
 
             <el-form-item label="总共需要还的金额" prop="totalAmount">
@@ -38,18 +39,22 @@
 </template>
   
 <script>
+import axios from 'axios';
 export default {
     data() {
         return {
             loanForm: {
                 loanAmount: null,
                 installments: '3',
-                interestRate: 0.05,
+                interestRate: '0.01',
             },
+            installmentRates: {}, // 存放后端返回的分期利率数据
             loanDetails: {
                 installmentAmount: null,
+                interestPerInstallment: null,
                 totalAmount: null,
             },
+            productRates: [],
             userLimit: 10000, // 用户最高额度，示例值，根据实际情况设置
         };
     },
@@ -57,6 +62,10 @@ export default {
         this.updateLoanDetails();
     },
     methods: {
+        handleSelectChange() {
+            this.updateInterestRate();
+            this.updateLoanDetails();
+        },
         submitForm() {
             // Check if the loan amount exceeds the user limit
             const loanAmount = parseFloat(this.loanForm.loanAmount);
@@ -75,7 +84,6 @@ export default {
             this.updateLoanDetails();
         },
         updateLoanDetails() {
-            // Add logic to update loan details based on loan amount, interest rate, and installments
             const loanAmount = parseFloat(this.loanForm.loanAmount);
             const interestRate = parseFloat(this.loanForm.interestRate);
             const selectedInstallments = parseFloat(this.loanForm.installments);
@@ -84,26 +92,48 @@ export default {
                 const monthlyInterestRate = interestRate / 12;
                 const totalAmount = loanAmount * (1 + interestRate);
                 const installmentAmount = totalAmount / selectedInstallments;
+                const interestPerInstallment = (loanAmount * monthlyInterestRate).toFixed(2);
 
                 this.loanDetails.totalAmount = totalAmount.toFixed(2);
                 this.loanDetails.installmentAmount = installmentAmount.toFixed(2);
+                this.loanDetails.interestPerInstallment = interestPerInstallment;
             } else {
                 this.loanDetails.totalAmount = null;
                 this.loanDetails.installmentAmount = null;
+                this.loanDetails.interestPerInstallment = null;
             }
         },
         updateInterestRate() {
-            // Add logic to update interest rate based on selected installments
-            const installmentRates = {
-                3: 0.05,
-                6: 0.08,
-                12: 0.1,
-                24: 0.15,
-            };
+            const installmentRates = this.installmentRates
 
             const selectedInstallments = this.loanForm.installments;
             this.loanForm.interestRate = installmentRates[selectedInstallments];
         },
+    },
+    computed: {
+        user() {
+            return this.$store.state.userInfo.user
+        }
+    },
+    mounted() {
+        // this.userLimit = this.user.balance;
+        console.log(this.user.balance)
+        this.userLimit = this.user.balance //存入用户的额度
+        axios({
+            method: 'get',
+            url: `http://localhost:3919/serve8080/rate/personalProduct`,
+        }).then(res => {
+            console.log(res.data.data);
+            this.productRates = res.data.data
+
+            this.installmentRates = {};
+
+            this.productRates.forEach((rate) => {
+                this.installmentRates[rate.term] = rate.interestRate;
+            });
+
+            this.loanForm.interestRate = this.installmentRates[3]; //将页面初始化利率设置为默认3期的利率
+        })
     },
 };
 </script>

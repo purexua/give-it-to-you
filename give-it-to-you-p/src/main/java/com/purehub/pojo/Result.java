@@ -1,4 +1,4 @@
-package com.sky.result;
+package com.purehub.pojo;
 
 import lombok.Data;
 
