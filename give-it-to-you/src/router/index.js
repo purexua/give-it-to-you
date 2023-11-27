@@ -5,6 +5,7 @@ import HomePageView from '../views/HomePageView.vue'
 import LoginView from '../views/LoginView.vue'
 import Index from '../views/Index.vue'
 import Home from '../views/index/Home.vue'
+import PersonalProduct from '../components/PersonalProduct'
 
 Vue.use(VueRouter)
 
@@ -41,6 +42,14 @@ const router = new VueRouter({
                component:Home,
                meta:{
                   title:'主页'
+               }
+            },
+            {
+               name:'personalProduct',
+               path:'/personalProduct',
+               component:PersonalProduct,
+               meta:{
+                  title:'个性化产品页面'
                }
             }
          ]
