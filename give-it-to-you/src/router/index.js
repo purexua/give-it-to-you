@@ -5,6 +5,7 @@ import HomePageView from '../views/HomePageView.vue'
 import LoginView from '../views/LoginView.vue'
 import Index from '../views/Index.vue'
 import Home from '../views/index/Home.vue'
+import ProductApplication from '../views/index/application/ProductApplication.vue'
 
 Vue.use(VueRouter)
 
@@ -41,6 +42,14 @@ const router = new VueRouter({
                component:Home,
                meta:{
                   title:'主页'
+               }
+            },
+            {
+               name:'applicationproduct',
+               path:'application/product',
+               component: ProductApplication,
+               meta:{
+                  title:'产品申请'
                }
             }
          ]
