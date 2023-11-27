@@ -22,7 +22,7 @@
                             }">产品申请</router-link>
                         </el-menu-item>
                         <el-menu-item index="2-2">
-                            个性化产品
+                            <router-link to="/personalProduct">个性化产品</router-link>
                         </el-menu-item>
                     </el-menu-item-group>
                 </el-submenu>
@@ -37,7 +37,7 @@
                 <el-menu-item index="5">
                     <i class="el-icon-document"></i>
                     <span slot="title">
-                        还款计划
+                      <router-link to = "repaymentPlan" >还款计划</router-link>
                     </span>
                 </el-menu-item>
 
@@ -75,6 +75,7 @@
 
 <script>
 import Header from '@/components/Header.vue';
+import router from '@/router';
 export default {
     name: 'Index',
     data() {
@@ -88,8 +89,9 @@ export default {
         }
     },
     components:{
-        Header,
-    }
+    Header,
+    router
+}
 }
 </script>
 

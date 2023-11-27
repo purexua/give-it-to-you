@@ -5,6 +5,10 @@ import HomePageView from '../views/HomePageView.vue'
 import LoginView from '../views/LoginView.vue'
 import Index from '../views/Index.vue'
 import Home from '../views/index/Home.vue'
+import RepaymentPlanView from '../views/RepaymentPlanView.vue'
+
+import PersonalProduct from '../components/PersonalProduct'
+
 import ProductApplication from '../views/index/application/ProductApplication.vue'
 
 Vue.use(VueRouter)
@@ -29,27 +33,44 @@ const router = new VueRouter({
          }
       },
       {
-         name:'index',
-         path:'/index',
+         name: 'index',
+         path: '/index',
          component: Index,
-         meta:{
-            title:'给你呗首页'
+         meta: {
+            title: '给你呗首页'
          },
-         children:[
+         children: [
             {
-               name:'home',
-               path:'home',
-               component:Home,
-               meta:{
-                  title:'主页'
+               name: 'home',
+               path: 'home',
+               component: Home,
+               meta: {
+                  title: '主页'
                }
             },
             {
-               name:'applicationproduct',
-               path:'application/product',
+               name: 'personalProduct',
+               path: '/personalProduct',
+               component: PersonalProduct,
+               meta: {
+                  title: '个性化产品页面'
+               },
+            },
+            {
+               name: 'applicationproduct',
+               path: 'application/product',
                component: ProductApplication,
+               meta: {
+                  title: '产品申请'
+
+               }
+            },
+            {
+               name:'repaymentPlan',
+               path:'repaymentplan',
+               component:RepaymentPlanView,
                meta:{
-                  title:'产品申请'
+                  title:'还款计划'
                }
             }
          ]
