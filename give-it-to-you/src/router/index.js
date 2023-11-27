@@ -5,6 +5,7 @@ import HomePageView from '../views/HomePageView.vue'
 import LoginView from '../views/LoginView.vue'
 import Index from '../views/Index.vue'
 import Home from '../views/index/Home.vue'
+import RepaymentPlanView from '../views/RepaymentPlanView.vue'
 
 Vue.use(VueRouter)
 
@@ -41,6 +42,14 @@ const router = new VueRouter({
                component:Home,
                meta:{
                   title:'主页'
+               }
+            },
+            {
+               name:'repaymentPlan',
+               path:'repaymentplan',
+               component:RepaymentPlanView,
+               meta:{
+                  title:'还款计划'
                }
             }
          ]
