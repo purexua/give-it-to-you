@@ -1,4 +1,4 @@
-package com.purehub.controller.user;
+package com.purehub.controller.rate;
 
 import com.purehub.pojo.ProductInterestRate;
 import com.purehub.service.rate.ProductInterestRateService;
