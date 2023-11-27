@@ -37,7 +37,9 @@
                 <el-menu-item index="5">
                     <i class="el-icon-document"></i>
                     <span slot="title">
-                      <router-link to = "repaymentPlan" >还款计划</router-link>
+                      <router-link :to="{
+                                name: 'repaymentPlan',
+                            }" >还款计划</router-link>
                     </span>
                 </el-menu-item>
 
