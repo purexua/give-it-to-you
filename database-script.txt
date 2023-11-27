@@ -16,7 +16,7 @@ CREATE TABLE user
     address      VARCHAR(255),
     phone_number VARCHAR(20),
     balance      INT         DEFAULT 0,
-    role         VARCHAR(20) DEFAULT 'client'，
+    role         VARCHAR(20) DEFAULT 'client',
     deleted      INT         DEFAULT 0,
     version      INT         DEFAULT 1
 );
@@ -37,7 +37,7 @@ CREATE TABLE interest_rate
     rate_id       INT AUTO_INCREMENT PRIMARY KEY,
     product_type  VARCHAR(50),
     term          INT,
-    interest_rate    DECIMAL(5, 2),
+    interest_rate DECIMAL(5, 2)
 );
 
 -- 在 product_interest_rate 表的 product_category 字段上创建索引
@@ -52,7 +52,7 @@ CREATE TABLE product_loan_application
     product_category VARCHAR(50),
     term             INT,
     requested_amount DECIMAL(10, 2),
-    interest_rate    INT,
+    interest_rate    DECIMAL(5, 2),
     PRIMARY KEY (application_id),
     FOREIGN KEY (user_id) REFERENCES user (user_id),
     FOREIGN KEY (product_category) REFERENCES product_interest_rate (product_category),
@@ -70,7 +70,7 @@ CREATE TABLE generic_loan_application
     product_type     VARCHAR(50),
     term             INT,
     requested_amount DECIMAL(10, 2),
-    interest_rate    INT,
+    interest_rate    DECIMAL(5, 2),
     PRIMARY KEY (application_id),
     FOREIGN KEY (user_id) REFERENCES user (user_id),
     FOREIGN KEY (product_type) REFERENCES interest_rate (product_type),
@@ -81,12 +81,14 @@ CREATE TABLE generic_loan_application
 CREATE TABLE repayment_plan
 (
     plan_id        INT AUTO_INCREMENT,
+    user_id        INT
     application_id INT,
     installment    INT,
     due_date       DATE,
     amount_due     DECIMAL(10, 2),
     payment_status VARCHAR(20) DEFAULT 'Pending',
     PRIMARY KEY (plan_id),
+    FOREIGN KEY (user_id) REFERENCES user (user_id),
     FOREIGN KEY (application_id) REFERENCES product_loan_application (application_id)
 );
 
@@ -122,7 +124,7 @@ CREATE TABLE credit_score
 (
     score_id     INT AUTO_INCREMENT PRIMARY KEY,
     user_id      INT,
-    credit_score INT,
+    limit_amount DECIMAL(5, 2),
     FOREIGN KEY (user_id) REFERENCES user (user_id)
 );
 
