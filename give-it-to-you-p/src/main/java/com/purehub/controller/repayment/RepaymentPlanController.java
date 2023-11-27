@@ -24,7 +24,7 @@ public class RepaymentPlanController {
     public RepaymentResult selectAllPlan(@RequestParam Integer userId, @RequestParam Integer current,@RequestParam Integer size)
     {
         QueryWrapper<RepaymentPlan> queryWrapper = new QueryWrapper<>();
-        queryWrapper.eq("user_id",userId);
+        queryWrapper.eq("userId",userId);
         try{
             Page<RepaymentPlan> page = new Page<>(current, size); // 当前页码和每页记录数
             IPage<RepaymentPlan> plans = repaymentPlanService.page(page, queryWrapper);
