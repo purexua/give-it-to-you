@@ -15,11 +15,11 @@
       </el-form-item>
 
       <el-form-item label="分期" prop="term">
-        <el-input type="text" v-model="ruleForm.term" autocomplete="off" disabled ></el-input>
+        <el-input type="text" v-model.number="ruleForm.term" autocomplete="off" disabled></el-input>
       </el-form-item>
 
       <el-form-item label="贷款金额" prop="requestAmount">
-        <el-input v-model.number="ruleForm.requestAmount" autocomplete="off" disabled></el-input>
+        <el-input v-model.number="ruleForm.requestedAmount" autocomplete="off" disabled></el-input>
       </el-form-item>
 
       <el-form-item label="贷款利率" prop="interestRate">
@@ -35,6 +35,8 @@
 </template>
 
 <script>
+import axios from 'axios';
+
 export default {
   name: 'ProductApplication',
   data() {
@@ -50,7 +52,7 @@ export default {
         userId: '',
         productCategory: '',
         term: '',
-        requestAmount: '',
+        requestedAmount: '',
         interestRate: '',
       },
       rules: {
@@ -64,7 +66,33 @@ export default {
     submitForm(formName) {
       this.$refs[formName].validate((valid) => {
         if (valid) {
-          alert('submit!');
+          axios(
+            {
+              method: 'post',
+              url: 'http://localhost:3919/serve8080/application/product',
+              data: {
+                userId: this.ruleForm.userId,
+                productCategory: this.ruleForm.productCategory,
+                term: this.ruleForm.term,
+                requestedAmount: this.ruleForm.requestedAmount,
+                interestRate: this.ruleForm.interestRate,
+              }
+            }
+          ).then((response) => {
+            if (response.data === 'success') {
+              this.$message({
+                message: '提交成功',
+                type: 'success'
+              });
+            } else {
+              this.$message({
+                message: '提交失败',
+                type: 'error'
+              });
+            }
+          }).catch((error) => {
+            console.log(error);
+          });
         } else {
           console.log('error submit!!');
           return false;
@@ -79,11 +107,11 @@ export default {
       const selectedProduct = this.productInterestRate.find(item => item.productCategory === selectedCategory);
       if (selectedProduct) {
         this.ruleForm.term = selectedProduct.term;
-        this.ruleForm.requestAmount = selectedProduct.loanAmount;
+        this.ruleForm.requestedAmount = selectedProduct.loanAmount;
         this.ruleForm.interestRate = selectedProduct.interestRate;
       } else {
         this.ruleForm.term = '';
-        this.ruleForm.requestAmount = '';
+        this.ruleForm.requestedAmount = '';
         this.ruleForm.interestRate = '';
       }
     }
