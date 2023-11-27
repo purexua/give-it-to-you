@@ -49,6 +49,7 @@ export default {
                 interestRate: '0.01',  //期数利率
             },
             installmentRates: {}, // 存放后端返回的分期利率数据
+            productType:{},//存放后端返回的产品类型
             loanDetails: {
                 installmentAmount: null,
                 interestPerInstallment: null,
@@ -75,7 +76,7 @@ export default {
             } else {
                 console.log('前端发送的数据:', {
                     userId: this.user.userId,
-                    productType: this.productRates.productType,
+                    productType: this.productType[this.loanForm.term],
                     term: this.loanForm.term,
                     requestedAmount: this.loanForm.requestedAmount,
                     interestRate: this.loanForm.interestRate
@@ -85,7 +86,7 @@ export default {
                     url: 'http://localhost:3919/serve8080/rate/insertPersonal',
                     data: {
                         userId: this.user.userId,
-                        productType: this.productRates.type,
+                        productType: this.productType[this.loanForm.term],
                         term: this.loanForm.term,
                         requestedAmount: this.loanForm.requestedAmount,
                         interestRate: this.loanForm.interestRate
@@ -162,6 +163,7 @@ export default {
 
             this.productRates.forEach((rate) => {
                 this.installmentRates[rate.term] = rate.interestRate;
+                this.productType[rate.term] = rate.productType;
             });
 
             this.loanForm.interestRate = this.installmentRates[3]; //将页面初始化利率设置为默认3期的利率
