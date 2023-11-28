@@ -95,17 +95,19 @@ export default {
                 }
               }
             ).then((response) => {
-              if (response.data === 'success') {
-                this.$message({
-                  message: '申请成功，你的额度已经被扣除',
-                  type: 'success'
-                });
-              } else {
-                this.$message({
-                  message: '申请失败',
-                  type: 'success'
-                });
-              }
+              this.$message({
+                message: '申请成功，你的额度已经被扣除',
+                type: 'success'
+              });
+              axios({
+                method: 'POST',
+                url: 'http://localhost:3919/serve8080/repayment/plan/plus',
+                params: {
+                  userId: this.user.userId,
+                  applicationId: response.data,
+                  amountDue: this.ruleForm.requestedAmount,
+                }
+              })
             }).catch((error) => {
               console.log(error);
             });
