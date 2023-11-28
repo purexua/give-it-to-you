@@ -47,7 +47,7 @@ CREATE INDEX idx_product_category ON product_interest_rate (product_category);
 #创建 借款申请表，与产品利率表关联 (Product_Loan_Application)
 CREATE TABLE product_loan_application
 (
-    application_id   INT AUTO_INCREMENT,
+    application_id   LONG AUTO_INCREMENT,
     user_id          INT,
     product_category VARCHAR(50),
     term             INT,
@@ -65,7 +65,7 @@ CREATE INDEX idx_product_type ON interest_rate (product_type);
 #创建 借款申请表，与利率表关联 (Generic_Loan_Application)
 CREATE TABLE generic_loan_application
 (
-    application_id   INT AUTO_INCREMENT,
+    application_id   LONG AUTO_INCREMENT,
     user_id          INT,
     product_type     VARCHAR(50),
     term             INT,
@@ -82,7 +82,7 @@ CREATE TABLE repayment_plan
 (
     plan_id        INT AUTO_INCREMENT,
     user_id        INT
-    application_id INT,
+    application_id LONG,
     installment    INT,
     due_date       DATE,
     amount_due     DECIMAL(10, 2),
@@ -109,7 +109,7 @@ CREATE TABLE loan_contract
 (
     contract_id     INT AUTO_INCREMENT,
     user_id         INT,
-    application_id  INT,
+    application_id  LONG,
     contract_number VARCHAR(50),
     signing_date    DATE,
     loan_purpose    VARCHAR(255),

@@ -60,32 +60,32 @@ logo：![give-it-to-give-it-to-you](./image/logo-min-min.png)
 
 ### 借款申请表，与产品利率表关联（Product_Loan_Application）
 
-| Field            | Explanation | Type           | Null | Key  | Default | Extra          |
-| ---------------- | ----------- | -------------- | ---- | ---- | ------- | -------------- |
-| application_id   | 申请ID      | INT            | NO   | PRI  | NULL    | AUTO_INCREMENT |
-| user_id          | 用户ID      | INT            | NO   | MUL  | NULL    |                |
-| product_category | 产品类别    | VARCHAR(50)    | NO   | MUL  | NULL    |                |
-| term             | 期限        | INT            | NO   |      | NULL    |                |
-| requested_amount | 申请金额    | DECIMAL(10, 2) | NO   |      | NULL    |                |
-| interest_rate    | 利率        | DECIMAL(5, 2)  | NO   |      | NULL    |                |
+| Field            | Explanation | Type           | Null | Key  | Default | Extra    |
+| ---------------- | ----------- | -------------- | ---- | ---- | ------- | -------- |
+| application_id   | 申请ID      | LONG           | NO   | PRI  | NULL    | 雪花算法 |
+| user_id          | 用户ID      | INT            | NO   | MUL  | NULL    |          |
+| product_category | 产品类别    | VARCHAR(50)    | NO   | MUL  | NULL    |          |
+| term             | 期限        | INT            | NO   |      | NULL    |          |
+| requested_amount | 申请金额    | DECIMAL(10, 2) | NO   |      | NULL    |          |
+| interest_rate    | 利率        | DECIMAL(5, 2)  | NO   |      | NULL    |          |
 
 ### 借款申请表，与利率表关联（Generic_Loan_Application）
 
-| Field            | Explanation | Type           | Null | Key  | Default | Extra          |
-| ---------------- | ----------- | -------------- | ---- | ---- | ------- | -------------- |
-| application_id   | 申请ID      | INT            | NO   | PRI  | NULL    | AUTO_INCREMENT |
-| user_id          | 用户ID      | INT            | NO   | MUL  | NULL    |                |
-| product_type     | 产品类型    | VARCHAR(50)    | NO   | MUL  | NULL    |                |
-| term             | 期限        | INT            | NO   |      | NULL    |                |
-| requested_amount | 申请金额    | DECIMAL(10, 2) | NO   |      | NULL    |                |
-| interest_rate    | 利率ID      | DECIMAL(5, 2)  | NO   |      | NULL    |                |
+| Field            | Explanation | Type           | Null | Key  | Default | Extra    |
+| ---------------- | ----------- | -------------- | ---- | ---- | ------- | -------- |
+| application_id   | 申请ID      | LONG           | NO   | PRI  | NULL    | 雪花算法 |
+| user_id          | 用户ID      | INT            | NO   | MUL  | NULL    |          |
+| product_type     | 产品类型    | VARCHAR(50)    | NO   | MUL  | NULL    |          |
+| term             | 期限        | INT            | NO   |      | NULL    |          |
+| requested_amount | 申请金额    | DECIMAL(10, 2) | NO   |      | NULL    |          |
+| interest_rate    | 利率ID      | DECIMAL(5, 2)  | NO   |      | NULL    |          |
 
 ### 还款计划表（Repayment_Schedule）
 
 | Field          | Explanation | Type           | Null | Key  | Default | Extra          |
 | -------------- | ----------- | -------------- | ---- | ---- | ------- | -------------- |
 | plan_id        | 计划ID      | INT            | NO   | PRI  | NULL    | AUTO_INCREMENT |
-| application_id | 申请ID      | INT            | NO   | MUL  | NULL    |                |
+| application_id | 申请ID      | LONG           | NO   | MUL  | NULL    |                |
 | installment    | 分期数      | INT            | NO   |      | NULL    |                |
 | due_date       | 到期日期    | DATE           | NO   |      | NULL    |                |
 | amount_due     | 应还金额    | DECIMAL(10, 2) | NO   |      | NULL    |                |
@@ -106,7 +106,7 @@ logo：![give-it-to-give-it-to-you](./image/logo-min-min.png)
 | --------------- | ----------- | ------------ | ---- | ---- | ------- | -------------- |
 | contract_id     | 合同ID      | INT          | NO   | PRI  | NULL    | AUTO_INCREMENT |
 | user_id         | 用户ID      | INT          | NO   | MUL  | NULL    |                |
-| application_id  | 申请ID      | INT          | NO   | MUL  | NULL    |                |
+| application_id  | 申请ID      | LONG         | NO   | MUL  | NULL    |                |
 | contract_number | 合同编号    | VARCHAR(50)  | NO   |      | NULL    |                |
 | signing_date    | 签署日期    | DATE         | NO   |      | NULL    |                |
 | loan_purpose    | 贷款目的    | VARCHAR(255) | NO   |      | NULL    |                |
@@ -190,6 +190,51 @@ logo：![give-it-to-give-it-to-you](./image/logo-min-min.png)
 |  No  | 版本号 |   修改内容意见   |  修改日期  | 修改人 |
 | :--: | :----: | :--------------: | :--------: | :----: |
 |  1   | v1.0.0 | 初始版本（布局） | 2023/11/21 | 徐健豪 |
+
+5.
+
+|     名称     |      描述      |
+| :----------: | :------------: |
+|   模块名称   |  用户贷款申请  |
+|  模块负责人  | 徐健豪、龚圆康 |
+| 文档提交日期 |   2023/11/21   |
+
+修改记录
+
+|  No  | 版本号 |       修改内容意见       |  修改日期  | 修改人 |
+| :--: | :----: | :----------------------: | :--------: | :----: |
+|  1   | v1.0.0 |     初始版本（布局）     | 2023/11/21 | 徐健豪 |
+|  2   | v1.1.0 | 产品类型贷款申请（demo） | 2023/11/22 | 徐健豪 |
+|  3   | v1.1.1 |  个性化贷款申请（demo）  | 2023/11/22 | 龚圆康 |
+
+6.
+
+|     名称     |         描述         |
+| :----------: | :------------------: |
+|   模块名称   |     用户贷款记录     |
+|  模块负责人  | 龚圆康、徐健豪、龚安 |
+| 文档提交日期 |      2023/11/21      |
+
+修改记录
+
+|  No  | 版本号 |      修改内容意见      |  修改日期  |     修改人     |
+| :--: | :----: | :--------------------: | :--------: | :------------: |
+|  1   | v1.0.0 |  初始版本（页面显示）  | 2023/11/21 |      龚安      |
+|  2   | v1.1.0 | 贷款申请后生成贷款记录 | 2023/11/23 | 龚圆康、徐健豪 |
+
+7.
+
+|     名称     |     描述     |
+| :----------: | :----------: |
+|   模块名称   | 用户还款记录 |
+|  模块负责人  |     龚安     |
+| 文档提交日期 |  2023/11/21  |
+
+修改记录
+
+|  No  | 版本号 |     修改内容意见     |  修改日期  | 修改人 |
+| :--: | :----: | :------------------: | :--------: | :----: |
+|  1   | v1.0.0 | 初始版本（页面显示） | 2023/11/21 |  龚安  |
 
 ## 接口说明
 
