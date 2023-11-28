@@ -34,4 +34,20 @@ public class UserController {
       return "success";
     }
   }
+
+  @ResponseBody
+  @PutMapping("/user/password")
+  public String updatePassword(@RequestParam Integer userId, @RequestParam String password) {
+    User user = userService.getById(userId);
+    user.setPassword(password);
+    userService.updateById(user);
+    return "success";
+  }
+
+  @ResponseBody
+  @PutMapping("/user")
+  public String updateUser(@RequestBody User user) {
+    userService.updateById(user);
+    return "success";
+  }
 }
