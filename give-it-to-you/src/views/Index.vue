@@ -30,7 +30,9 @@
                 <el-menu-item index="3">
                     <i class="el-icon-document"></i>
                     <span slot="title">
-                        还款记录
+                        <router-link :to="{
+                                name: 'RepaymentRecordsView',
+                            }" >还款记录</router-link>
                     </span>
                 </el-menu-item>
 

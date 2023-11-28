@@ -3,28 +3,16 @@
     <el-table
     :data="tableData"
       style="width: 100%"
-      @expand-change="findProductInfo">
-      <el-table-column type="expand">
-        <template slot-scope="props">
-          <el-form label-position="left" ref="productInfo" :model="productInfo" inline class="demo-table-expand" style="position: relative;text-align: left;margin-left: 10%;">
-            <el-form-item label="产品类别">
-              <span>{{ productInfo.productType }}</span>
-            </el-form-item>
-            <el-form-item label="期数">
-              <span>{{ productInfo.term  }}</span>
-            </el-form-item>
-            <el-form-item label="申请金额">
-              <span>{{ productInfo.requestedAmount  }}</span>
-            </el-form-item>
-            <el-form-item label="利率">
-              <span>{{ productInfo.interestRate  }}</span>
-            </el-form-item>
-          </el-form>
-        </template>
-      </el-table-column>
+      ref="multipleTable"
+      tooltip-effect="dark"
+      @selection-change="handleSelectionChange()">
+      <el-table-column
+      type="selection"
+      width="55">
+    </el-table-column>
       <el-table-column
         label="序号"
-        type="index">
+        type = "index">
       </el-table-column>
       <el-table-column
         label="申请Id"
@@ -38,7 +26,8 @@
       <el-table-column
         label="截止日期"
         sortable
-        prop="dueDate">
+        prop="dueDate"
+        :formatter="formatDate">
       </el-table-column>
       <el-table-column
         label="还款金额"
@@ -49,25 +38,22 @@
         label="还款状态"
         prop="paymentStatus">
       </el-table-column>
-      <el-table-column
-      >
-      <template slot="header" slot-scope="scope">
-        <el-input
-          v-model="search"
-          size="mini"
-          placeholder="输入关键字搜索"/>
-      </template>
-      <template slot-scope="scope">
+      <el-table-column>
+        <template slot-scope="scope">
         <el-button
           size="mini"
-          @click="handleEdit(scope.$index, scope.row)">详情</el-button>
-        <el-button
+          type="text"
+          >详情</el-button>
+          <el-button
           size="mini"
-          type="success"
-          @click="handleDelete(scope.$index, scope.row)">我要还款</el-button>
+          @click="addInstallment(scope.row)"
+          >我要还款</el-button>
       </template>
-    </el-table-column>
+      </el-table-column>
     </el-table>
+   <div style="position: relative;margin-top: 20px;margin-left: 80%;">
+    <el-button type = "success" @click="toggleSelection()">批量还款</el-button>
+   </div>
     <div class="block" style="position: relative;margin-left: 20%;">
         <el-pagination
         @size-change="handleSizeChange"
@@ -83,11 +69,14 @@
   </template>
   
   <script>
+  import dayjs from 'dayjs';
+  import 'dayjs/locale/zh-cn'; // 导入中文语言包
   import axios from "axios"
     export default {
         name: "RepaymentPlanView",
       data() {
         return {
+        multipleSelection: [],
         search: null,
         tableData: [],
         total:null,
@@ -102,6 +91,42 @@
         }
       },
       methods: {
+        formatDate(row, column, cellValue) {
+          return dayjs(cellValue).format('YYYY-MM-DD');
+        },
+        toggleSelection(row) {
+        if (row) {
+          this.multipleSelection.forEach(row => {
+            this.handleSelectedRow(row);
+            this.$refs.multipleTable.toggleRowSelection(row);
+          });
+        } else {
+          this.$refs.multipleTable.clearSelection();
+        }
+      },
+      handleSelectedRow(row) {
+        this.addInstallment(row);
+      },
+      handleSelectionChange(val) {
+        this.multipleSelection = val;
+      },
+      addInstallment(val){
+        // this.tableData[val].installment++;
+        axios.get('http://localhost:3919/serve8080/changeInstallment',{
+        params: {
+            applicationId : val.applicationId
+        }
+       })
+        .then(response => { 
+            console.log(response.data.data)
+            if(response.data.status === 1)
+            this.$message.error('哎呦~出错啦');
+            this.findAllPage();
+        })
+        .catch(error =>  {
+            console.log(error);
+        });
+      },
         handleSizeChange(val) {
         this.pageSize = val;
         this.findAllPage();

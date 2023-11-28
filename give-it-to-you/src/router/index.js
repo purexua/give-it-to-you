@@ -10,6 +10,7 @@ import RepaymentPlanView from '../views/RepaymentPlanView.vue'
 import PersonalProduct from '../components/PersonalProduct'
 
 import ProductApplication from '../views/index/application/ProductApplication.vue'
+import RepaymentRecordsView from '@/views/RepaymentRecordsView.vue'
 
 Vue.use(VueRouter)
 
@@ -71,6 +72,14 @@ const router = new VueRouter({
                component:RepaymentPlanView,
                meta:{
                   title:'还款计划'
+               }
+            },
+            {
+               name:'RepaymentRecordsView',
+               path:'repaymentRecords',
+               component:RepaymentRecordsView,
+               meta:{
+                  title:'还款记录'
                }
             }
          ]

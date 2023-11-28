@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- namespace等于mapper接口类的全限定名,这样实现对应 -->
+<mapper namespace="com.purehub.mapper.RepaymentRecordsMapper">
+    <insert id="repaymentInsertRecords">
+            insert into repayment_record(plan_id, payment_date, actual_amount) values(#{planId},#{paymentDate}, #{actualAmount})
+    </insert>
+    <select id="findAllRecords" resultType="com.purehub.pojo.RepaymentRecord">
+            select repayment_plan.application_id , product_type, installment, actual_amount, payment_date
+        from generic_loan_application, repayment_plan, repayment_record
+        where generic_loan_application.application_id = repayment_plan.application_id and
+        repayment_plan.plan_id = repayment_record.plan_id and repayment_plan.user_id = #{userId}
+    </select>
+
+    <update id="updateTimeAndAmount">
+        UPDATE repayment_record
+        JOIN repayment_plan ON repayment_record.plan_id = repayment_plan.plan_id
+        SET repayment_record.payment_date = #{date}, actual_amount = actual_amount*2
+        WHERE repayment_plan.plan_id = #{planId}
+    </update>
+
+    <select id="findPlanId" resultType="integer">
+        select plan_id from repayment_plan where application_id = #{applicationId}
+    </select>
+
+</mapper>
