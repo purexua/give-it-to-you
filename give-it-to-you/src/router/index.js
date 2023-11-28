@@ -10,8 +10,11 @@ import RepaymentPlanView from '../views/RepaymentPlanView.vue'
 import PersonalProduct from '../components/PersonalProduct'
 
 import ProductApplication from '../views/index/application/ProductApplication.vue'
+
 import ChangePass from '../views/index/ChangePass.vue'
 import ChangeInfo from '../views/ChangeInfo.vue'
+
+import RepaymentRecordsView from '@/views/RepaymentRecordsView.vue'
 
 Vue.use(VueRouter)
 
@@ -89,6 +92,14 @@ const router = new VueRouter({
                component: ChangeInfo,
                meta: {
                   title: '修改个人信息'
+               }
+            },
+            {
+               name: 'RepaymentRecordsView',
+               path: 'repaymentRecords',
+               component: RepaymentRecordsView,
+               meta: {
+                  title: '还款记录'
                }
             }
          ]
