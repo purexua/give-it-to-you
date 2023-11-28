@@ -4,6 +4,7 @@ import com.purehub.pojo.GenericLoanApplication;
 import com.purehub.pojo.PersonalProductInterestRate;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Options;
 import org.apache.ibatis.annotations.Select;
 
 import java.util.List;
@@ -20,5 +21,6 @@ public interface GenericLoanApplicationMapper {
 
     @Insert("insert into generic_loan_application(user_id, product_type, term, requested_amount, interest_rate) " +
             "values (#{userId},#{productType},#{term},#{requestedAmount},#{interestRate})")
+    @Options(useGeneratedKeys = true, keyProperty = "applicationId")
     int InsetGenericLoan(GenericLoanApplication loanApplication);
 }
