@@ -8,6 +8,6 @@ import java.util.List;
 
 public interface RepaymentRecordsService{
     public List<RepaymentRecord> findAllRecords(Integer userId);
-    public void updateRecords(LocalDate date, Integer applicationId);
-    public void insertRecord(LocalDate date, Integer applicationId, Integer amount);
+    public void updateRecords(LocalDate date, Long applicationId);
+    public void insertRecord(LocalDate date, Long applicationId, Integer amount);
 }

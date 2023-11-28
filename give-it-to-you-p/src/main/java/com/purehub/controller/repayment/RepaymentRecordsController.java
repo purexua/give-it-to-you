@@ -29,14 +29,19 @@ public class RepaymentRecordsController {
         return new RepaymentResult().success(repaymentRecordList, "获取所有还款记录成功");
     }
     @GetMapping("/changeInstallment")
-    public RepaymentResult updateInstallment(@RequestParam Integer applicationId){
+    public RepaymentResult updateInstallment(@RequestParam Long applicationId){
         QueryWrapper<RepaymentPlan> queryWrapper = new QueryWrapper<>();
         queryWrapper.eq("application_id", applicationId);
         RepaymentPlan repaymentPlan = repaymentPlanService.getOne(queryWrapper);
         repaymentPlan.setInstallment(repaymentPlan.getInstallment()+1);
         try{
-            repaymentPlanService.update(repaymentPlan, queryWrapper);
-            return new RepaymentResult().success(null, "还款成功");
+            if(repaymentPlanService.findNowInstall(applicationId) - 1  == repaymentPlanService.findTotalTerm(applicationId))
+            {
+                return new RepaymentResult().success(null, "1");
+            }else{
+                repaymentPlanService.update(repaymentPlan, queryWrapper);
+                return new RepaymentResult().success(null, "还款成功");
+            }
         }catch(Exception e)
         {
             e.printStackTrace();
@@ -44,9 +49,9 @@ public class RepaymentRecordsController {
         }
     }
     @GetMapping("/updateRecords")
-    public RepaymentResult updatePaymentDateAndActualAmount(@RequestParam String paymentDate, @RequestParam Integer applicationId){
+    public RepaymentResult updatePaymentDateAndActualAmount(@RequestParam String paymentDate, @RequestParam Long applicationId){
         try{
-            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd").ISO_DATE_TIME;
             LocalDate date = LocalDate.parse(paymentDate, formatter);
             repaymentRecordsService.updateRecords(date,applicationId);
             return new RepaymentResult().success(null,"更新记录成功");
@@ -57,11 +62,11 @@ public class RepaymentRecordsController {
         }
     }
     @GetMapping("/insertRecords")
-    public RepaymentResult insertFirstRecord(@RequestParam String date, @RequestParam Integer appliationId, @RequestParam Integer amount){
+    public RepaymentResult insertFirstRecord(@RequestParam String date, @RequestParam Long applicationId, @RequestParam Integer amount){
         try{
-            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd").ISO_DATE_TIME;
             LocalDate date1 = LocalDate.parse(date, formatter);
-            repaymentRecordsService.insertRecord(date1, appliationId, amount);
+            repaymentRecordsService.insertRecord(date1, applicationId, amount);
             return new RepaymentResult().success(null,"插入记录成功");
         }catch (Exception e)
         {

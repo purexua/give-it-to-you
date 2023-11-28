@@ -15,5 +15,5 @@ public interface RepaymentRecordsMapper{
 
     public List<RepaymentRecord> findAllRecords(Integer userId);
     public void updateTimeAndAmount(LocalDate date, Integer planId);
-    public Integer findPlanId(Integer applicationId);
+    public Integer findPlanId(Long applicationId);
 }

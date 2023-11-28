@@ -6,7 +6,7 @@ import java.time.LocalDate;
 
 @Data
 public class RepaymentPlan {
-    private Integer applicationId;
+    private Long applicationId;
     private Integer installment;
     private LocalDate dueDate;
     private Integer amountDue;

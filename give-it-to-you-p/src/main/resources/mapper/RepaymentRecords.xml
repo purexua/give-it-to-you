@@ -17,7 +17,7 @@
     <update id="updateTimeAndAmount">
         UPDATE repayment_record
         JOIN repayment_plan ON repayment_record.plan_id = repayment_plan.plan_id
-        SET repayment_record.payment_date = #{date}, actual_amount = actual_amount*2
+        SET repayment_record.payment_date = #{date}, actual_amount = actual_amount + repayment_plan.amount_due
         WHERE repayment_plan.plan_id = #{planId}
     </update>
 

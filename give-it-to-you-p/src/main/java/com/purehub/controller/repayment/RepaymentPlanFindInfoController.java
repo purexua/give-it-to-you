@@ -14,7 +14,7 @@ public class RepaymentPlanFindInfoController {
     @Autowired
     private RepaymentPlanFindInfoService repaymentPlanFindInfoService;
     @GetMapping("/findProductInfoByApplicationId")
-    public RepaymentResult findProductInfo(@RequestParam Integer applicationId)
+    public RepaymentResult findProductInfo(@RequestParam Long applicationId)
     {
         QueryWrapper<GenericLoanApplication> queryWrapper = new QueryWrapper<>();
         queryWrapper.eq("application_id", applicationId);

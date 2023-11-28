@@ -6,7 +6,7 @@ import java.time.LocalDate;
 
 @Data
 public class RepaymentRecord {
-    private Integer applicationId;
+    private Long applicationId;
     private String productType;
     private Integer installment;//当前期数
     private Double actualAmount;//已还金额

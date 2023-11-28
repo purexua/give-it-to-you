@@ -76,10 +76,13 @@
             axios.get('http://localhost:3919/serve8080/findAllRepaymentRecords',{
             params: {
                 userId: userId,
-            }
-        })
+                }
+            })
             .then(response => { 
                 this.tableData = response.data.data;
+                for (const item of this.tableData) {
+                  item.installment = item.installment-1;
+                }
                 console.log(response.data.data);
                 if(response.data.status === 1)
                 this.$message.error('哎呦~出错啦');
