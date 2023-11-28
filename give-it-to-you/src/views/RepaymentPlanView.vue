@@ -2,21 +2,22 @@
     <div>
     <el-table
     :data="tableData"
-      style="width: 100%">
+      style="width: 100%"
+      @expand-change="findProductInfo">
       <el-table-column type="expand">
-        <template>
-          <el-form label-position="left" inline class="demo-table-expand" style="position: relative;text-align: left;margin-left: 10%;">
+        <template slot-scope="props">
+          <el-form label-position="left" ref="productInfo" :model="productInfo" inline class="demo-table-expand" style="position: relative;text-align: left;margin-left: 10%;">
             <el-form-item label="产品类别">
-              <!-- <span>{{ props.row.name }}</span> -->
+              <span>{{ productInfo.productType }}</span>
             </el-form-item>
-            <el-form-item label="期限">
-              <!-- <span>{{ props.row.shop }}</span> -->
+            <el-form-item label="期数">
+              <span>{{ productInfo.term  }}</span>
             </el-form-item>
             <el-form-item label="申请金额">
-              <!-- <span>{{ props.row.id }}</span> -->
+              <span>{{ productInfo.requestedAmount  }}</span>
             </el-form-item>
             <el-form-item label="利率">
-              <!-- <span>{{ props.row.shopId }}</span> -->
+              <span>{{ productInfo.interestRate  }}</span>
             </el-form-item>
           </el-form>
         </template>
@@ -92,6 +93,12 @@
         total:null,
         currentPage:1,
         pageSize:10,
+        productInfo:{
+            productType:null,
+            term:null,
+            requestedAmount:null,
+            interestRate:null
+        }
         }
       },
       methods: {
@@ -108,6 +115,23 @@
       },
       handleDelete(index, row) {
         console.log(index, row);
+      },
+      findProductInfo(row,expandedRows){
+        const applicationId = row.applicationId;
+        axios.get('http://localhost:3919/serve8080/findProductInfoByApplicationId',{
+        params: {
+            applicationId : applicationId
+        }
+       })
+        .then(response => { 
+            this.productInfo = response.data.data;
+            console.log(response.data.data);
+            if(response.data.status === 1)
+            this.$message.error('哎呦~出错啦');
+        })
+        .catch(error =>  {
+            console.log(error);
+        });
       },
       findAllPage(){
         const userId = this.user.userId;
@@ -130,7 +154,7 @@
         .catch(error =>  {
             console.log(error);
         });
-      }
+      },
     },
     mounted(){
         this.findAllPage();
@@ -140,6 +164,8 @@
         {
             return this.$store.state.userInfo.user;
         }
+    },
+    beforeDestroy() {
     }
     }
   </script>

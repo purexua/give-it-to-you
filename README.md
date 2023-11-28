@@ -22,7 +22,7 @@ logo：![give-it-to-give-it-to-you](./image/logo-min-min.png)
 
 ## 数据库
 
-### 用户表（user）
+### 用户表（User）
 
 | Field        | Explanation | Type         | Null | Key  | Default | Extra          |
 | ------------ | ----------- | ------------ | ---- | ---- | ------- | -------------- |
@@ -36,93 +36,95 @@ logo：![give-it-to-give-it-to-you](./image/logo-min-min.png)
 | phone_number | 电话号码    | VARCHAR(20)  | YES  |      | NULL    |                |
 | balance      | 余额        | INT          | NO   |      | 0       |                |
 | role         | 角色        | VARCHAR(20)  | NO   |      | client  |                |
+| deleted      | 删除标识    | INT          | NO   |      | 0       |                |
+| version      | 版本号      | INT          | NO   |      | 1       |                |
 
-### 借款申请表，与产品利率表关联 (Product_Loan_Application)
+### 产品利率表（Product_Interest_Rate）
 
-| Field            | Explanation | Type          | Null | Key  | Default | Extra          |
-| ---------------- | ----------- | ------------- | ---- | ---- | ------- | -------------- |
-| application_id   | 申请ID      | INT           | NO   | PRI  | NULL    | AUTO_INCREMENT |
-| user_id          | 用户ID      | INT           | YES  | MUL  | NULL    |                |
-| product_category | 产品类别    | VARCHAR(50)   | NO   | MUL  | NULL    |                |
-| term             | 期限        | INT           | NO   |      | NULL    |                |
-| requested_amount | 申请金额    | DECIMAL(10,2) | NO   |      | NULL    |                |
-| interest_rate    | 利率        | DECIMAL(5,2） | NO   |      | NULL    |                |
+| Field            | Explanation | Type           | Null | Key  | Default | Extra          |
+| ---------------- | ----------- | -------------- | ---- | ---- | ------- | -------------- |
+| p_rate_id        | 利率ID      | INT            | NO   | PRI  | NULL    | AUTO_INCREMENT |
+| product_category | 产品类别    | VARCHAR(50)    | NO   |      | NULL    |                |
+| term             | 期限        | INT            | NO   |      | NULL    |                |
+| interest_rate    | 利率        | DECIMAL(5, 2)  | NO   |      | NULL    |                |
+| loan_amount      | 贷款金额    | DECIMAL(10, 2) | NO   |      | NULL    |                |
 
-### 借款申请表，与利率表关联 (Generic_Loan_Application)
+### 利率表（Interest_Rate）
 
-| Field            | Explanation | Type          | Null | Key  | Default | Extra          |
-| ---------------- | ----------- | ------------- | ---- | ---- | ------- | -------------- |
-| application_id   | 申请ID      | INT           | NO   | PRI  | NULL    | AUTO_INCREMENT |
-| user_id          | 用户ID      | INT           | YES  | MUL  | NULL    |                |
-| product_type     | 产品类型    | VARCHAR(50)   | NO   | MUL  | NULL    |                |
-| term             | 期限        | INT           | NO   |      | NULL    |                |
-| requested_amount | 申请金额    | DECIMAL(10,2) | NO   |      | NULL    |                |
-| interest_rate    | 利率        | DECIMAL(5,2） | NO   |      | NULL    |                |
+| Field         | Explanation | Type          | Null | Key  | Default | Extra          |
+| ------------- | ----------- | ------------- | ---- | ---- | ------- | -------------- |
+| rate_id       | 利率ID      | INT           | NO   | PRI  | NULL    | AUTO_INCREMENT |
+| product_type  | 产品类型    | VARCHAR(50)   | NO   |      | NULL    |                |
+| term          | 期限        | INT           | NO   |      | NULL    |                |
+| interest_rate | 利率        | DECIMAL(5, 2) | NO   |      | NULL    |                |
+
+### 借款申请表，与产品利率表关联（Product_Loan_Application）
+
+| Field            | Explanation | Type           | Null | Key  | Default | Extra          |
+| ---------------- | ----------- | -------------- | ---- | ---- | ------- | -------------- |
+| application_id   | 申请ID      | INT            | NO   | PRI  | NULL    | AUTO_INCREMENT |
+| user_id          | 用户ID      | INT            | NO   | MUL  | NULL    |                |
+| product_category | 产品类别    | VARCHAR(50)    | NO   | MUL  | NULL    |                |
+| term             | 期限        | INT            | NO   |      | NULL    |                |
+| requested_amount | 申请金额    | DECIMAL(10, 2) | NO   |      | NULL    |                |
+| interest_rate    | 利率        | DECIMAL(5, 2)  | NO   |      | NULL    |                |
+
+### 借款申请表，与利率表关联（Generic_Loan_Application）
+
+| Field            | Explanation | Type           | Null | Key  | Default | Extra          |
+| ---------------- | ----------- | -------------- | ---- | ---- | ------- | -------------- |
+| application_id   | 申请ID      | INT            | NO   | PRI  | NULL    | AUTO_INCREMENT |
+| user_id          | 用户ID      | INT            | NO   | MUL  | NULL    |                |
+| product_type     | 产品类型    | VARCHAR(50)    | NO   | MUL  | NULL    |                |
+| term             | 期限        | INT            | NO   |      | NULL    |                |
+| requested_amount | 申请金额    | DECIMAL(10, 2) | NO   |      | NULL    |                |
+| interest_rate    | 利率ID      | DECIMAL(5, 2)  | NO   |      | NULL    |                |
 
 ### 还款计划表（Repayment_Schedule）
 
-| Field          | Explanation | Type          | Null | Key  | Default | Extra          |
-| -------------- | ----------- | ------------- | ---- | ---- | ------- | -------------- |
-| plan_id        | 计划ID      | INT           | NO   | PRI  | NULL    | AUTO_INCREMENT |
-| application_id | 申请ID      | INT           | YES  | MUL  | NULL    |                |
-| installment    | 分期号      | INT           | NO   |      | NULL    |                |
-| due_date       | 到期日期    | DATE          | NO   |      | NULL    |                |
-| amount_due     | 应付金额    | DECIMAL(10,2) | NO   |      | NULL    |                |
-| payment_status | 付款状态    | VARCHAR(20)   | NO   |      | Pending |                |
+| Field          | Explanation | Type           | Null | Key  | Default | Extra          |
+| -------------- | ----------- | -------------- | ---- | ---- | ------- | -------------- |
+| plan_id        | 计划ID      | INT            | NO   | PRI  | NULL    | AUTO_INCREMENT |
+| application_id | 申请ID      | INT            | NO   | MUL  | NULL    |                |
+| installment    | 分期数      | INT            | NO   |      | NULL    |                |
+| due_date       | 到期日期    | DATE           | NO   |      | NULL    |                |
+| amount_due     | 应还金额    | DECIMAL(10, 2) | NO   |      | NULL    |                |
+| payment_status | 支付状态    | VARCHAR(20)    | NO   |      | Pending |                |
 
 ### 还款记录表（Repayment_Record）
 
-| Field         | Explanation  | Type          | Null | Key  | Default | Extra          |
-| ------------- | ------------ | ------------- | ---- | ---- | ------- | -------------- |
-| record_id     | 记录ID       | INT           | NO   | PRI  | NULL    | AUTO_INCREMENT |
-| plan_id       | 计划ID       | INT           | YES  | MUL  | NULL    |                |
-| payment_date  | 付款日期     | DATE          | NO   |      | NULL    |                |
-| actual_amount | 实际付款金额 | DECIMAL(10,2) | NO   |      | NULL    |                |
+| Field         | Explanation  | Type           | Null | Key  | Default | Extra          |
+| ------------- | ------------ | -------------- | ---- | ---- | ------- | -------------- |
+| record_id     | 记录ID       | INT            | NO   | PRI  | NULL    | AUTO_INCREMENT |
+| plan_id       | 计划ID       | INT            | NO   | MUL  | NULL    |                |
+| payment_date  | 付款日期     | DATE           | NO   |      | NULL    |                |
+| actual_amount | 实际还款金额 | DECIMAL(10, 2) | NO   |      | NULL    |                |
 
 ### 贷款合同表（Loan_Contract）
 
 | Field           | Explanation | Type         | Null | Key  | Default | Extra          |
 | --------------- | ----------- | ------------ | ---- | ---- | ------- | -------------- |
 | contract_id     | 合同ID      | INT          | NO   | PRI  | NULL    | AUTO_INCREMENT |
-| user_id         | 用户ID      | INT          | YES  | MUL  | NULL    |                |
-| application_id  | 申请ID      | INT          | YES  | MUL  | NULL    |                |
+| user_id         | 用户ID      | INT          | NO   | MUL  | NULL    |                |
+| application_id  | 申请ID      | INT          | NO   | MUL  | NULL    |                |
 | contract_number | 合同编号    | VARCHAR(50)  | NO   |      | NULL    |                |
-| signing_date    | 签订日期    | DATE         | NO   |      | NULL    |                |
+| signing_date    | 签署日期    | DATE         | NO   |      | NULL    |                |
 | loan_purpose    | 贷款目的    | VARCHAR(255) | NO   |      | NULL    |                |
 
 ### 用户信用评分表（Credit_Score）
 
-| Field        | Explanation | Type | Null | Key  | Default | Extra          |
-| ------------ | ----------- | ---- | ---- | ---- | ------- | -------------- |
-| score_id     | 评分ID      | INT  | NO   | PRI  | NULL    | AUTO_INCREMENT |
-| user_id      | 用户ID      | INT  | YES  | MUL  | NULL    |                |
-| credit_score | 信用评分    | INT  | NO   |      | NULL    |                |
+| Field        | Explanation | Type          | Null | Key  | Default | Extra          |
+| ------------ | ----------- | ------------- | ---- | ---- | ------- | -------------- |
+| score_id     | 评分ID      | INT           | NO   | PRI  | NULL    | AUTO_INCREMENT |
+| user_id      | 用户ID      | INT           | NO   | MUL  | NULL    |                |
+| limit_amount | 信用额度    | DECIMAL(5, 2) | NO   |      | NULL    |                |
 
-### 产品利率表 (Product_Interest_Rate)
-
-| Field            | Explanation | Type          | Null | Key  | Default | Extra          |
-| ---------------- | ----------- | ------------- | ---- | ---- | ------- | -------------- |
-| p_rate_id        | 利率ID      | INT           | NO   | PRI  | NULL    | AUTO_INCREMENT |
-| product_category | 产品类别    | VARCHAR(50)   | NO   |      | NULL    |                |
-| term             | 期限        | INT           | NO   |      | NULL    |                |
-| interest_rate    | 利率        | INT           | NO   |      | NULL    |                |
-| loan_amount      | 贷款金额    | DECIMAL(10,2) | NO   |      | NULL    |                |
-
-### 利率表（Interest_Rate）
-
-| Field         | Explanation | Type        | Null | Key  | Default | Extra          |
-| ------------- | ----------- | ----------- | ---- | ---- | ------- | -------------- |
-| rate_id       | 利率ID      | INT         | NO   | PRI  | NULL    | AUTO_INCREMENT |
-| product_type  | 产品类型    | VARCHAR(50) | NO   |      | NULL    |                |
-| term          | 期限        | INT         | NO   |      | NULL    |                |
-| interest_rate | 利率        | INT         | NO   |      | NULL    |                |
-
-### 系统日志表 (System_Log)
+### 系统日志表（System_Log）
 
 | Field    | Explanation | Type         | Null | Key  | Default | Extra          |
 | -------- | ----------- | ------------ | ---- | ---- | ------- | -------------- |
 | log_id   | 日志ID      | INT          | NO   | PRI  | NULL    | AUTO_INCREMENT |
-| user_id  | 用户ID      | INT          | YES  | MUL  | NULL    |                |
+| user_id  | 用户ID      | INT          | NO   | MUL  | NULL    |                |
 | log_date | 日志日期    | DATETIME     | NO   |      | NULL    |                |
 | action   | 操作        | VARCHAR(255) | NO   |      | NULL    |                |
 
