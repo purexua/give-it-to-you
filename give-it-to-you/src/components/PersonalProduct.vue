@@ -1,7 +1,7 @@
 <template>
     <div class="personal-loan-page">
         <h1>个性化贷款页面</h1>
-        <span>你的额度：{{ userLimit }} 元</span>
+        <span>你的额度：{{ userCreditScore.limitAmount }} 元</span>
 
         <el-form :model="loanForm" ref="loanForm" label-position="top">
             <el-form-item label="贷款金额" prop="requestedAmount">
@@ -49,6 +49,7 @@ export default {
                 interestRate: '0.01',  //期数利率
             },
             installmentRates: {}, // 存放后端返回的分期利率数据
+            productType: {},//存放后端返回的产品类型
             loanDetails: {
                 installmentAmount: null,
                 interestPerInstallment: null,
@@ -75,7 +76,7 @@ export default {
             } else {
                 console.log('前端发送的数据:', {
                     userId: this.user.userId,
-                    productType: this.productRates.productType,
+                    productType: this.productType[this.loanForm.term],
                     term: this.loanForm.term,
                     requestedAmount: this.loanForm.requestedAmount,
                     interestRate: this.loanForm.interestRate
@@ -85,7 +86,7 @@ export default {
                     url: 'http://localhost:3919/serve8080/rate/insertPersonal',
                     data: {
                         userId: this.user.userId,
-                        productType: this.productRates.type,
+                        productType: this.productType[this.loanForm.term],
                         term: this.loanForm.term,
                         requestedAmount: this.loanForm.requestedAmount,
                         interestRate: this.loanForm.interestRate
@@ -96,6 +97,11 @@ export default {
                             type: 'success',
                             message: '贷款成功'
                         })
+                        this.$store.dispatch('creditInfo/updateLimitAmountAfterLoanApplication', {
+                            userId: this.user.userId,
+                            amount: this.loanForm.requestedAmount
+                        });
+                        this.resetForm();//刷新
                     }
                     else {
                         this.$message({
@@ -145,12 +151,13 @@ export default {
     computed: {
         user() {
             return this.$store.state.userInfo.user
+        },
+        userCreditScore() {
+            return this.$store.state.creditInfo.userCreditScore
         }
     },
     mounted() {
         // this.userLimit = this.user.balance;
-        console.log(this.user.balance)
-        this.userLimit = this.user.balance //存入用户的额度
         axios({
             method: 'get',
             url: `http://localhost:3919/serve8080/rate/personalProduct`,
@@ -162,6 +169,7 @@ export default {
 
             this.productRates.forEach((rate) => {
                 this.installmentRates[rate.term] = rate.interestRate;
+                this.productType[rate.term] = rate.productType;
             });
 
             this.loanForm.interestRate = this.installmentRates[3]; //将页面初始化利率设置为默认3期的利率

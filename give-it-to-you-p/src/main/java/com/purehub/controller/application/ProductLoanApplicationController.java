@@ -14,10 +14,10 @@ public class ProductLoanApplicationController {
   private ProductLoanApplicationService productLoanApplicationService;
 
   @PostMapping("/application/product")
-  public String createProductLoanApplication(@RequestBody ProductLoanApplication productLoanApplication) {
+  public Integer createProductLoanApplication(@RequestBody ProductLoanApplication productLoanApplication) {
     System.out.println("### createProductLoanApplication");
     productLoanApplicationService.save(productLoanApplication);
-    return "success";
+    return productLoanApplication.getApplicationId();
   }
 
 }
