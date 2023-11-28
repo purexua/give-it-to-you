@@ -10,6 +10,8 @@ import RepaymentPlanView from '../views/RepaymentPlanView.vue'
 import PersonalProduct from '../components/PersonalProduct'
 
 import ProductApplication from '../views/index/application/ProductApplication.vue'
+import ChangePass from '../views/index/ChangePass.vue'
+import ChangeInfo from '../views/ChangeInfo.vue'
 
 Vue.use(VueRouter)
 
@@ -66,11 +68,27 @@ const router = new VueRouter({
                }
             },
             {
-               name:'repaymentPlan',
-               path:'repaymentplan',
-               component:RepaymentPlanView,
-               meta:{
-                  title:'还款计划'
+               name: 'repaymentPlan',
+               path: 'repaymentplan',
+               component: RepaymentPlanView,
+               meta: {
+                  title: '还款计划'
+               }
+            },
+            {
+               name: 'changePassword',
+               path: 'change/password',
+               component: ChangePass,
+               meta: {
+                  title: '修改密码'
+               }
+            },
+            {
+               name: 'changeInfo',
+               path: 'change/info',
+               component: ChangeInfo,
+               meta: {
+                  title: '修改个人信息'
                }
             }
          ]

@@ -5,8 +5,8 @@
                 <el-menu-item index="1">
                     <i class="el-icon-s-home"></i>
                     <span slot="title"><router-link :to="{
-                                name: 'home',
-                            }">首页</router-link></span>
+                        name: 'home',
+                    }">首页</router-link></span>
                 </el-menu-item>
 
                 <el-submenu index="2">
@@ -37,9 +37,9 @@
                 <el-menu-item index="5">
                     <i class="el-icon-document"></i>
                     <span slot="title">
-                      <router-link :to="{
-                                name: 'repaymentPlan',
-                            }" >还款计划</router-link>
+                        <router-link :to="{
+                            name: 'repaymentPlan',
+                        }">还款计划</router-link>
                     </span>
                 </el-menu-item>
 
@@ -51,13 +51,17 @@
                     <el-menu-item-group>
                         <template slot="title">设置</template>
                         <el-menu-item index="4-1">
-                            修改密码
+                            <router-link :to="{
+                                name: 'changePassword',
+                            }">修改密码</router-link>
                         </el-menu-item>
                     </el-menu-item-group>
                     <el-submenu index="4-2">
                         <template slot="title">信息</template>
                         <el-menu-item index="4-2-1">
-                            修改信息
+                            <router-link :to="{
+                                name: 'changeInfo',
+                            }">修改信息</router-link>
                         </el-menu-item>
                         <el-menu-item index="4-2-2">
                             我的信用
@@ -90,10 +94,10 @@ export default {
             console.log(key, keyPath);
         }
     },
-    components:{
-    Header,
-    router
-}
+    components: {
+        Header,
+        router
+    }
 }
 </script>
 
