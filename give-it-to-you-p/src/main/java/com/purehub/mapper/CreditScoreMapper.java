@@ -9,5 +9,5 @@ import org.apache.ibatis.annotations.Update;
 public interface CreditScoreMapper extends BaseMapper<CreditScore> {
 
     @Update("update credit_score set limit_amount=limit_amount-#{requestedAmount} where user_id=#{userId}")
-    int updateByUserId(int userId, Long requestedAmount);
+    int updateByUserId(int userId, Double requestedAmount);
 }

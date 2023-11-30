@@ -25,8 +25,8 @@ public class RepaymentRecordsImpl implements RepaymentRecordsService {
     }
 
     @Override
-    public void insertRecord(LocalDate date, Long appliationId, Integer amount) {
-        Integer planId = repaymentRecordsMapper.findPlanId(appliationId);
+    public void insertRecord(LocalDate date, Long applicationId, Integer amount) {
+        Integer planId = repaymentRecordsMapper.findPlanId(applicationId);
         repaymentRecordsMapper.repaymentInsertRecords(planId, date, amount);
     }
 }

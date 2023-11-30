@@ -1,7 +1,7 @@
 package com.purehub.controller.repayment;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
-import com.purehub.pojo.GenericLoanApplication;
+import com.purehub.pojo.LoanApplication;
 import com.purehub.pojo.RepaymentResult;
 import com.purehub.service.Repayment.RepaymentPlanFindInfoService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,10 +16,10 @@ public class RepaymentPlanFindInfoController {
     @GetMapping("/findProductInfoByApplicationId")
     public RepaymentResult findProductInfo(@RequestParam Long applicationId)
     {
-        QueryWrapper<GenericLoanApplication> queryWrapper = new QueryWrapper<>();
+        QueryWrapper<LoanApplication> queryWrapper = new QueryWrapper<>();
         queryWrapper.eq("application_id", applicationId);
         try{
-            GenericLoanApplication genericLoanApplication = repaymentPlanFindInfoService.getOne(queryWrapper);
+            LoanApplication genericLoanApplication = repaymentPlanFindInfoService.getOne(queryWrapper);
             return new RepaymentResult().success(genericLoanApplication, "查询成功");
         }catch(Exception e)
         {

@@ -10,10 +10,10 @@
           <el-input type="text" v-model="ruleForm.userId" autocomplete="off" disabled></el-input>
         </el-form-item>
 
-        <el-form-item label="产品类型" prop="productCategory">
-          <el-select v-model="ruleForm.productCategory" placeholder="请选择活动区域" @change="updateFields">
-            <el-option v-for="item in productInterestRate" :key="item.prateId" :label="item.productCategory"
-              :value="item.productCategory">
+        <el-form-item label="产品类型" prop="productType">
+          <el-select v-model="ruleForm.productType" placeholder="请选择活动区域" @change="updateFields">
+            <el-option v-for="item in productInterestRate" :key="item.prateId" :label="item.productType"
+              :value="item.productType">
             </el-option>
           </el-select>
         </el-form-item>
@@ -46,7 +46,7 @@ import axios from 'axios';
 export default {
   name: 'ProductApplication',
   data() {
-    var checkProductCategory = (rule, value, callback) => {
+    var checkproductType = (rule, value, callback) => {
       if (value === '') {
         callback(new Error('请选择产品类型'));
       } else {
@@ -56,14 +56,14 @@ export default {
     return {
       ruleForm: {
         userId: '',
-        productCategory: '',
+        productType: '',
         term: '',
         requestedAmount: '',
         interestRate: '',
       },
       rules: {
-        productCategory: [
-          { validator: checkProductCategory, trigger: 'change' }
+        productType: [
+          { validator: checkproductType, trigger: 'change' }
         ],
       }
     };
@@ -88,7 +88,7 @@ export default {
                 url: 'http://localhost:3919/serve8080/application/product',
                 data: {
                   userId: this.ruleForm.userId,
-                  productCategory: this.ruleForm.productCategory,
+                  productType: this.ruleForm.productType,
                   term: this.ruleForm.term,
                   requestedAmount: this.ruleForm.requestedAmount,
                   interestRate: this.ruleForm.interestRate,
@@ -122,8 +122,8 @@ export default {
       this.$refs[formName].resetFields();
     },
     updateFields() {
-      const selectedCategory = this.ruleForm.productCategory;
-      const selectedProduct = this.productInterestRate.find(item => item.productCategory === selectedCategory);
+      const selectedCategory = this.ruleForm.productType;
+      const selectedProduct = this.productInterestRate.find(item => item.productType === selectedCategory);
       if (selectedProduct) {
         this.ruleForm.term = selectedProduct.term;
         this.ruleForm.requestedAmount = selectedProduct.loanAmount;

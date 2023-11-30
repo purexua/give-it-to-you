@@ -9,8 +9,8 @@
     </insert>
     <select id="findAllRecords" resultType="com.purehub.pojo.RepaymentRecord">
             select repayment_plan.application_id , product_type, installment, actual_amount, payment_date
-        from generic_loan_application, repayment_plan, repayment_record
-        where generic_loan_application.application_id = repayment_plan.application_id and
+        from loan_application, repayment_plan, repayment_record
+        where loan_application.application_id = repayment_plan.application_id and
         repayment_plan.plan_id = repayment_record.plan_id and repayment_plan.user_id = #{userId}
     </select>
 

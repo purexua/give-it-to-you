@@ -1,6 +1,6 @@
 package com.purehub.controller.application;
 
-import com.purehub.pojo.ProductLoanApplication;
+import com.purehub.pojo.LoanApplication;
 import com.purehub.service.application.ProductLoanApplicationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -14,7 +14,7 @@ public class ProductLoanApplicationController {
   private ProductLoanApplicationService productLoanApplicationService;
 
   @PostMapping("/application/product")
-  public Integer createProductLoanApplication(@RequestBody ProductLoanApplication productLoanApplication) {
+  public Integer createProductLoanApplication(@RequestBody LoanApplication productLoanApplication) {
     System.out.println("### createProductLoanApplication");
     productLoanApplicationService.save(productLoanApplication);
     return productLoanApplication.getApplicationId();

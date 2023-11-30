@@ -7,7 +7,7 @@ import lombok.Data;
 @TableName("user")
 public class User {
   @TableId(value = "user_id", type = IdType.AUTO)
-  private Long userId;
+  private Integer userId;
   private String userName;
   private String password;
   private String realName;

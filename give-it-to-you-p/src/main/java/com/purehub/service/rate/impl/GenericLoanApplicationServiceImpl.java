@@ -1,7 +1,7 @@
 package com.purehub.service.rate.impl;
 
 import com.purehub.mapper.*;
-import com.purehub.pojo.GenericLoanApplication;
+import com.purehub.pojo.LoanApplication;
 import com.purehub.pojo.PersonalProductInterestRate;
 import com.purehub.pojo.RepaymentPlanPlus;
 import com.purehub.service.rate.GenericLoanApplicationService;
@@ -33,10 +33,10 @@ public class GenericLoanApplicationServiceImpl implements GenericLoanApplication
 
     @Override
     @Transactional
-    public Boolean InsertGenericLoan(GenericLoanApplication loanApplication) {
-        int applicationId = genericLoanApplicationMapper.InsetGenericLoan(loanApplication);
+    public Boolean InsertGenericLoan(LoanApplication loanApplication) {
+        Integer applicationId = genericLoanApplicationMapper.InsetGenericLoan(loanApplication);
         int userId = loanApplication.getUserId(); //获取用户id
-        Long requestedAmount = loanApplication.getRequestedAmount(); //获取申请的贷款
+        Double requestedAmount = loanApplication.getRequestedAmount(); //获取申请的贷款
 
         creditScoreMapper.updateByUserId(userId,requestedAmount);  //扣除信誉额度
 

@@ -1,6 +1,6 @@
 package com.purehub.controller.rate;
 
-import com.purehub.pojo.GenericLoanApplication;
+import com.purehub.pojo.LoanApplication;
 import com.purehub.pojo.PersonalProductInterestRate;
 import com.purehub.pojo.ProductInterestRate;
 import com.purehub.pojo.Result;
@@ -34,7 +34,7 @@ public class RateController {
     }
 
     @PostMapping("/rate/insertPersonal")
-    public Result InsertPersonal(@RequestBody GenericLoanApplication loanApplication) {
+    public Result InsertPersonal(@RequestBody LoanApplication loanApplication) {
         System.out.println(loanApplication);
         Boolean flag = genericLoanApplicationService.InsertGenericLoan(loanApplication);
         if (flag) {

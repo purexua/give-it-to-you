@@ -9,7 +9,7 @@ import lombok.Data;
 public class ProductInterestRate {
   @TableId(value = "p_rate_id")
   Integer pRateId;
-  String productCategory;
+  String productType;
   Integer term;
   Double interestRate;
   Double loanAmount;

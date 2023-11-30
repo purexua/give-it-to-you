@@ -1,6 +1,6 @@
 package com.purehub.service.rate;
 
-import com.purehub.pojo.GenericLoanApplication;
+import com.purehub.pojo.LoanApplication;
 import com.purehub.pojo.PersonalProductInterestRate;
 
 import java.util.List;
@@ -13,5 +13,5 @@ import java.util.List;
 public interface GenericLoanApplicationService {
     List<PersonalProductInterestRate> getPersonalProductRate();
 
-    Boolean InsertGenericLoan(GenericLoanApplication loanApplication);
+    Boolean InsertGenericLoan(LoanApplication loanApplication);
 }

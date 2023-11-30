@@ -5,7 +5,7 @@
 <!-- namespace等于mapper接口类的全限定名,这样实现对应 -->
 <mapper namespace="com.purehub.mapper.RepaymentAboutMapper">
         <select id="findTotalTerm" resultType="integer">
-            select term from generic_loan_application where application_id = #{applicationId}
+            select term from loan_application where application_id = #{applicationId}
         </select>
         <select id="findNowInstallment" resultType="integer">
             select installment from repayment_plan where application_id = #{applicationId}
