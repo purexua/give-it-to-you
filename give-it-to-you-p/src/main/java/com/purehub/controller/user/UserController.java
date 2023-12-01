@@ -58,7 +58,7 @@ public class UserController {
     QueryWrapper<User> userQueryWrapper = new QueryWrapper<>();
     userQueryWrapper.eq("user_id", userId);
     User user = userService.getOne(userQueryWrapper);
-    user.setBalance(balance);
+    user.setBalance(user.getBalance() - balance);
     userService.update(user, userQueryWrapper);
     return "success";
   }

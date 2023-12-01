@@ -60,7 +60,7 @@
           >详情</el-button>
           <el-button
           size="mini"
-          @click="startConfirmation(scope.row,scope.$index)"
+          @click="addInstallment(scope.row,scope.$index)"
           >我要还款</el-button>
       </template>
       </el-table-column>
@@ -114,21 +114,6 @@
         </el-descriptions-item>
   </el-descriptions>
     </el-dialog>
-    <el-dialog
-      title="提示"
-      :visible.sync="dialogVisible"
-      width="30%"
-      center>
-      <h2>您当前的余额是: </h2>
-      <div style="position: relative; margin-left: 30%;">
-        <span style="color: red;font-size: 20px;"> {{ balance }} </span>
-        <span>元</span>
-      </div>
-      <span slot="footer" class="dialog-footer">
-        <el-button @click="dialogVisible = false">取 消</el-button>
-        <el-button type="primary" @click="confirmRepay = true">确 定</el-button>
-      </span>
-    </el-dialog>
    </div>
   </template>
   
@@ -140,9 +125,6 @@
         name: "RepaymentPlanView",
       data() {
         return {
-        confirmRepay:false,
-        balance: 0,
-        dialogVisible:false,
         centerDialogVisible: false,
         multipleSelection: [],
         search: null,
@@ -156,44 +138,28 @@
             requestedAmount:null,
             interestRate:null
         },
-        confirmationInterval: null
         }
       },
-      // beforeUnmount() {
-      //   clearInterval(this.confirmationInterval);
-      // },
       methods: {
-        startConfirmation(val,index) {
-          this.dialogVisible = true;
-          this.balance = this.user.balance;
-          if (this.confirmRepay) {
-            this.dialogVisible = false;
-            this.addInstallment(val,index);
-          } else {
-            this.confirmationInterval = setInterval(() => {
-              if (this.confirmRepay) {
-                clearInterval(this.confirmationInterval);
-                this.dialogVisible = false;
-                this.addInstallment(val,index);
-              }
-            }, 1000);
-          }
-        },
         formatDate(row, column, cellValue) {
           return dayjs(cellValue).format('YYYY-MM-DD');
         },
-        toggleSelection(row) {
-        if (row) {
-          this.multipleSelection.forEach(row => {
-            this.handleSelectedRow(row);
-            this.$refs.multipleTable.toggleRowSelection(row);
+        toggleSelection() {
+          var balance = this.getBalance();
+          const selectedRows = this.$refs.multipleTable.selection; 
+          var num = 0;
+          selectedRows.forEach(row => {
+                num += row.amountDue; 
           });
-        } else {
-          this.$refs.multipleTable.clearSelection();
-        }
-      },
-      handleSelectedRow(row) {
-        this.addInstallment(row);
+          if(balance < num)
+          {
+            this.$message.error('无法全部还款');
+            return;
+          }
+          selectedRows.forEach(row => {
+            this.addInstallment(row, row.$index);
+          });
+          this.$message.success('部分还款成功');
       },
       handleSelectionChange(val) {
         this.multipleSelection = val;
@@ -203,7 +169,7 @@
         axios.get('http://localhost:3919/serve8080/updateRecords',{
         params: {
             paymentDate: date,
-            applicationId : val
+            applicationId : val.applicationId,
         }
        })
         .then(response => { 
@@ -215,13 +181,13 @@
             console.log(error);
         });
       },
-      insertFirstRecord(val,val1){
+      insertFirstRecord(val){
         const date = new Date().toISOString();
         axios.get('http://localhost:3919/serve8080/insertRecords',{
         params: {
             date:date,
-            applicationId : val,
-            amount:val1
+            applicationId : val.applicationId,
+            amount:val.amountDue,
         }
        })
         .then(response => { 
@@ -237,37 +203,41 @@
         const amount = row.amountDue;
           if(row.installment === 1)
           {
-            this.insertFirstRecord(row.applicationId,amount);
+            this.insertFirstRecord(row);
           }else{
-            this.updateOtherRecord(row.applicationId);
+            this.updateOtherRecord(row);
           }
           this.$store.dispatch('creditInfo/addLimitAmountAfterRepayment',{
             userId:this.user.userId,
             amount:row.amountDue
           });
-          const balance = this.user.balance - amount;
           this.$store.dispatch('creditInfo/subBalanceAfterRepament',
             {
               userId:this.user.userId,
-              balance:balance
-            }
-          );
-          this.$store.dispatch('userInfo/getUserInfoById',
-            {
-              userId:this.user.userId,
+              balance:amount
             }
           );
       },
       addInstallment(val, index){
         axios.get('http://localhost:3919/serve8080/changeInstallment',{
         params: {
-            applicationId : val.applicationId
+            applicationId : val.applicationId,
+            userId: this.user.userId,
+            due: val.amountDue
         }
        })
         .then(response => { 
             console.log(response.data.data)
+            if(response.data.message === '余额不足')
+            {
+              this.$message.error('余额不足');
+              return;
+            }
             if(response.data.status === 1)
-            this.$message.error('哎呦~出错啦');
+            {
+              this.$message.error('哎呦~出错啦');
+              return ;
+            }
             if(response.data.message === "1")
             {
               this.$message({
@@ -280,8 +250,6 @@
               this.addRecords(val);
               this.findAllPage();
             }
-            this.confirmRepay = false;
-            this.confirmationInterval = null;
         })
         .catch(error =>  {
             console.log(error);
@@ -314,6 +282,23 @@
             console.log(response.data.data);
             if(response.data.status === 1)
             this.$message.error('哎呦~出错啦');
+        })
+        .catch(error =>  {
+            console.log(error);
+        });
+      },
+      getBalance()
+      {
+        axios.get('http://localhost:3919/serve8080/getRealBalance',{
+        params: {
+            userId: this.user.userId
+        }
+       })
+        .then(response => { 
+            console.log(response.data.data)
+            if(response.data.status === 1)
+            this.$message.error('哎呦~出错啦');
+            return response.data.data;
         })
         .catch(error =>  {
             console.log(error);

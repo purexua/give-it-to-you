@@ -4,8 +4,10 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.purehub.pojo.RepaymentPlan;
 import com.purehub.pojo.RepaymentRecord;
 import com.purehub.pojo.RepaymentResult;
+import com.purehub.pojo.User;
 import com.purehub.service.Repayment.RepaymentPlanService;
 import com.purehub.service.Repayment.RepaymentRecordsService;
+import com.purehub.service.user.UserService;
 import lombok.Data;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -22,6 +24,8 @@ public class RepaymentRecordsController {
     private RepaymentRecordsService repaymentRecordsService;
     @Autowired
     private RepaymentPlanService repaymentPlanService;
+    @Autowired
+    private UserService userService;
     @GetMapping("/findAllRepaymentRecords")
     public RepaymentResult findAllRecords(@RequestParam Integer userId)
     {
@@ -29,7 +33,9 @@ public class RepaymentRecordsController {
         return new RepaymentResult().success(repaymentRecordList, "获取所有还款记录成功");
     }
     @GetMapping("/changeInstallment")
-    public RepaymentResult updateInstallment(@RequestParam Long applicationId){
+    public RepaymentResult updateInstallment(@RequestParam Long applicationId, @RequestParam Integer userId, @RequestParam Integer due){
+        if(!determineBalance(due, userId))
+            return  new RepaymentResult().success(null,"余额不足");
         QueryWrapper<RepaymentPlan> queryWrapper = new QueryWrapper<>();
         queryWrapper.eq("application_id", applicationId);
         RepaymentPlan repaymentPlan = repaymentPlanService.getOne(queryWrapper);
@@ -75,4 +81,21 @@ public class RepaymentRecordsController {
             return new RepaymentResult().error("插入记录失败");
         }
     }
+    public Boolean determineBalance(Integer due, Integer userId){
+        QueryWrapper<User> userQueryWrapper = new QueryWrapper<>();
+        userQueryWrapper.eq("user_id", userId);
+        if(due <= userService.getOne(userQueryWrapper).getBalance())
+            return true;
+        return false;
+    }
+
+    @GetMapping("/getRealBalance")
+    public RepaymentResult getRealBalance(@RequestParam Integer userId)
+    {
+        QueryWrapper<User> queryWrapper = new QueryWrapper<>();
+        queryWrapper.eq("user_id", userId);
+        Integer balance = userService.getOne(queryWrapper).getBalance();
+        return new RepaymentResult().success(balance, "获取用户现在的余额成功");
+    }
+
 }

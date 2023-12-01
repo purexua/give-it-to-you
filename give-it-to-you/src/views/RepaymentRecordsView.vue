@@ -21,7 +21,7 @@
       </el-table-column>
       <el-table-column
         prop="installment"
-        label="当前期数">
+        label="已还期数">
       </el-table-column>
       <el-table-column
         prop="actualAmount"
