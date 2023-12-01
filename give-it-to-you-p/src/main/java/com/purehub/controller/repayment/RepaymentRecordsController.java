@@ -37,6 +37,7 @@ public class RepaymentRecordsController {
         try{
             if(repaymentPlanService.findNowInstall(applicationId) - 1  == repaymentPlanService.findTotalTerm(applicationId))
             {
+                repaymentPlanService.remove(queryWrapper);
                 return new RepaymentResult().success(null, "1");
             }else{
                 repaymentPlanService.update(repaymentPlan, queryWrapper);

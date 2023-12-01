@@ -1,5 +1,6 @@
 package com.purehub.pojo;
 
+import com.baomidou.mybatisplus.annotation.TableLogic;
 import lombok.Data;
 
 import java.time.LocalDate;
@@ -12,4 +13,7 @@ public class RepaymentPlan {
     private Integer amountDue;
     private String paymentStatus;
     private Integer userId;
+
+    @TableLogic
+    private Integer deleted;
 }

@@ -56,10 +56,11 @@
         <el-button
           size="mini"
           type="text"
+          @click="findProductInfo(scope.row,scope.$index)"
           >详情</el-button>
           <el-button
           size="mini"
-          @click="addInstallment(scope.row,scope.$index)"
+          @click="startConfirmation(scope.row,scope.$index)"
           >我要还款</el-button>
       </template>
       </el-table-column>
@@ -79,14 +80,53 @@
         </el-pagination>
     </div>
     <el-dialog
-      title="提示"
+      title="产品信息"
       :visible.sync="centerDialogVisible"
+      width="45%">
+      <el-descriptions class="margin-top" :column="3" :size="size" border >
+        <el-descriptions-item>
+          <template slot="label">
+            <i class="el-icon-shopping-bag-2"></i>
+            产品类型
+          </template>
+          <span>{{ productInfo.productType }}</span>
+        </el-descriptions-item>
+        <el-descriptions-item>
+          <template slot="label">
+            <i class="el-icon-pie-chart"></i>
+            总期数
+          </template>
+          <span>{{ productInfo.term }}</span>
+        </el-descriptions-item>
+        <el-descriptions-item>
+          <template slot="label">
+            <i class="el-icon-bank-card"></i>
+            总金额
+          </template>
+          <span>{{ productInfo.requestedAmount }}</span>
+        </el-descriptions-item>
+        <el-descriptions-item>
+          <template slot="label">
+            <i class="el-icon-data-line"></i>
+            利率
+          </template>
+          <el-tag size="small"><span>{{ productInfo.interestRate }}</span></el-tag>
+        </el-descriptions-item>
+  </el-descriptions>
+    </el-dialog>
+    <el-dialog
+      title="提示"
+      :visible.sync="dialogVisible"
       width="30%"
       center>
-      <span>需要注意的是内容是默认不居中的</span>
+      <h2>您当前的余额是: </h2>
+      <div style="position: relative; margin-left: 30%;">
+        <span style="color: red;font-size: 20px;"> {{ balance }} </span>
+        <span>元</span>
+      </div>
       <span slot="footer" class="dialog-footer">
-        <el-button @click="centerDialogVisible = false">取 消</el-button>
-        <el-button type="primary" @click="centerDialogVisible = false">确 定</el-button>
+        <el-button @click="dialogVisible = false">取 消</el-button>
+        <el-button type="primary" @click="confirmRepay = true">确 定</el-button>
       </span>
     </el-dialog>
    </div>
@@ -100,6 +140,9 @@
         name: "RepaymentPlanView",
       data() {
         return {
+        confirmRepay:false,
+        balance: 0,
+        dialogVisible:false,
         centerDialogVisible: false,
         multipleSelection: [],
         search: null,
@@ -112,10 +155,30 @@
             term:null,
             requestedAmount:null,
             interestRate:null
-        }
+        },
+        confirmationInterval: null
         }
       },
+      // beforeUnmount() {
+      //   clearInterval(this.confirmationInterval);
+      // },
       methods: {
+        startConfirmation(val,index) {
+          this.dialogVisible = true;
+          this.balance = this.user.balance;
+          if (this.confirmRepay) {
+            this.dialogVisible = false;
+            this.addInstallment(val,index);
+          } else {
+            this.confirmationInterval = setInterval(() => {
+              if (this.confirmRepay) {
+                clearInterval(this.confirmationInterval);
+                this.dialogVisible = false;
+                this.addInstallment(val,index);
+              }
+            }, 1000);
+          }
+        },
         formatDate(row, column, cellValue) {
           return dayjs(cellValue).format('YYYY-MM-DD');
         },
@@ -178,9 +241,24 @@
           }else{
             this.updateOtherRecord(row.applicationId);
           }
+          this.$store.dispatch('creditInfo/addLimitAmountAfterRepayment',{
+            userId:this.user.userId,
+            amount:row.amountDue
+          });
+          const balance = this.user.balance - amount;
+          this.$store.dispatch('creditInfo/subBalanceAfterRepament',
+            {
+              userId:this.user.userId,
+              balance:balance
+            }
+          );
+          this.$store.dispatch('userInfo/getUserInfoById',
+            {
+              userId:this.user.userId,
+            }
+          );
       },
       addInstallment(val, index){
-        // this.tableData[val].installment++;
         axios.get('http://localhost:3919/serve8080/changeInstallment',{
         params: {
             applicationId : val.applicationId
@@ -202,6 +280,8 @@
               this.addRecords(val);
               this.findAllPage();
             }
+            this.confirmRepay = false;
+            this.confirmationInterval = null;
         })
         .catch(error =>  {
             console.log(error);
@@ -221,7 +301,7 @@
       handleDelete(index, row) {
         console.log(index, row);
       },
-      findProductInfo(row,expandedRows){
+      findProductInfo(row,index){
         const applicationId = row.applicationId;
         axios.get('http://localhost:3919/serve8080/findProductInfoByApplicationId',{
         params: {
@@ -230,6 +310,7 @@
        })
         .then(response => { 
             this.productInfo = response.data.data;
+            this.centerDialogVisible = true;
             console.log(response.data.data);
             if(response.data.status === 1)
             this.$message.error('哎呦~出错啦');
@@ -275,6 +356,10 @@
         user()
         {
             return this.$store.state.userInfo.user;
+        },
+        userCreditScore()
+        {
+            return this.$store.state.creditInfo.userCreditScore;
         }
     },
     beforeDestroy() {

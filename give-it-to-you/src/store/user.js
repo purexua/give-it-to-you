@@ -1,6 +1,19 @@
 export default {
 	namespaced: true,
 	actions: {
+		getUserInfoById(context, data) {
+			axios({
+				method: 'get',
+				url: 'http://localhost:3919/serve8080/getUserInfo',
+				params: {
+					userId: data.userId,
+				}
+			}).then(res => {
+				context.commit('SAVEUSERINFO', res.data)
+			}).catch(err => {
+				console.log(err)
+			})
+		}
 	},
 	mutations: {
 		SAVEUSERINFO(state, user) {
