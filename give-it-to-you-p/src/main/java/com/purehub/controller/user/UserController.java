@@ -2,6 +2,7 @@ package com.purehub.controller.user;
 
 import com.baomidou.mybatisplus.core.conditions.Wrapper;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.purehub.pojo.User;
 import com.purehub.service.user.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -49,5 +50,22 @@ public class UserController {
   public String updateUser(@RequestBody User user) {
     userService.updateById(user);
     return "success";
+  }
+
+  @ResponseBody
+  @PutMapping("/changeBalance")
+  public String changeBalance(@RequestParam Integer userId, @RequestParam Integer balance) {
+    QueryWrapper<User> userQueryWrapper = new QueryWrapper<>();
+    userQueryWrapper.eq("user_id", userId);
+    User user = userService.getOne(userQueryWrapper);
+    user.setBalance(balance);
+    userService.update(user, userQueryWrapper);
+    return "success";
+  }
+  @GetMapping("/getUserInfo")
+  public User getUserInfo(@RequestParam Integer userId) {
+    QueryWrapper<User> userQueryWrapper = new QueryWrapper<>();
+    userQueryWrapper.eq("user_id", userId);
+    return userService.getOne(userQueryWrapper);
   }
 }
