@@ -157,7 +157,7 @@ export default {
         }
     },
     mounted() {
-        // this.userLimit = this.user.balance;
+        this.userLimit = this.userCreditScore.limitAmount;
         axios({
             method: 'get',
             url: `http://localhost:3919/serve8080/rate/personalProduct`,
