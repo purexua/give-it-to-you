@@ -1,7 +1,6 @@
 import Vue from 'vue'
 import App from './App.vue'
 
-import axios from 'axios';
 //引入store
 import store from './store'
 //引入VueRouter
@@ -19,8 +18,6 @@ Vue.config.productionTip = false
 Vue.use(ElementUI)
 //使用路由器
 Vue.use(VueRouter)
-
-// axios.defaults.headers.common['Authorization'] = localStorage.getItem('token');
 
 new Vue({
   render: h => h(App),

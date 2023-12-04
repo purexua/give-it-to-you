@@ -2,20 +2,15 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 import HomePageView from '../views/HomePageView.vue'
-import LoginView from '../views/LoginView.vue'
+import LoginView from '../views/index/login/LoginView.vue'
 import Index from '../views/Index.vue'
 import Home from '../views/index/Home.vue'
-import RepaymentPlanView from '../views/RepaymentPlanView.vue'
-
-import PersonalProduct from '../components/PersonalProduct'
-
+import PersonalProduct from '../views/index/application/PersonalProduct.vue'
 import ProductApplication from '../views/index/application/ProductApplication.vue'
-
-import ChangePass from '../views/index/ChangePass.vue'
-import ChangeInfo from '../views/ChangeInfo.vue'
-
-import RepaymentRecordsView from '@/views/RepaymentRecordsView.vue'
-
+import RepaymentPlanView from '../views/index/repayment/RepaymentPlanView.vue'
+import ChangePass from '../views/index/change/ChangePass.vue'
+import ChangeInfo from '../views/index/change/ChangeInfo.vue'
+import RepaymentRecordsView from '../views/index/repayment/RepaymentRecordsView.vue'
 Vue.use(VueRouter)
 
 const router = new VueRouter({

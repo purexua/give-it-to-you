@@ -25,16 +25,6 @@ export default {
   },
   methods: {
     handleCommand(command) {
-      if (command === 'a') {
-
-      } else if (command === 'b') {
-
-      } else if (command === 'c') {
-
-      }
-      else if (command === 'd') {
-        this.$router.push('/')
-      }
     }
   },
   mounted() {
