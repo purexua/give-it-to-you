@@ -29,6 +29,9 @@ export default {
 			state.user.address = user.address
 			state.user.phoneNumber = user.phoneNumber
 		},
+		CHANGEBALANCE(state, balance) {
+			state.user.balance = state.user.balance + balance
+		},
 	},
 	state: {
 		user: {

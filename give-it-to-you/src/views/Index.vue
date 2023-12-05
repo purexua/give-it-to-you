@@ -57,6 +57,11 @@
                                 name: 'changePassword',
                             }">修改密码</router-link>
                         </el-menu-item>
+                        <el-menu-item index="4-2">
+                            <router-link :to="{
+                                name: 'recharge',
+                            }">充值</router-link>
+                        </el-menu-item>
                     </el-menu-item-group>
                     <el-submenu index="4-2">
                         <template slot="title">信息</template>
@@ -66,7 +71,9 @@
                             }">修改信息</router-link>
                         </el-menu-item>
                         <el-menu-item index="4-2-2">
-                            我的信用
+                            <router-link :to="{
+                                name: 'creditInfo',
+                            }">信用信息</router-link>
                         </el-menu-item>
                     </el-submenu>
                 </el-submenu>

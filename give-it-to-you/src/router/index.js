@@ -11,6 +11,8 @@ import RepaymentPlanView from '../views/index/repayment/RepaymentPlanView.vue'
 import ChangePass from '../views/index/change/ChangePass.vue'
 import ChangeInfo from '../views/index/change/ChangeInfo.vue'
 import RepaymentRecordsView from '../views/index/repayment/RepaymentRecordsView.vue'
+import CreditInfo from '../views/index/credit/CreditInfo.vue'
+import Recharge from '../views/index/recharge/Recharge.vue'
 Vue.use(VueRouter)
 
 const router = new VueRouter({
@@ -95,6 +97,22 @@ const router = new VueRouter({
                component: RepaymentRecordsView,
                meta: {
                   title: '还款记录'
+               }
+            },
+            {
+               name:'creditInfo',
+               path:'show/credit',
+               component:CreditInfo,
+               meta:{
+                  title:'我的信用'
+               }
+            },
+            {
+               name:'recharge',
+               path:'change/recharge',
+               component: Recharge,
+               meta:{
+                  title:'充值'
                }
             }
          ]

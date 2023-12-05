@@ -49,6 +49,8 @@ export default {
     var checkproductType = (rule, value, callback) => {
       if (value === '') {
         callback(new Error('请选择产品类型'));
+      } else if (this.userCreditScore.limitAmount < this.ruleForm.requestedAmount) {
+        callback(new Error('申请失败，超过了你的可用额度'));
       } else {
         callback();
       }
@@ -76,42 +78,35 @@ export default {
             userId: this.user.userId,
             amount: this.ruleForm.requestedAmount
           });
-          if (this.userCreditScore.limitAmount < this.ruleForm.requestedAmount) {
-            this.$message({
-              message: '申请失败，超过了你的可用额度',
-              type: 'error'
-            });
-          } else {
-            axios(
-              {
-                method: 'post',
-                url: 'http://localhost:3919/serve8080/application/product',
-                data: {
-                  userId: this.ruleForm.userId,
-                  productType: this.ruleForm.productType,
-                  term: this.ruleForm.term,
-                  requestedAmount: this.ruleForm.requestedAmount,
-                  interestRate: this.ruleForm.interestRate,
-                }
+          axios(
+            {
+              method: 'post',
+              url: 'http://localhost:3919/serve8080/application/product',
+              data: {
+                userId: this.ruleForm.userId,
+                productType: this.ruleForm.productType,
+                term: this.ruleForm.term,
+                requestedAmount: this.ruleForm.requestedAmount,
+                interestRate: this.ruleForm.interestRate,
               }
-            ).then((response) => {
-              this.$message({
-                message: '申请成功，你的额度已经被扣除',
-                type: 'success'
-              });
-              axios({
-                method: 'POST',
-                url: 'http://localhost:3919/serve8080/repayment/plan/plus',
-                params: {
-                  userId: this.user.userId,
-                  applicationId: response.data,
-                  amountDue: this.ruleForm.requestedAmount,
-                }
-              })
-            }).catch((error) => {
-              console.log(error);
+            }
+          ).then((response) => {
+            this.$message({
+              message: '申请成功，你的额度已经被扣除',
+              type: 'success'
             });
-          }
+            axios({
+              method: 'POST',
+              url: 'http://localhost:3919/serve8080/repayment/plan/plus',
+              params: {
+                userId: this.user.userId,
+                applicationId: response.data,
+                amountDue: this.ruleForm.requestedAmount,
+              }
+            })
+          }).catch((error) => {
+            console.log(error);
+          });
         } else {
           console.log('error submit!!');
           return false;

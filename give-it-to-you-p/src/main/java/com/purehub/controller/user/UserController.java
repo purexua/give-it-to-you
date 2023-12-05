@@ -53,6 +53,17 @@ public class UserController {
   }
 
   @ResponseBody
+  @PutMapping("/user/recharge")
+  public String recharge(@RequestParam Integer userId, @RequestParam Integer balance) {
+    QueryWrapper<User> userQueryWrapper = new QueryWrapper<>();
+    userQueryWrapper.eq("user_id", userId);
+    User user = userService.getOne(userQueryWrapper);
+    user.setBalance(user.getBalance() + balance);
+    userService.update(user, userQueryWrapper);
+    return "success";
+  }
+
+  @ResponseBody
   @PutMapping("/changeBalance")
   public String changeBalance(@RequestParam Integer userId, @RequestParam Integer balance) {
     QueryWrapper<User> userQueryWrapper = new QueryWrapper<>();
