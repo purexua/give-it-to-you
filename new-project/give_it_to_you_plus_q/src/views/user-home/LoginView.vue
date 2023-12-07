@@ -193,6 +193,8 @@ export default {
                     if (res.data.password === this.loginForm.password) {
                         // 保存用户信息到 vuex 的 user
                         this.$store.commit('userInfo/SAVEUSERINFO', res.data)
+                        this.$store.dispatch('creditInfo/getCreditScoreInfo', this.$store.state.userInfo.user.userId)
+                        this.$router.replace('/index/home')
                     } else {
                         this.$message({
                             message: '密码错误',
@@ -204,8 +206,6 @@ export default {
                 console.log('哎呦~出错啦' + err)
             }).finally(() => {
                 this.loading = false
-                this.$store.dispatch('creditInfo/getCreditScoreInfo', this.$store.state.userInfo.user.userId)
-                this.$router.replace('/index/home')
             })
         },
         registerButton() {
