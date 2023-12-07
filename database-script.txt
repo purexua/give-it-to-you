@@ -1,155 +1,154 @@
-DROP DATABASE IF EXISTS give_it_to_you;
+DROP DATABASE IF EXISTS give_it_to_you_plus;
 
-#创建数据库 give_it_to_you
-create database give_it_to_you;
+#创建数据库 give_it_to_you_plus
+create database give_it_to_you_plus;
 
 #使用数据库
-use give_it_to_you;
+use give_it_to_you_plus;
 
 #创建 用户表(user)
 CREATE TABLE user
 (
-    user_id      INT AUTO_INCREMENT PRIMARY KEY,
-    user_name    VARCHAR(255) NOT NULL,
-    password     VARCHAR(255) NOT NULL,
-    real_name    VARCHAR(255) NOT NULL,
-    id_card      VARCHAR(255) NOT NULL,
-    email        VARCHAR(100),
-    address      VARCHAR(255),
-    phone_number VARCHAR(20),
-    balance      INT         DEFAULT 0,
-    role         VARCHAR(20) DEFAULT 'client',
-    deleted      INT         DEFAULT 0,
-    version      INT         DEFAULT 1
+    user_id       INT AUTO_INCREMENT PRIMARY KEY,
+    user_name     VARCHAR(255) NOT NULL,
+    password      VARCHAR(255) NOT NULL,
+    real_name     VARCHAR(255) NOT NULL,
+    id_card       VARCHAR(255),
+    email         VARCHAR(100),
+    address       VARCHAR(255),
+    phone_number  VARCHAR(20),
+    health_status VARCHAR(20)    DEFAULT 'Good',
+    credit_status VARCHAR(20)    DEFAULT 'Fair',
+    role          VARCHAR(20)    DEFAULT 'Client',
+    wallet        DECIMAL(10, 2) DEFAULT 0,
+    deleted       INT            DEFAULT 0,
+    version       INT            DEFAULT 1
 );
+
+INSERT INTO user (user_name, password, real_name, id_card, email, address, phone_number)
+    VALUE ('purexu', '123456', 'xjh', '123456789012345678', '', '', '');
 
 #创建 产品利率表 (Product_Interest_Rate)
 CREATE TABLE product_interest_rate
 (
-    p_rate_id     INT AUTO_INCREMENT PRIMARY KEY,
+    rate_id       INT AUTO_INCREMENT PRIMARY KEY,
     product_type  VARCHAR(50),
     term          INT,
-    interest_rate DECIMAL(4, 2),
+    interest_rate DECIMAL(5, 2),
     loan_amount   DECIMAL(10, 2) -- 金额字段，DECIMAL(总位数, 小数位数)
 );
 
-#创建 利率表(Interest_Rate)
-CREATE TABLE interest_rate
-(
-    rate_id         INT AUTO_INCREMENT PRIMARY KEY,
-    term            INT,
-    interest_rate   DECIMAL(5, 2),
-    max_loan_amount DECIMAL(10, 2) -- 最大金额字段，DECIMAL(总位数, 小数位数)
-);
+INSERT INTO product_interest_rate (product_type, term, interest_rate, loan_amount)
+VALUES ('A-6', 15, 6, 500),
+       ('A-12', 30, 8, 2000),
+       ('A-24', 45, 10, 5000),
+       ('A-24-vip', 90, 0, 5000),
+       ('B-6', 6, 15, 2000),
+       ('B-12', 12, 30, 5000),
+       ('B-24', 24, 45, 10000),
+       ('B-24-vip', 90, 0, 10000),
+       ('C-6', 6, 15, 5000),
+       ('C-12', 12, 30, 10000),
+       ('C-24', 24, 45, 20000),
+       ('C-24-vip', 90, 0, 20000);
 
-#创建 借款申请表，与产品利率表关联 (Product_Loan_Application)
+#创建 贷款申请表(Loan_Application)
 CREATE TABLE loan_application
 (
-    application_id   INT AUTO_INCREMENT,
+    application_id   INT PRIMARY KEY,
     user_id          INT,
-    product_type     VARCHAR(50) DEFAULT 'personalise',
+    loan_type        VARCHAR(255),
     term             INT,
     requested_amount DECIMAL(10, 2),
     interest_rate    DECIMAL(5, 2),
-    PRIMARY KEY (application_id),
-    FOREIGN KEY (user_id) REFERENCES user (user_id),
-    CHECK (requested_amount > 0)
+    application_time TIMESTAMP,
+    approval_time    TIMESTAMP,
+    status           VARCHAR(50),
+    FOREIGN KEY (user_id) REFERENCES user (user_id) -- 添加外键约束
 );
 
-#创建 还款计划表(Repayment_Schedule)
+#创建 还款计划表(Repayment_Plan)
 CREATE TABLE repayment_plan
 (
-    plan_id        INT AUTO_INCREMENT,
-    user_id        INT,
-    application_id INT,
-    installment    INT,
-    due_date       DATE,
-    amount_due     DECIMAL(10, 2),
-    payment_status VARCHAR(20) DEFAULT 'Pending',
-    PRIMARY KEY (plan_id),
-    FOREIGN KEY (user_id) REFERENCES user (user_id),
+    plan_id         INT PRIMARY KEY,
+    user_id         INT,
+    application_id  INT,
+    term            INT,
+    current_term    INT,
+    due_amount      DECIMAL(10, 2),
+    total_amount    DECIMAL(10, 2),
+    plan_start_time TIMESTAMP,
+    is_paid         INT DEFAULT 0,
+    FOREIGN KEY (user_id) REFERENCES user (user_id), -- 修改为外键约束
     FOREIGN KEY (application_id) REFERENCES loan_application (application_id)
 );
 
 #创建 还款记录表(Repayment_Record)
 CREATE TABLE repayment_record
 (
-    record_id     INT AUTO_INCREMENT,
-    plan_id       INT,
-    payment_date  DATE,
-    actual_amount DECIMAL(10, 2),
-    PRIMARY KEY (record_id),
+    record_id      INT PRIMARY KEY,
+    user_id        INT,
+    plan_id        INT,
+    payment_time   TIMESTAMP,
+    payment_amount DECIMAL(10, 2),
+    payment_method VARCHAR(50),
+    FOREIGN KEY (user_id) REFERENCES user (user_id),
     FOREIGN KEY (plan_id) REFERENCES repayment_plan (plan_id)
 );
-
-
-#创建 贷款合同表(Loan_Contract)
-CREATE TABLE loan_contract
-(
-    contract_id    INT AUTO_INCREMENT,
-    user_id        INT,
-    application_id INT,
-    signing_date   DATE,
-    loan_purpose   VARCHAR(255),
-    PRIMARY KEY (contract_id),
-    FOREIGN KEY (user_id) REFERENCES user (user_id),
-    FOREIGN KEY (application_id) REFERENCES loan_application (application_id)
-);
-
 
 #创建 用户信用评分表(Credit_Score)
 CREATE TABLE credit_score
 (
-    score_id     INT AUTO_INCREMENT PRIMARY KEY,
-    user_id      INT,
-    limit_amount DECIMAL(10, 2),
+    score_id           INT AUTO_INCREMENT PRIMARY KEY,
+    user_id            INT,
+    credit_score       INT,
+    monthly_income     DECIMAL(10, 2),
+    expenses           DECIMAL(10, 2),
+    employment_status  VARCHAR(50),
+    job_duration       INT,
+    education_level    VARCHAR(50),
+    overdue_records    INT,
+    assets_value       DECIMAL(15, 2),
+    social_connections INT,
+    legal_disputes     INT,
+    behavior_analysis  VARCHAR(255),
     FOREIGN KEY (user_id) REFERENCES user (user_id)
 );
 
+INSERT INTO Credit_Score (user_id,
+                          credit_score,
+                          monthly_income,
+                          expenses,
+                          employment_status,
+                          job_duration,
+                          education_level,
+                          overdue_records,
+                          assets_value,
+                          social_connections,
+                          legal_disputes,
+                          behavior_analysis)
+VALUES (1, -- 用户ID
+        750, -- 信用分数
+        5000.00, -- 月收入
+        3000.00, -- 月支出
+        'Employed', -- 就业状态
+        3, -- 工作年限
+        'Bachelor', -- 教育程度
+        0, -- 逾期记录次数
+        150000.00, -- 资产价值
+        300, -- 社交关系数量
+        1, -- 法律纠纷记录次数
+        'Stable' -- 行为分析
+       );
 
 #创建 系统日志表 (System_Log)
 CREATE TABLE system_log
 (
     log_id   INT AUTO_INCREMENT,
     user_id  INT,
-    log_date DATETIME,
+    log_date TIMESTAMP,
     action   VARCHAR(255),
     PRIMARY KEY (log_id),
     FOREIGN KEY (user_id) REFERENCES user (user_id)
 );
 
-#插入默认用户（purexu）数据
-INSERT INTO user (user_name, password, real_name, id_card, email, address, phone_number, balance, role, deleted,
-                  version)
-VALUES ('purexu', '123456', 'admin', '123456789012345678', 'qq@qq.com', '北京市', '12345678901', 99999, 'admin', 0, 1);
-
-INSERT INTO product_interest_rate (product_type, term, interest_rate, loan_amount)
-VALUES ('A-6', 6, 6, 500),
-       ('A-12', 12, 8, 2000),
-       ('A-24', 24, 10, 5000),
-       ('A-24-vip', 24, 0, 5000),
-       ('B-6', 6, 8, 2000),
-       ('B-12', 12, 10, 5000),
-       ('B-24', 24, 12, 10000),
-       ('B-24-vip', 24, 0, 10000),
-       ('C-6', 6, 10, 5000),
-       ('C-12', 12, 12, 10000),
-       ('C-24', 24, 14, 20000),
-       ('C-24-vip', 24, 0, 20000);
-
-INSERT INTO interest_rate (term, interest_rate, max_loan_amount)
-VALUES (6, 6, 500),
-       (12, 8, 2000),
-       (24, 10, 5000),
-       (24, 0, 5000),
-       (6, 8, 2000),
-       (12, 10, 5000),
-       (24, 12, 10000),
-       (24, 0, 10000),
-       (6, 10, 5000),
-       (12, 12, 10000),
-       (24, 14, 20000),
-       (24, 0, 20000);
-
-INSERT INTO credit_score (user_id, limit_amount)
-VALUES (1, 5000);

@@ -6,226 +6,25 @@
 
 logo：![give-it-to-give-it-to-you](./image/logo-min-min.png)
 
-## 关于项目
+## 关于项目功能
 
-给你呗-网络小额贷款平台，旨在为需要短期或小额资金的个人和小微企业提供便捷的在线借贷服务。该平台的主要功能和亮点包括:
+- [x] issue - 1: 用户的登录
+- [x] issue - 2: 用户注册
+- [ ] issue - 3: 管理员登录
+- [x] issue - 4: 用户信息修改
+- [x] issue - 5: 用户密码修改
+- [x] issue - 6: 用户钱包充值
+- [ ] issue - 7: 贷款申请 - 产品
+- [ ] issue - 8: 贷款申请 - 个性化
+- [x] issue - 9: 用户信用信息查询
+- [ ] issue - 10: 用户还款
+- [ ] issue - 11:用户查询还款记录
+- [ ] issue - 12:用户查询贷款申请记录
+- [ ] issue - 13:管理员新增贷款产品
+- [ ] issue - 14:管理员审批贷款申请
+- [ ] ...
 
-1. 在线申请和审批流程简单快速 - 借款人只需通过网页提交基本信息和资料,无须线下运行,一般可在1-3个工作日内放款。
-2. 全自动风控体系 - 平台通过数据分析,构建科学合理的信用评估和反欺诈模型,准确判断风险。
-3. 多元灵活的产品组合 - 根据不同客户需求,提供多种期限(7天、15天、30天等)和额度的产品。利率透明合理。
-4. 自动拉取数据、智能还款提醒 - 通过授权拉取借款人信用和交易数据,并通过短信、邮件主动提醒还款。
-5. 直观易操作的用户界面 - 借款人和投资人都可以通过网页便捷管理。
-6. 严格的数据安全系统 - 平台采用~~加密~~、~~SSL证书~~、~~防火墙~~、数据备份等前沿技术保证信息安全。
-
-本项目作为科技金融课程的应用实践，由 purehub 公司的五个人，对整个项目进行全过程开发。
-公司成员如下：钟俊博 （purezhong）、龚圆康（puregong）、龚安（puregong2）、张炳洋（purezhang）、徐健豪（purexu）
-
-## 数据库
-
-### 用户表（User）
-
-| Field        | Explanation | Type         | Null | Key  | Default | Extra          |
-| ------------ | ----------- | ------------ | ---- | ---- | ------- | -------------- |
-| user_id      | 用户ID      | INT          | NO   | PRI  | NULL    | AUTO_INCREMENT |
-| user_name    | 用户名      | VARCHAR(255) | NO   |      | NULL    |                |
-| password     | 密码        | VARCHAR(255) | NO   |      | NULL    |                |
-| real_name    | 真实姓名    | VARCHAR(255) | NO   |      | NULL    |                |
-| id_card      | 身份证号    | VARCHAR(255) | NO   |      | NULL    |                |
-| email        | 电子邮件    | VARCHAR(100) | YES  |      | NULL    |                |
-| address      | 地址        | VARCHAR(255) | YES  |      | NULL    |                |
-| phone_number | 电话号码    | VARCHAR(20)  | YES  |      | NULL    |                |
-| balance      | 余额        | INT          | NO   |      | 0       |                |
-| role         | 角色        | VARCHAR(20)  | NO   |      | client  |                |
-| deleted      | 删除标志    | INT          | NO   |      | 0       |                |
-| version      | 版本号      | INT          | NO   |      | 1       |                |
-
-### 产品利率表 (Product_Interest_Rate)
-
-| Field         | Explanation | Type          | Null | Key  | Default | Extra          |
-| ------------- | ----------- | ------------- | ---- | ---- | ------- | -------------- |
-| p_rate_id     | 利率ID      | INT           | NO   | PRI  | NULL    | AUTO_INCREMENT |
-| product_type  | 产品类型    | VARCHAR(50)   | NO   |      | NULL    |                |
-| term          | 期限        | INT           | NO   |      | NULL    |                |
-| interest_rate | 利率        | DECIMAL(4,2)  | NO   |      | NULL    |                |
-| loan_amount   | 贷款金额    | DECIMAL(10,2) | NO   |      | NULL    |                |
-
-### 利率表(Interest_Rate)
-
-| Field           | Explanation  | Type          | Null | Key  | Default | Extra          |
-| --------------- | ------------ | ------------- | ---- | ---- | ------- | -------------- |
-| rate_id         | 利率ID       | INT           | NO   | PRI  | NULL    | AUTO_INCREMENT |
-| term            | 期限         | INT           | NO   |      | NULL    |                |
-| interest_rate   | 利率         | DECIMAL(5,2)  | NO   |      | NULL    |                |
-| max_loan_amount | 最大贷款金额 | DECIMAL(10,2) | NO   |      | NULL    |                |
-
-### 借款申请表，与产品利率表关联 (Product_Loan_Application)
-
-| Field            | Explanation | Type          | Null | Key  | Default       | Extra |
-| ---------------- | ----------- | ------------- | ---- | ---- | ------------- | ----- |
-| application_id   | 申请ID      | INT           | NO   | PRI  | NULL          |       |
-| user_id          | 用户ID      | INT           | NO   | MUL  | NULL          |       |
-| product_type     | 产品类型    | VARCHAR(50)   | NO   |      | 'personalise' |       |
-| term             | 期限        | INT           | NO   |      | NULL          |       |
-| requested_amount | 请求金额    | DECIMAL(10,2) | NO   |      | NULL          |       |
-| interest_rate    | 利率        | DECIMAL(5,2)  | NO   |      | NULL          |       |
-
-### 还款计划表(Repayment_Schedule)
-
-| Field          | Explanation | Type          | Null | Key  | Default   | Extra          |
-| -------------- | ----------- | ------------- | ---- | ---- | --------- | -------------- |
-| plan_id        | 计划ID      | INT           | NO   | PRI  | NULL      | AUTO_INCREMENT |
-| user_id        | 用户ID      | INT           | NO   | MUL  | NULL      |                |
-| application_id | 申请ID      | INT           | NO   | MUL  | NULL      |                |
-| installment    | 分期        | INT           | NO   |      | NULL      |                |
-| due_date       | 到期日期    | DATE          | NO   |      | NULL      |                |
-| amount_due     | 应还金额    | DECIMAL(10,2) | NO   |      | NULL      |                |
-| payment_status | 支付状态    | VARCHAR(20)   | NO   |      | 'Pending' |                |
-
-### 还款记录表(Repayment_Record)
-
-| Field         | Explanation  | Type          | Null | Key  | Default | Extra          |
-| ------------- | ------------ | ------------- | ---- | ---- | ------- | -------------- |
-| record_id     | 记录ID       | INT           | NO   | PRI  | NULL    | AUTO_INCREMENT |
-| plan_id       | 计划ID       | INT           | NO   | MUL  | NULL    |                |
-| payment_date  | 支付日期     | DATE          | NO   |      | NULL    |                |
-| actual_amount | 实际支付金额 | DECIMAL(10,2) | NO   |      | NULL    |                |
-
-### 贷款合同表(Loan_Contract)
-
-| Field          | Explanation | Type         | Null | Key  | Default | Extra          |
-| -------------- | ----------- | ------------ | ---- | ---- | ------- | -------------- |
-| contract_id    | 合同ID      | INT          | NO   | PRI  | NULL    | AUTO_INCREMENT |
-| user_id        | 用户ID      | INT          | NO   | MUL  | NULL    |                |
-| application_id | 申请ID      | INT          | NO   | MUL  | NULL    |                |
-| signing_date   | 签署日期    | DATE         | NO   |      | NULL    |                |
-| loan_purpose   | 贷款用途    | VARCHAR(255) | NO   |      | NULL    |                |
-
-### 用户信用评分表(Credit_Score)
-
-| Field        | Explanation | Type          | Null | Key  | Default | Extra          |
-| ------------ | ----------- | ------------- | ---- | ---- | ------- | -------------- |
-| score_id     | 评分ID      | INT           | NO   | PRI  | NULL    | AUTO_INCREMENT |
-| user_id      | 用户ID      | INT           | NO   | MUL  | NULL    |                |
-| limit_amount | 信用额度    | DECIMAL(10,2) | NO   |      | NULL    |                |
-
-### 系统日志表 (System_Log)
-
-| Field    | Explanation | Type         | Null | Key  | Default | Extra          |
-| -------- | ----------- | ------------ | ---- | ---- | ------- | -------------- |
-| log_id   | 日志ID      | INT          | NO   | PRI  | NULL    | AUTO_INCREMENT |
-| user_id  | 用户ID      | INT          | NO   | MUL  | NULL    |                |
-| log_date | 日志日期    | DATETIME     | NO   |      | NULL    |                |
-| action   | 操作        | VARCHAR(255) | NO   |      | NULL    |                |
-
-## 模块
-
-1.
-
-|     名称     |         描述         |
-| :----------: | :------------------: |
-|   模块名称   |         登录         |
-|  模块负责人  | 龚安、徐健豪、龚圆康 |
-| 文档提交日期 |      2023/11/16      |
-
-修改记录
-
-|  No  | 版本号 |       修改内容意见        |  修改日期  | 修改人 |
-| :--: | :----: | :-----------------------: | :--------: | :----: |
-|  1   | v1.0.0 |         初始版本          | 2023/11/16 | 徐健豪 |
-|  2   | v1.1.0 | 加入 jwt 令牌进行登录校验 | 2023/11/16 | 龚圆康 |
-|  3   | v2.0.0 |         重构布局          | 2023/11/21 | 徐健豪 |
-
-2.
-
-|     名称     |         描述         |
-| :----------: | :------------------: |
-|   模块名称   |         注册         |
-|  模块负责人  | 龚安、徐健豪、龚圆康 |
-| 文档提交日期 |      2023/11/16      |
-
-修改记录
-
-|  No  | 版本号 |       修改内容意见       |  修改日期  | 修改人 |
-| :--: | :----: | :----------------------: | :--------: | :----: |
-|  1   | v1.0.0 |         初始版本         | 2023/11/16 | 徐健豪 |
-|  2   | v1.1.0 | 优化接口使用Mybatis-Plus | 2023/11/20 | 徐健豪 |
-|  3   | v2.0.0 |         重构布局         | 2023/11/21 | 徐健豪 |
-
-3.
-
-|     名称     |    描述    |
-| :----------: | :--------: |
-|   模块名称   |    首页    |
-|  模块负责人  |    龚安    |
-| 文档提交日期 | 2023/11/16 |
-
-修改记录
-
-|  No  | 版本号 |         修改内容意见         |  修改日期  | 修改人 |
-| :--: | :----: | :--------------------------: | :--------: | :----: |
-|  1   | v1.0.0 |           初始版本           | 2023/11/16 |  龚安  |
-|  2   | v2.0.0 | 首页2.0（符合 Vue 项目格式） | 2023/11/16 |  龚安  |
-
-4.
-
-|     名称     |         描述         |
-| :----------: | :------------------: |
-|   模块名称   |       用户首页       |
-|  模块负责人  | 龚安、徐健豪、龚圆康 |
-| 文档提交日期 |      2023/11/21      |
-
-修改记录
-
-|  No  | 版本号 |   修改内容意见   |  修改日期  | 修改人 |
-| :--: | :----: | :--------------: | :--------: | :----: |
-|  1   | v1.0.0 | 初始版本（布局） | 2023/11/21 | 徐健豪 |
-
-5.
-
-|     名称     |      描述      |
-| :----------: | :------------: |
-|   模块名称   |  用户贷款申请  |
-|  模块负责人  | 徐健豪、龚圆康 |
-| 文档提交日期 |   2023/11/21   |
-
-修改记录
-
-|  No  | 版本号 |       修改内容意见       |  修改日期  | 修改人 |
-| :--: | :----: | :----------------------: | :--------: | :----: |
-|  1   | v1.0.0 |     初始版本（布局）     | 2023/11/21 | 徐健豪 |
-|  2   | v1.1.0 | 产品类型贷款申请（demo） | 2023/11/22 | 徐健豪 |
-|  3   | v1.1.1 |  个性化贷款申请（demo）  | 2023/11/22 | 龚圆康 |
-
-6.
-
-|     名称     |         描述         |
-| :----------: | :------------------: |
-|   模块名称   |     用户贷款记录     |
-|  模块负责人  | 龚圆康、徐健豪、龚安 |
-| 文档提交日期 |      2023/11/21      |
-
-修改记录
-
-|  No  | 版本号 |      修改内容意见      |  修改日期  |     修改人     |
-| :--: | :----: | :--------------------: | :--------: | :------------: |
-|  1   | v1.0.0 |  初始版本（页面显示）  | 2023/11/21 |      龚安      |
-|  2   | v1.1.0 | 贷款申请后生成贷款记录 | 2023/11/23 | 龚圆康、徐健豪 |
-
-7.
-
-|     名称     |     描述     |
-| :----------: | :----------: |
-|   模块名称   | 用户还款记录 |
-|  模块负责人  |     龚安     |
-| 文档提交日期 |  2023/11/21  |
-
-修改记录
-
-|  No  | 版本号 |     修改内容意见     |  修改日期  | 修改人 |
-| :--: | :----: | :------------------: | :--------: | :----: |
-|  1   | v1.0.0 | 初始版本（页面显示） | 2023/11/21 |  龚安  |
-
-## 接口说明
+## 接口
 
 ### 用户登录
 
@@ -239,24 +38,211 @@ type: `params`
 | :------: | :------: | :-------: | :--------------: |
 | userName |  用户名  | String/Y  | 按用户名查询用户 |
 
-接口流程：
-
-输出结果：
-
 ### 用户注册
 
 url: `http://localhost:3919/register`
 
 method: `POST`
 
-type: `params`
+type: `JSON`
 
 |   参数名    |   参数含义    | 类型/必须 |       备注       |
 | :---------: | :-----------: | :-------: | :--------------: |
 |  userName   |    用户名     | String/Y  | 按用户名查询用户 |
-|  password   |     密码      | String/Y  |       加密       |
-|  realName   | 用户真实姓名  | String/Y  |       加密       |
-|   idCard    |   身份证号    | String/Y  |       加密       |
-|    email    |     邮箱      |  String   |                  |
-|   address   |     地址      |  String   |                  |
-| phoneNumber | 电话/联系方式 |  String   |                  |
+|  password   |     密码      | String/Y  |                  |
+|  realName   | 用户真实姓名  | String/Y  |                  |
+|   idCard    |   身份证号    |  String   |   可选择性传参   |
+|    email    |     邮箱      |  String   |   可选择性传参   |
+|   address   |     地址      |  String   |   可选择性传参   |
+| phoneNumber | 电话/联系方式 |  String   |   可选择性传参   |
+
+### 获取用户信息
+
+url: `http://localhost:3919/user/info`
+
+method: `GET`
+
+type: `params`
+
+| 参数名 | 参数含义 | 类型/必须 |          备注          |
+| :----: | :------: | :-------: | :--------------------: |
+| userId | 用户 ID  | Integer/Y | 按用户 ID 查询用户信息 |
+
+### 用户修改密码
+
+url: `http://localhost:3919/user/change/password`
+
+method: `PUT`
+
+type: `params`
+
+|  参数名  | 参数含义 | 类型/必须 |          备注          |
+| :------: | :------: | :-------: | :--------------------: |
+|  userId  | 用户 ID  | Integer/Y | 按用户 ID 查询用户信息 |
+| password |   密码   | String/Y  |         新密码         |
+
+### 用户修改个人信息
+
+url: `http://localhost:3919/user/change/info`
+
+method: `PUT`
+
+type: `JSON`
+
+|   参数名    |   参数含义    | 类型/必须 |     备注     |
+| :---------: | :-----------: | :-------: | :----------: |
+|  realName   | 用户真实姓名  |  String   | 可选择性传参 |
+|   idCard    |   身份证号    |  String   | 可选择性传参 |
+|    email    |     邮箱      |  String   | 可选择性传参 |
+|   address   |     地址      |  String   | 可选择性传参 |
+| phoneNumber | 电话/联系方式 |  String   | 可选择性传参 |
+
+### 用户钱包充值
+
+url: `http://localhost:3919/user/recharge`
+
+method: `PUT`
+
+type: `params`
+
+|    参数名    | 参数含义 | 类型/必须 |          备注          |
+| :----------: | :------: | :-------: | :--------------------: |
+|    userId    | 用户 ID  | Integer/Y | 按用户 ID 查询用户信息 |
+| walletAmount |   金额   | String/Y  |        充值金额        |
+
+### 用户贷款申请 - 产品
+
+url: `http://localhost:3919/application/product`
+
+method: `POST`
+
+type: `JSON`
+
+|     参数名      |   参数含义   |  类型/必须   |     备注      |
+| :-------------: | :----------: | :----------: | :-----------: |
+|     userId      |   用户 ID    |  Integer/Y   | 贷款申请人 ID |
+|   productType   |   产品类型   |   String/Y   |               |
+|      term       |   贷款期限   |  Integer/Y   |  单位（天）   |
+| requestedAmount | 请求贷款金额 | Decimal(8,2) |               |
+|  interestRate   |   贷款利率   | Decimal(5,2) |               |
+
+### 用户贷款申请 - 产品
+
+url: `http://localhost:3919/application/personal`
+
+method: `POST`
+
+type: `JSON`
+
+|     参数名      |   参数含义   |  类型/必须   |     备注      |
+| :-------------: | :----------: | :----------: | :-----------: |
+|     userId      |   用户 ID    |  Integer/Y   | 贷款申请人 ID |
+|   productType   |   产品类型   |   String/Y   |               |
+|      term       |   贷款期限   |  Integer/Y   |  单位（天）   |
+| requestedAmount | 请求贷款金额 | Decimal(8,2) |               |
+|  interestRate   |   贷款利率   | Decimal(5,2) |               |
+
+## 数据库
+
+### 用户表（user）
+
+| Field         | Explanation | Type           | Null | Key  | Default  | Extra          |
+| ------------- | ----------- | -------------- | ---- | ---- | -------- | -------------- |
+| user_id       | 用户ID      | INT            | NO   | PRI  | NULL     | AUTO_INCREMENT |
+| user_name     | 用户名      | VARCHAR(255)   | NO   |      | NULL     |                |
+| password      | 密码        | VARCHAR(255)   | NO   |      | NULL     |                |
+| real_name     | 真实姓名    | VARCHAR(255)   | NO   |      | NULL     |                |
+| id_card       | 身份证号    | VARCHAR(255)   | YES  |      | NULL     |                |
+| email         | 电子邮件    | VARCHAR(100)   | YES  |      | NULL     |                |
+| address       | 地址        | VARCHAR(255)   | YES  |      | NULL     |                |
+| phone_number  | 电话号码    | VARCHAR(20)    | YES  |      | NULL     |                |
+| health_status | 健康状态    | VARCHAR(20)    | NO   |      | 'Good'   |                |
+| credit_status | 信用状态    | VARCHAR(20)    | NO   |      | 'Fair'   |                |
+| role          | 角色        | VARCHAR(20)    | NO   |      | 'Client' |                |
+| wallet        | 钱包余额    | DECIMAL(10, 2) | NO   |      | 0        |                |
+| deleted       | 删除标志    | INT            | NO   |      | 0        |                |
+| version       | 版本号      | INT            | NO   |      | 1        |                |
+
+### 产品利率表（product_interest_rate）
+
+| Field         | Explanation | Type           | Null | Key  | Default | Extra          |
+| ------------- | ----------- | -------------- | ---- | ---- | ------- | -------------- |
+| rate_id       | 利率ID      | INT            | NO   | PRI  | NULL    | AUTO_INCREMENT |
+| product_type  | 产品类型    | VARCHAR(50)    |      |      | NULL    |                |
+| term          | 期限        | INT            |      |      | NULL    |                |
+| interest_rate | 利率        | DECIMAL(5, 2)  |      |      | NULL    |                |
+| loan_amount   | 贷款金额    | DECIMAL(10, 2) |      |      | NULL    |                |
+
+### 贷款申请表（loan_application）
+
+| Field                                           | Explanation | Type           | Null | Key  | Default | Extra |
+| ----------------------------------------------- | ----------- | -------------- | ---- | ---- | ------- | :---- |
+| application_id                                  | 申请ID      | INT            | NO   | PRI  | NULL    |       |
+| user_id                                         | 用户ID      | INT            |      | MUL  | NULL    |       |
+| loan_type                                       | 贷款类型    | VARCHAR(255)   |      |      | NULL    |       |
+| term                                            | 期限        | INT            |      |      | NULL    | 天    |
+| requested_amount                                | 申请金额    | DECIMAL(10, 2) |      |      | NULL    |       |
+| interest_rate                                   | 利率        | DECIMAL(5, 2)  |      |      | NULL    |       |
+| application_time                                | 申请时间    | TIMESTAMP      |      |      | NULL    |       |
+| approval_time                                   | 审批时间    | TIMESTAMP      |      |      | NULL    |       |
+| status                                          | 状态        | VARCHAR(50)    |      |      | NULL    |       |
+| FOREIGN KEY (user_id) REFERENCES user (user_id) | 外键约束    |                |      |      |         |       |
+
+### 还款计划表（repayment_plan）
+
+| Field                                                        | Explanation  | Type           | Null | Key  | Default | Extra |
+| ------------------------------------------------------------ | ------------ | -------------- | :--- | :--- | :------ | ----- |
+| plan_id                                                      | 计划ID       | INT            | NO   | PRI  | NULL    |       |
+| user_id                                                      | 用户ID       | INT            |      | MUL  | NULL    |       |
+| application_id                                               | 申请ID       | INT            |      | MUL  | NULL    |       |
+| term                                                         | 期限         | INT            |      |      | NULL    | 天    |
+| current_term                                                 | 当前期数     | INT            |      |      | NULL    | 天    |
+| due_amount                                                   | 应还金额     | DECIMAL(10, 2) |      |      | NULL    |       |
+| total_amount                                                 | 总金额       | DECIMAL(10, 2) |      |      | NULL    |       |
+| plan_start_time                                              | 计划开始时间 | TIMESTAMP      |      |      | NULL    |       |
+| is_paid                                                      | 是否已还款   | INT            |      |      | 0       |       |
+| FOREIGN KEY (user_id) REFERENCES user (user_id)              | 外键约束     |                |      |      |         |       |
+| FOREIGN KEY (application_id) REFERENCES loan_application (application_id) | 外键约束     |                |      |      |         |       |
+
+### 还款记录表（repayment_record）
+
+| Field                                                     | Explanation | Type           | Null | Key  | Default | Extra |
+| --------------------------------------------------------- | ----------- | -------------- | ---- | ---- | ------- | ----- |
+| record_id                                                 | 记录ID      | INT            | NO   | PRI  | NULL    |       |
+| user_id                                                   | 用户ID      | INT            |      | MUL  | NULL    |       |
+| plan_id                                                   | 计划ID      | INT            |      | MUL  | NULL    |       |
+| payment_time                                              | 还款时间    | TIMESTAMP      |      |      | NULL    |       |
+| payment_amount                                            | 还款金额    | DECIMAL(10, 2) |      |      | NULL    |       |
+| payment_method                                            | 还款方式    | VARCHAR(50)    |      |      | NULL    |       |
+| FOREIGN KEY (user_id) REFERENCES user (user_id)           | 外键约束    |                |      |      |         |       |
+| FOREIGN KEY (plan_id) REFERENCES repayment_plan (plan_id) | 外键约束    |                |      |      |         |       |
+
+### 用户信用评分表（credit_score）
+
+| Field                                           | Explanation  | Type           | Null | Key  | Default | Extra          |
+| ----------------------------------------------- | ------------ | -------------- | ---- | ---- | ------- | -------------- |
+| score_id                                        | 评分ID       | INT            | NO   | PRI  | NULL    | AUTO_INCREMENT |
+| user_id                                         | 用户ID       | INT            |      | MUL  | NULL    |                |
+| credit_score                                    | 信用评分     | INT            |      |      | NULL    |                |
+| monthly_income                                  | 月收入       | DECIMAL(10, 2) |      |      | NULL    |                |
+| expenses                                        | 消费支出     | DECIMAL(10, 2) |      |      | NULL    |                |
+| employment_status                               | 就业状态     | VARCHAR(50)    |      |      | NULL    |                |
+| job_duration                                    | 就业时长     | INT            |      |      | NULL    |                |
+| education_level                                 | 教育水平     | VARCHAR(50)    |      |      | NULL    |                |
+| overdue_records                                 | 逾期记录     | INT            |      |      | NULL    |                |
+| assets_value                                    | 资产价值     | DECIMAL(15, 2) |      |      | NULL    |                |
+| social_connections                              | 社交关系数量 | INT            |      |      | NULL    |                |
+| legal_disputes                                  | 法律纠纷数量 | INT            |      |      | NULL    |                |
+| behavior_analysis                               | 行为分析     | VARCHAR(255)   |      |      | NULL    |                |
+| FOREIGN KEY (user_id) REFERENCES user (user_id) | 外键约束     |                |      |      |         |                |
+
+### 系统日志表（system_log）
+
+| Field                                           | Explanation | Type         | Null | Key  | Default | Extra          |
+| ----------------------------------------------- | ----------- | ------------ | ---- | ---- | ------- | -------------- |
+| log_id                                          | 日志ID      | INT          | NO   | PRI  | NULL    | AUTO_INCREMENT |
+| user_id                                         | 用户ID      | INT          |      | MUL  | NULL    |                |
+| log_date                                        | 日志日期    | TIMESTAMP    |      |      | NULL    |                |
+| action                                          | 操作        | VARCHAR(255) |      |      | NULL    |                |
+| PRIMARY KEY (log_id)                            | 主键约束    |              |      |      |         |                |
+| FOREIGN KEY (user_id) REFERENCES user (user_id) | 外键约束    |              |      |      |         |                |
