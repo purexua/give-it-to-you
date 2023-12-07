@@ -2,7 +2,7 @@
 <template>
   <div class="product-application">
     <h1 class="title">产品申请</h1>
-    <p class="credit-limit">你的额度为{{ userCreditScore.limitAmount }}</p>
+    <p class="credit-limit">你的额度为{{ creditScoreInfo.limitAmount }}</p>
     <div class="form-container">
       <el-form :model="ruleForm" status-icon :rules="rules" ref="ruleForm" label-width="100px" class="demo-ruleForm">
 
@@ -46,10 +46,10 @@ import axios from 'axios';
 export default {
   name: 'ProductApplication',
   data() {
-    var checkproductType = (rule, value, callback) => {
+    var checkProductType = (rule, value, callback) => {
       if (value === '') {
         callback(new Error('请选择产品类型'));
-      } else if (this.userCreditScore.limitAmount < this.ruleForm.requestedAmount) {
+      } else if (this.creditScoreInfo.limitAmount < this.ruleForm.requestedAmount) {
         callback(new Error('申请失败，超过了你的可用额度'));
       } else {
         callback();
@@ -65,7 +65,7 @@ export default {
       },
       rules: {
         productType: [
-          { validator: checkproductType, trigger: 'change' }
+          { validator: checkProductType, trigger: 'change' }
         ],
       }
     };
@@ -74,41 +74,36 @@ export default {
     submitForm(formName) {
       this.$refs[formName].validate((valid) => {
         if (valid) {
-          this.$store.dispatch('creditInfo/updateLimitAmountAfterLoanApplication', {
-            userId: this.user.userId,
-            amount: this.ruleForm.requestedAmount
-          });
-          axios(
-            {
-              method: 'post',
-              url: 'http://localhost:3919/serve8080/application/product',
-              data: {
-                userId: this.ruleForm.userId,
-                productType: this.ruleForm.productType,
-                term: this.ruleForm.term,
-                requestedAmount: this.ruleForm.requestedAmount,
-                interestRate: this.ruleForm.interestRate,
-              }
+          axios({
+            method: 'post',
+            url: 'http://localhost:3919/serve8080/application/product',
+            data: {
+              userId: this.user.userId,
+              loanType: this.ruleForm.productType,
+              term: this.ruleForm.term,
+              requestedAmount: this.ruleForm.requestedAmount,
+              interestRate: this.ruleForm.interestRate,
             }
-          ).then((response) => {
-            this.$message({
-              message: '申请成功，你的额度已经被扣除',
-              type: 'success'
-            });
-            axios({
-              method: 'POST',
-              url: 'http://localhost:3919/serve8080/repayment/plan/plus',
-              params: {
-                userId: this.user.userId,
-                applicationId: response.data,
-                amountDue: this.ruleForm.requestedAmount,
-              }
-            })
-          }).catch((error) => {
-            console.log(error);
+          }).then(res => {
+            if (res.data === 'success') {
+              console.log('application product - success submit!!');
+              this.$message({
+                message: '申请成功',
+                type: 'success'
+              });
+              this.$store.dispatch('creditInfo/getCreditScoreInfo', this.user.userId);
+            } else {
+              console.log('application product - error submit!!');
+              this.$message({
+                message: '申请失败',
+                type: 'error'
+              });
+            }
+          }).catch(err => {
+            console.log(err);
           });
         } else {
-          console.log('error submit!!');
+          console.log('application product - error submit!!');
           return false;
         }
       });
@@ -137,9 +132,9 @@ export default {
     user() {
       return this.$store.state.userInfo.user
     },
-    userCreditScore() {
-      return this.$store.state.creditInfo.userCreditScore
-    }
+    creditScoreInfo() {
+      return this.$store.state.creditInfo.creditScoreInfo
+    },
   },
   mounted() {
     this.$store.dispatch('rateInfo/getAllProductInterestRate');

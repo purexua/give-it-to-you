@@ -10,6 +10,7 @@ import ChangePass from '../views/user-home/ChangePass.vue'
 import ChangeInfo from '../views/user-home/ChangeInfo.vue'
 import Recharge from '../views/user-home/Recharge.vue'
 import CreditScore from '../views/user-home/CreditScore.vue'
+import ProductApplication from '../views/user-home/ProductApplication.vue'
 
 Vue.use(VueRouter)
 
@@ -59,25 +60,33 @@ const router = new VueRouter({
             {
                name: 'changeInfo',
                path: 'change/info',
-               component:ChangeInfo,
+               component: ChangeInfo,
                meta: {
                   title: '修改信息'
                }
             },
             {
-               name:'recharge',
-               path:'recharge',
+               name: 'recharge',
+               path: 'recharge',
                component: Recharge,
-               meta:{
-                  title:'充值'
+               meta: {
+                  title: '充值'
                }
             },
             {
-               name:'creditInfo',
-               path:'credit/info',
+               name: 'creditInfo',
+               path: 'credit/info',
                component: CreditScore,
-               meta:{
-                  title:'我的信用信息'
+               meta: {
+                  title: '我的信用信息'
+               }
+            },
+            {
+               name: 'productApplication',
+               path: 'application/product',
+               component: ProductApplication,
+               meta: {
+                  title: '产品申请'
                }
             }
          ]

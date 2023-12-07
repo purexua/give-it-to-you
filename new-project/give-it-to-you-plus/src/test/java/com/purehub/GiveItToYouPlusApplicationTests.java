@@ -8,6 +8,7 @@ class GiveItToYouPlusApplicationTests {
 
   @Test
   void contextLoads() {
+    System.out.println(java.time.LocalDateTime.now());
   }
 
 }

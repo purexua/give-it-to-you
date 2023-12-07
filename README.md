@@ -14,7 +14,7 @@ logo：![give-it-to-give-it-to-you](./image/logo-min-min.png)
 - [x] issue - 4: 用户信息修改
 - [x] issue - 5: 用户密码修改
 - [x] issue - 6: 用户钱包充值
-- [ ] issue - 7: 贷款申请 - 产品
+- [x] issue - 7: 贷款申请 - 产品
 - [ ] issue - 8: 贷款申请 - 个性化
 - [x] issue - 9: 用户信用信息查询
 - [ ] issue - 10: 用户还款
@@ -175,34 +175,34 @@ type: `JSON`
 
 ### 贷款申请表（loan_application）
 
-| Field                                           | Explanation | Type           | Null | Key  | Default | Extra |
-| ----------------------------------------------- | ----------- | -------------- | ---- | ---- | ------- | :---- |
-| application_id                                  | 申请ID      | INT            | NO   | PRI  | NULL    |       |
-| user_id                                         | 用户ID      | INT            |      | MUL  | NULL    |       |
-| loan_type                                       | 贷款类型    | VARCHAR(255)   |      |      | NULL    |       |
-| term                                            | 期限        | INT            |      |      | NULL    | 天    |
-| requested_amount                                | 申请金额    | DECIMAL(10, 2) |      |      | NULL    |       |
-| interest_rate                                   | 利率        | DECIMAL(5, 2)  |      |      | NULL    |       |
-| application_time                                | 申请时间    | TIMESTAMP      |      |      | NULL    |       |
-| approval_time                                   | 审批时间    | TIMESTAMP      |      |      | NULL    |       |
-| status                                          | 状态        | VARCHAR(50)    |      |      | NULL    |       |
-| FOREIGN KEY (user_id) REFERENCES user (user_id) | 外键约束    |                |      |      |         |       |
+| Field                                           | Explanation | Type           | Null | Key  | Default | Extra                     |
+| ----------------------------------------------- | ----------- | -------------- | ---- | ---- | ------- | :------------------------ |
+| application_id                                  | 申请ID      | INT            | NO   | PRI  | NULL    |                           |
+| user_id                                         | 用户ID      | INT            |      | MUL  | NULL    |                           |
+| loan_type                                       | 贷款类型    | VARCHAR(255)   |      |      | NULL    |                           |
+| term                                            | 期限        | INT            |      |      | NULL    | 天                        |
+| requested_amount                                | 申请金额    | DECIMAL(10, 2) |      |      | NULL    |                           |
+| interest_rate                                   | 利率        | DECIMAL(5, 2)  |      |      | NULL    |                           |
+| application_time                                | 申请时间    | TIMESTAMP      |      |      | NULL    |                           |
+| approval_time                                   | 审批时间    | TIMESTAMP      |      |      | NULL    |                           |
+| status                                          | 状态        | VARCHAR(50)    |      |      | NULL    | Pending Approved Rejected |
+| FOREIGN KEY (user_id) REFERENCES user (user_id) | 外键约束    |                |      |      |         |                           |
 
 ### 还款计划表（repayment_plan）
 
-| Field                                                        | Explanation  | Type           | Null | Key  | Default | Extra |
-| ------------------------------------------------------------ | ------------ | -------------- | :--- | :--- | :------ | ----- |
-| plan_id                                                      | 计划ID       | INT            | NO   | PRI  | NULL    |       |
-| user_id                                                      | 用户ID       | INT            |      | MUL  | NULL    |       |
-| application_id                                               | 申请ID       | INT            |      | MUL  | NULL    |       |
-| term                                                         | 期限         | INT            |      |      | NULL    | 天    |
-| current_term                                                 | 当前期数     | INT            |      |      | NULL    | 天    |
-| due_amount                                                   | 应还金额     | DECIMAL(10, 2) |      |      | NULL    |       |
-| total_amount                                                 | 总金额       | DECIMAL(10, 2) |      |      | NULL    |       |
-| plan_start_time                                              | 计划开始时间 | TIMESTAMP      |      |      | NULL    |       |
-| is_paid                                                      | 是否已还款   | INT            |      |      | 0       |       |
-| FOREIGN KEY (user_id) REFERENCES user (user_id)              | 外键约束     |                |      |      |         |       |
-| FOREIGN KEY (application_id) REFERENCES loan_application (application_id) | 外键约束     |                |      |      |         |       |
+| Field                                                        | Explanation  | Type           | Null | Key  | Default | Extra     |
+| ------------------------------------------------------------ | ------------ | -------------- | :--- | :--- | :------ | --------- |
+| plan_id                                                      | 计划ID       | INT            | NO   | PRI  | NULL    |           |
+| user_id                                                      | 用户ID       | INT            |      | MUL  | NULL    |           |
+| application_id                                               | 申请ID       | INT            |      | MUL  | NULL    |           |
+| term                                                         | 期限         | INT            |      |      | NULL    | 天        |
+| current_term                                                 | 当前期数     | INT            |      |      | NULL    | 天        |
+| due_amount                                                   | 应还金额     | DECIMAL(10, 2) |      |      | NULL    |           |
+| total_amount                                                 | 总金额       | DECIMAL(10, 2) |      |      | NULL    |           |
+| plan_start_time                                              | 计划开始时间 | TIMESTAMP      |      |      | NULL    |           |
+| is_paid                                                      | 是否已还款   | INT            |      |      | 0       | (Not)Paid |
+| FOREIGN KEY (user_id) REFERENCES user (user_id)              | 外键约束     |                |      |      |         |           |
+| FOREIGN KEY (application_id) REFERENCES loan_application (application_id) | 外键约束     |                |      |      |         |           |
 
 ### 还款记录表（repayment_record）
 
@@ -224,6 +224,7 @@ type: `JSON`
 | score_id                                        | 评分ID       | INT            | NO   | PRI  | NULL    | AUTO_INCREMENT |
 | user_id                                         | 用户ID       | INT            |      | MUL  | NULL    |                |
 | credit_score                                    | 信用评分     | INT            |      |      | NULL    |                |
+| limit_amount                                    | 用户额度     | DECIMAL(10, 2) |      |      | 0       |                |
 | monthly_income                                  | 月收入       | DECIMAL(10, 2) |      |      | NULL    |                |
 | expenses                                        | 消费支出     | DECIMAL(10, 2) |      |      | NULL    |                |
 | employment_status                               | 就业状态     | VARCHAR(50)    |      |      | NULL    |                |

@@ -12,6 +12,7 @@ public class CreditScore {
   private Integer scoreId;
   private Integer userId;
   private Integer creditScore;
+  private Double limitAmount;
   private Double monthlyIncome;
   private Double expenses;
   private String employmentStatus;

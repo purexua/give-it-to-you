@@ -7,7 +7,7 @@ export default {
             axios(
                 {
                     method: "get",
-                    url: "http://localhost:3919/serve8080/product/interestRate/all"
+                    url: "http://localhost:3919/serve8080/rate/product/info"
                 }
             )
                 .then((response) => {

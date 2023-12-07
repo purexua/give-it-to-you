@@ -55,7 +55,7 @@ VALUES ('A-6', 15, 6, 500),
 #创建 贷款申请表(Loan_Application)
 CREATE TABLE loan_application
 (
-    application_id   INT PRIMARY KEY,
+    application_id   INT PRIMARY KEY AUTO_INCREMENT,
     user_id          INT,
     loan_type        VARCHAR(255),
     term             INT,
@@ -63,14 +63,14 @@ CREATE TABLE loan_application
     interest_rate    DECIMAL(5, 2),
     application_time TIMESTAMP,
     approval_time    TIMESTAMP,
-    status           VARCHAR(50),
+    status           VARCHAR(50) DEFAULT 'Pending', -- Pending, Approved, Rejected
     FOREIGN KEY (user_id) REFERENCES user (user_id) -- 添加外键约束
 );
 
 #创建 还款计划表(Repayment_Plan)
 CREATE TABLE repayment_plan
 (
-    plan_id         INT PRIMARY KEY,
+    plan_id         INT PRIMARY KEY AUTO_INCREMENT,
     user_id         INT,
     application_id  INT,
     term            INT,
@@ -78,7 +78,7 @@ CREATE TABLE repayment_plan
     due_amount      DECIMAL(10, 2),
     total_amount    DECIMAL(10, 2),
     plan_start_time TIMESTAMP,
-    is_paid         INT DEFAULT 0,
+    is_paid         INT DEFAULT 0,                   -- 0: Not Paid, 1: Paid
     FOREIGN KEY (user_id) REFERENCES user (user_id), -- 修改为外键约束
     FOREIGN KEY (application_id) REFERENCES loan_application (application_id)
 );
@@ -86,7 +86,7 @@ CREATE TABLE repayment_plan
 #创建 还款记录表(Repayment_Record)
 CREATE TABLE repayment_record
 (
-    record_id      INT PRIMARY KEY,
+    record_id      INT PRIMARY KEY AUTO_INCREMENT,
     user_id        INT,
     plan_id        INT,
     payment_time   TIMESTAMP,
@@ -102,6 +102,7 @@ CREATE TABLE credit_score
     score_id           INT AUTO_INCREMENT PRIMARY KEY,
     user_id            INT,
     credit_score       INT,
+    limit_amount       DECIMAL(10, 2),
     monthly_income     DECIMAL(10, 2),
     expenses           DECIMAL(10, 2),
     employment_status  VARCHAR(50),
@@ -117,6 +118,7 @@ CREATE TABLE credit_score
 
 INSERT INTO Credit_Score (user_id,
                           credit_score,
+                          limit_amount,
                           monthly_income,
                           expenses,
                           employment_status,
@@ -129,6 +131,7 @@ INSERT INTO Credit_Score (user_id,
                           behavior_analysis)
 VALUES (1, -- 用户ID
         750, -- 信用分数
+        5000.00, -- 信用额度
         5000.00, -- 月收入
         3000.00, -- 月支出
         'Employed', -- 就业状态

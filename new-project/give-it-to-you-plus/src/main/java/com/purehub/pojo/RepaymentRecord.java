@@ -5,7 +5,7 @@ import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
 
-import java.time.LocalDateTime;
+import java.sql.Timestamp;
 
 @Data
 @TableName("repayment_record")
@@ -14,7 +14,7 @@ public class RepaymentRecord {
   Integer recordId;
   Integer userId;
   Integer planId;
-  LocalDateTime paymentTime;
+  Timestamp paymentTime;
   Double paymentAmount;
   String paymentMethod;
 }

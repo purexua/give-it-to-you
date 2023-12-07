@@ -204,6 +204,7 @@ export default {
                 console.log('哎呦~出错啦' + err)
             }).finally(() => {
                 this.loading = false
+                this.$store.dispatch('creditInfo/getCreditScoreInfo', this.$store.state.userInfo.user.userId)
                 this.$router.replace('/index/home')
             })
         },

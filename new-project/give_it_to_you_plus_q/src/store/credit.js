@@ -10,7 +10,7 @@ export default {
                 }).catch((error) => {
                     console.log(error);
                 })
-        },
+        }
     },
     mutations: {
         GETCREDITSOCREINFO(state, creditScoreInfo) {
@@ -22,6 +22,7 @@ export default {
             scoreId: '',
             userId: '',
             creditScore: '',
+            limitAmount: '',
             monthlyIncome: '',
             expenses: '',
             employmentStatus: '',

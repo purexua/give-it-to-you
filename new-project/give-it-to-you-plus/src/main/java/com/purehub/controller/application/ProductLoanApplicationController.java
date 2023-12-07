@@ -7,6 +7,9 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.sql.Timestamp;
+import java.time.LocalDateTime;
+
 @RestController
 public class ProductLoanApplicationController {
 
@@ -14,16 +17,17 @@ public class ProductLoanApplicationController {
   private LoanApplicationService loanApplicationService;
 
   @PostMapping("/application/product")
-  public Integer createProductLoanApplication(@RequestBody LoanApplication productLoanApplication) {
+  public String createProductLoanApplication(@RequestBody LoanApplication productLoanApplication) {
+    productLoanApplication.setApplicationTime(Timestamp.valueOf(LocalDateTime.now()));
     loanApplicationService.save(productLoanApplication);
     System.out.println("### 创建贷款申请成功 - 产品贷款申请");
-    return productLoanApplication.getApplicationId();
+    return "success";
   }
 
   @PostMapping("/application/personal")
-  public Integer createPersonalLoanApplication(@RequestBody LoanApplication personalLoanApplication) {
+  public String createPersonalLoanApplication(@RequestBody LoanApplication personalLoanApplication) {
     loanApplicationService.save(personalLoanApplication);
     System.out.println("### 创建贷款申请成功 - 个性化贷款申请");
-    return personalLoanApplication.getApplicationId();
+    return "success";
   }
 }

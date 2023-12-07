@@ -6,7 +6,7 @@ import com.baomidou.mybatisplus.annotation.TableLogic;
 import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
 
-import java.time.LocalDateTime;
+import java.sql.Timestamp;
 
 @Data
 @TableName("repayment_plan")
@@ -19,7 +19,7 @@ public class RepaymentPlan {
   Integer currentTerm;
   Double dueAmount;
   Double totalAmount;
-  LocalDateTime planStartTime;
+  Timestamp planStartTime;
   @TableLogic
   Integer isPaid;
 }

@@ -15,7 +15,9 @@
                     <el-menu-item-group>
                         <template slot="title">分类</template>
                         <el-menu-item index="2-1">
-                            产品申请
+                            <router-link :to="{
+                                name: 'productApplication',
+                            }">贷款申请</router-link>
                         </el-menu-item>
                         <el-menu-item index="2-2">
                             个性化产品
