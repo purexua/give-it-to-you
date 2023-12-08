@@ -28,14 +28,18 @@
                 <el-menu-item index="3">
                     <i class="el-icon-document"></i>
                     <span slot="title">
-                        还款记录
+                        <router-link :to="{
+                                name: 'RepaymentRecords',
+                            }">还款记录</router-link>
                     </span>
                 </el-menu-item>
 
                 <el-menu-item index="5">
                     <i class="el-icon-document"></i>
                     <span slot="title">
-                        还款计划
+                        <router-link :to="{
+                                name: 'RepaymentPlan',
+                            }">还款计划</router-link>
                     </span>
                 </el-menu-item>
 

@@ -11,6 +11,8 @@ import ChangeInfo from '../views/user-home/ChangeInfo.vue'
 import Recharge from '../views/user-home/Recharge.vue'
 import CreditScore from '../views/user-home/CreditScore.vue'
 import ProductApplication from '../views/user-home/ProductApplication.vue'
+import RepaymentPlanView from '../views/user-home/RepaymentPlanView'
+import RepaymentRecordsView from '../views/user-home/RepaymentRecordsView.vue'
 
 Vue.use(VueRouter)
 
@@ -87,6 +89,23 @@ const router = new VueRouter({
                component: ProductApplication,
                meta: {
                   title: '产品申请'
+               }
+            },
+            {
+               name: 'RepaymentPlan',
+               path: 'application/plan',
+               component: RepaymentPlanView,
+               meta: {
+                  title: '还款计划'
+               }
+            }
+            ,
+            {
+               name: 'RepaymentRecords',
+               path: 'application/records',
+               component: RepaymentRecordsView,
+               meta: {
+                  title: '还款记录'
                }
             }
          ]
