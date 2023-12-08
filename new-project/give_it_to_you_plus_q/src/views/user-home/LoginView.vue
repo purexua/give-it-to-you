@@ -191,10 +191,12 @@ export default {
                     })
                 } else {
                     if (res.data.password === this.loginForm.password) {
-                        // 保存用户信息到 vuex 的 user
                         this.$store.commit('userInfo/SAVEUSERINFO', res.data)
-                        this.$store.dispatch('creditInfo/getCreditScoreInfo', this.$store.state.userInfo.user.userId)
-                        this.$router.replace('/index/home')
+                        if (res.data.role === 'Admin') {
+                            this.$router.replace('/admin/index/home')
+                        } else {
+                            this.$router.replace('/index/home')
+                        }
                     } else {
                         this.$message({
                             message: '密码错误',

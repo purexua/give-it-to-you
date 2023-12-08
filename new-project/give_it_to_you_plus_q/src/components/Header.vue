@@ -18,13 +18,6 @@
 <script>
 export default {
   name: 'Header',
-  methods: {
-    handleCommand(command) {
-    }
-  },
-  mounted() {
-
-  }
 }
 </script>
 

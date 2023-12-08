@@ -22,4 +22,16 @@ public class CreditScoreController {
     creditScoreQueryWrapper.eq("user_id", userId);
     return creditScoreService.getOne(creditScoreQueryWrapper);
   }
+
+  @PutMapping("/credit/limit/sub")
+  public String updateCreditScoreLimitAmountAfterLoan(@RequestParam("userId") Integer userId, @RequestParam("loanAmount") Double loanAmount) {
+    QueryWrapper<CreditScore> creditScoreQueryWrapper = new QueryWrapper<>();
+    creditScoreQueryWrapper.eq("user_id", userId);
+    CreditScore creditScore = creditScoreService.getOne(creditScoreQueryWrapper);
+    creditScore.setLimitAmount(creditScore.getLimitAmount() - loanAmount);
+    creditScoreService.update(creditScore, creditScoreQueryWrapper);
+    System.out.println("### 更新贷款额度成功 - 扣减");
+    return "success";
+  }
+
 }

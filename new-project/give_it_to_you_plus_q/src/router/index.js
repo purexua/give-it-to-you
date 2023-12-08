@@ -11,6 +11,9 @@ import ChangeInfo from '../views/user-home/ChangeInfo.vue'
 import Recharge from '../views/user-home/Recharge.vue'
 import CreditScore from '../views/user-home/CreditScore.vue'
 import ProductApplication from '../views/user-home/ProductApplication.vue'
+import AdminIndex from '../views/admin-home/Index.vue'
+import AdminHome from '../views/admin-home/AdminHome.vue'
+import LoanApproval from '../views/admin-home/LoanApproval.vue'
 
 Vue.use(VueRouter)
 
@@ -87,6 +90,32 @@ const router = new VueRouter({
                component: ProductApplication,
                meta: {
                   title: '产品申请'
+               }
+            }
+         ]
+      },
+      {
+         name: 'adminIndex',
+         path: '/admin/index',
+         component: AdminIndex,
+         meta: {
+            title: '后台管理'
+         },
+         children: [
+            {
+               name: 'adminHome',
+               path: 'home',
+               component: AdminHome,
+               meta: {
+                  title: '管理员主页'
+               }
+            },
+            {
+               name: 'loanApproval',
+               path: 'loan/approval',
+               component: LoanApproval,
+               meta: {
+                  title: '贷款审批'
                }
             }
          ]
