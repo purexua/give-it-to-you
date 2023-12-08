@@ -138,6 +138,7 @@ export default {
   },
   mounted() {
     this.$store.dispatch('rateInfo/getAllProductInterestRate');
+    this.$store.dispatch('creditInfo/getCreditScoreInfo', this.user.userId);
     this.ruleForm.userId = this.user.userId;
   },
 }

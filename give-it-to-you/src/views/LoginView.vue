@@ -1,0 +1,302 @@
+<template>
+    <div class="login_container">
+        <el-row>
+            <el-col :span="12" :xs="0"></el-col>
+            <el-col :span="12" :xs="24">
+                <el-form class="login_form" :model="loginForm">
+                    <h1>Hello</h1>
+                    <h2>给你呗网络小额贷款</h2>
+                    <el-form-item>
+                        <el-input prefix-icon="el-icon-user" v-model="loginForm.username"></el-input>
+                    </el-form-item>
+                    <el-form-item>
+                        <el-input type="password" prefix-icon="el-icon-lock" v-model="loginForm.password"
+                            show-password></el-input>
+                    </el-form-item>
+                    <el-form-item>
+                        <el-button :loading="loading" class="login_btn" type="success" size="default"
+                            @click="login">登录</el-button>
+                        <div class="btn_space"></div>
+                        <el-popover placement="bottom" title="Welcome to use" width="200" trigger="hover"
+                            content="梦想无阻，贷款无忧。轻松借，快速达成您的目标！">
+                            <el-button slot="reference" class="login_btn" type="primary" size="default"
+                                @click="registerButton">注册</el-button>
+                        </el-popover>
+                    </el-form-item>
+                </el-form>
+            </el-col>
+        </el-row>
+        <el-dialog title="欢迎注册" :visible.sync="dialogFormVisible">
+            <el-form :model="ruleForm" status-icon :rules="rules" ref="ruleForm" label-width="100px" class="demo-ruleForm">
+
+                <el-form-item label="用户名" prop="userName" :label-width="formLabelWidth">
+                    <el-input v-model="ruleForm.userName" autocomplete="off"></el-input>
+                </el-form-item>
+
+                <el-form-item label="密码" prop="password" :label-width="formLabelWidth">
+                    <el-input type="password" v-model="ruleForm.password" autocomplete="off">
+                    </el-input>
+                </el-form-item>
+
+                <el-form-item label="真实姓名" prop="realName" :label-width="formLabelWidth">
+                    <el-input v-model.trim="ruleForm.realName" autocomplete="off"></el-input>
+                </el-form-item>
+
+                <el-form-item label="身份证" prop="idCard" :label-width="formLabelWidth">
+                    <el-input v-model.trim="ruleForm.idCard" autocomplete="off"></el-input>
+                </el-form-item>
+
+                <el-form-item label="邮箱" prop="email" :label-width="formLabelWidth">
+                    <el-input v-model.trim="ruleForm.email" autocomplete="off"></el-input>
+                </el-form-item>
+
+                <el-form-item label="地址" prop="address" :label-width="formLabelWidth">
+                    <el-input v-model.trim="ruleForm.address" autocomplete="off"></el-input>
+
+                </el-form-item>
+
+                <el-form-item label="电话号码" prop="phoneNumber" :label-width="formLabelWidth">
+                    <el-input v-model.trim="ruleForm.phoneNumber" autocomplete="off"></el-input>
+                </el-form-item>
+
+                <el-form-item>
+                    <el-button type="primary" @click="register('ruleForm')">注册</el-button>
+                    <el-button @click="resetForm('ruleForm')">重置</el-button>
+                </el-form-item>
+            </el-form>
+        </el-dialog>
+    </div>
+</template>
+
+<script>
+import axios from 'axios'
+
+export default {
+    name: 'LoginView',
+    data() {
+        var validateRealName = (rule, value, callback) => {
+            if (value === '') {
+                callback(new Error('请输入真实姓名'));
+            } else {
+                callback();
+            }
+        };
+        var validateEmail = (rule, value, callback) => {
+            const emailRegex = /^[\w-]+(\.[\w-]+)*@[\w-]+(\.[\w-]+)+$/;
+            if (value === '') {
+                callback(new Error('请输入邮箱'));
+            } else if (!emailRegex.test(value)) {
+                callback(new Error('请输入正确的邮箱格式'));
+            } else {
+                callback();
+            }
+        };
+        var validateAddress = (rule, value, callback) => {
+            if (value === '') {
+                callback(new Error('请输入地址'));
+            } else {
+                callback();
+            }
+        };
+        var validatePhoneNumber = (rule, value, callback) => {
+            const phoneRegex = /^1[34578]\d{9}$/;
+            if (value === '') {
+                callback(new Error('请输入电话号码'));
+            } else if (!phoneRegex.test(value)) {
+                callback(new Error('请输入正确的电话号码格式'));
+            } else {
+                callback();
+            }
+        };
+        var validateUserName = (rule, value, callback) => {
+            if (value === '') {
+                callback(new Error('请输入用户名'));
+            } else {
+                callback();
+            }
+        };
+        var validatePassword = (rule, value, callback) => {
+            if (value === '') {
+                callback(new Error('请输入密码'));
+            } else {
+                callback();
+            }
+        };
+        var validateIdCard = (rule, value, callback) => {
+            const idCardRegex = /^\d{18}$/;
+            if (value === '') {
+                callback(new Error('请输入身份证'));
+            } else if (!idCardRegex.test(value)) {
+                callback(new Error('身份证必须是18位数字'));
+            } else {
+                callback();
+            }
+        };
+        return {
+            loginForm: {
+                username: 'purexu',
+                password: '123456'
+            },
+            loading: false,
+            dialogFormVisible: false,
+            formLabelWidth: '120px',
+            ruleForm: {
+                userName: '',
+                password: '',
+                realName: '',
+                idCard: '',
+                email: '',
+                address: '',
+                phoneNumber: '',
+            },
+            rules: {
+                userName: [
+                    { validator: validateUserName, trigger: 'blur' }
+                ],
+                password: [
+                    { validator: validatePassword, trigger: 'blur' }
+                ],
+                realName: [
+                    { validator: validateRealName, trigger: 'blur' }
+                ],
+                idCard: [
+                    { validator: validateIdCard, trigger: 'blur' }
+                ],
+                email: [
+                    { validator: validateEmail, trigger: 'blur' }
+                ],
+                address: [
+                    { validator: validateAddress, trigger: 'blur' }
+                ],
+                phoneNumber: [
+                    { validator: validatePhoneNumber, trigger: 'blur' }
+                ]
+            }
+        }
+    },
+    methods: {
+        login() {
+            axios({
+                method: 'get',
+                url: `http://localhost:3919/serve8080/login?userName=${this.loginForm.username}`,
+            }).then(res => {
+                this.loading = true
+                if (res.data === '') {
+                    this.$message({
+                        message: '用户名不存在-请先注册',
+                        type: 'error'
+                    })
+                } else {
+                    if (res.data.password === this.loginForm.password) {
+                        // 保存用户信息到 vuex 的 user
+                        this.$store.commit('userInfo/SAVEUSERINFO', res.data)
+                        this.$store.dispatch('creditInfo/getUserCreditScoreByUserId', res.data.userId)
+                        this.$router.push('/index/home')
+                    } else {
+                        this.$message({
+                            message: '密码错误',
+                            type: 'error'
+                        })
+                    }
+                }
+            }).catch(err => {
+                this.$message.error('哎呦~出错啦'+err);
+            }).finally(() => {
+                this.loading = false
+            })
+        },
+        registerButton() {
+            this.dialogFormVisible = true
+        },
+        register(formName) {
+            this.$refs[formName].validate((valid) => {
+                if (valid) {
+                    axios({
+                        method: 'post',
+                        url: `http://localhost:3919/serve8080/register`,
+                        data: {
+                            userName: this.ruleForm.userName,
+                            password: this.ruleForm.password,
+                            realName: this.ruleForm.realName,
+                            idCard: this.ruleForm.idCard,
+                            email: this.ruleForm.email,
+                            address: this.ruleForm.address,
+                            phoneNumber: this.ruleForm.phoneNumber,
+                        }
+                    }).then(res => {
+                        if (res.data === 'success') {
+                            this.$message({
+                                message: '注册成功',
+                                type: 'success'
+                            })
+                            this.dialogFormVisible = false
+                            this.ruleForm = {
+                                userName: '',
+                                password: '',
+                                realName: '',
+                                idCard: '',
+                                email: '',
+                                address: '',
+                                phoneNumber: '',
+                            }
+                        } else {
+                            this.$message({
+                                message: res.data + '-注册失败',
+                                type: 'error'
+                            })
+                        }
+                    }).catch(err => {
+                        console.log(err)
+                    })
+                } else {
+                    console.log('error submit!!');
+                    return false;
+                }
+            });
+        },
+        resetForm(formName) {
+            this.$refs[formName].resetFields();
+        }
+    }
+}
+</script>
+
+<style lang="less" scoped>
+.login_container {
+    width: 100%;
+    height: 100vh;
+    background: url('../assets/images/background.jpg') no-repeat;
+    background-size: cover;
+
+    .login_form {
+        position: relative;
+        width: 80%;
+        top: 30vh;
+        left: 100%;
+        background: url("../assets/images/login_form.png") no-repeat;
+        background-size: cover;
+        padding: 40px;
+
+        h1 {
+            color: white;
+            font-size: 40px;
+        }
+
+        h2 {
+            font-size: 20px;
+            color: white;
+            margin: 20px 0px;
+        }
+
+        .login_btn {
+            display: inline-block;
+            width: 45%;
+        }
+
+        .btn_space {
+            display: inline-block;
+            width: 10%;
+        }
+    }
+}
+</style>

@@ -5,6 +5,8 @@ import Vuex from 'vuex'
 import userInfo from './user.js'
 import rateInfo from './rate.js'
 import creditInfo from './credit.js'
+import applicationInfo from './application.js'
+import planInfo from './plan.js'
 
 //应用Vuex插件
 Vue.use(Vuex)
@@ -16,5 +18,7 @@ export default new Vuex.Store(
             userInfo,
             rateInfo,
             creditInfo,
+            applicationInfo,
+            planInfo,
         }
     })

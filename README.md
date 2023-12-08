@@ -10,7 +10,7 @@ logo：![give-it-to-give-it-to-you](./image/logo-min-min.png)
 
 - [x] issue - 1: 用户的登录
 - [x] issue - 2: 用户注册
-- [ ] issue - 3: 管理员登录
+- [x] issue - 3: 管理员登录
 - [x] issue - 4: 用户信息修改
 - [x] issue - 5: 用户密码修改
 - [x] issue - 6: 用户钱包充值
@@ -21,7 +21,7 @@ logo：![give-it-to-give-it-to-you](./image/logo-min-min.png)
 - [ ] issue - 11:用户查询还款记录
 - [ ] issue - 12:用户查询贷款申请记录
 - [ ] issue - 13:管理员新增贷款产品
-- [ ] issue - 14:管理员审批贷款申请
+- [x] issue - 14:管理员审批贷款申请
 - [ ] ...
 
 ## 接口

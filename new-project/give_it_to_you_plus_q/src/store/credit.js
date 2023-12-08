@@ -10,6 +10,18 @@ export default {
                 }).catch((error) => {
                     console.log(error);
                 })
+        },
+        updateCreditScoreLimitAmountAfterLoan(context, data) {
+            axios({
+                method: "put",
+                url: "http://localhost:3919/serve8080/credit/limit/sub",
+                params: {
+                    userId: data.userId,
+                    loanAmount: data.loanAmount
+                }
+            }).catch((error) => {
+                console.log(error);
+            })
         }
     },
     mutations: {
