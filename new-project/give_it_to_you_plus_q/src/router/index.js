@@ -11,14 +11,11 @@ import ChangeInfo from '../views/user-home/ChangeInfo.vue'
 import Recharge from '../views/user-home/Recharge.vue'
 import CreditScore from '../views/user-home/CreditScore.vue'
 import ProductApplication from '../views/user-home/ProductApplication.vue'
-<<<<<<< HEAD
 import RepaymentPlanView from '../views/user-home/RepaymentPlanView'
 import RepaymentRecordsView from '../views/user-home/RepaymentRecordsView.vue'
-=======
 import AdminIndex from '../views/admin-home/Index.vue'
 import AdminHome from '../views/admin-home/AdminHome.vue'
 import LoanApproval from '../views/admin-home/LoanApproval.vue'
->>>>>>> 711fdfb5516b3436f28cb2c3de3efb3a2e4507ec
 
 Vue.use(VueRouter)
 

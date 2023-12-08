@@ -28,14 +28,18 @@ CREATE TABLE user
 INSERT INTO user (user_name, password, real_name, id_card, email, address, phone_number)
     VALUE ('purexu', '123456', 'xjh', '123456789012345678', '', '', '');
 
+INSERT INTO user (user_name, password, real_name, id_card, email, address, phone_number, role)
+    VALUE ('admin', '123456', 'admin', '123456789012345678', '', '', '', 'Admin');
+
 #创建 产品利率表 (Product_Interest_Rate)
 CREATE TABLE product_interest_rate
 (
     rate_id       INT AUTO_INCREMENT PRIMARY KEY,
-    product_type  VARCHAR(50),
+    product_type  VARCHAR(50) DEFAULT 'Personal Loan',
     term          INT,
     interest_rate DECIMAL(5, 2),
-    loan_amount   DECIMAL(10, 2) -- 金额字段，DECIMAL(总位数, 小数位数)
+    loan_amount   DECIMAL(10, 2), -- 金额字段，DECIMAL(总位数, 小数位数)
+    CHECK ( interest_rate >= 0 AND interest_rate <= 100 AND loan_amount >= 0 )
 );
 
 INSERT INTO product_interest_rate (product_type, term, interest_rate, loan_amount)
@@ -61,10 +65,11 @@ CREATE TABLE loan_application
     term             INT,
     requested_amount DECIMAL(10, 2),
     interest_rate    DECIMAL(5, 2),
-    application_time TIMESTAMP,
+    application_time TIMESTAMP   DEFAULT CURRENT_TIMESTAMP,
     approval_time    TIMESTAMP,
-    status           VARCHAR(50) DEFAULT 'Pending', -- Pending, Approved, Rejected
-    FOREIGN KEY (user_id) REFERENCES user (user_id) -- 添加外键约束
+    status           VARCHAR(50) DEFAULT 'Pending',  -- Pending, Approved, Rejected
+    FOREIGN KEY (user_id) REFERENCES user (user_id), -- 添加外键约束
+    CHECK ( requested_amount >= 0 AND interest_rate >= 0 AND interest_rate <= 100 )
 );
 
 #创建 还款计划表(Repayment_Plan)
@@ -74,13 +79,14 @@ CREATE TABLE repayment_plan
     user_id         INT,
     application_id  INT,
     term            INT,
-    current_term    INT,
+    current_term    INT       DEFAULT 1,
     due_amount      DECIMAL(10, 2),
     total_amount    DECIMAL(10, 2),
-    plan_start_time TIMESTAMP,
-    is_paid         INT DEFAULT 0,                   -- 0: Not Paid, 1: Paid
+    plan_start_time TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    is_paid         INT       DEFAULT 0,             -- 0: Not Paid, 1: Paid
     FOREIGN KEY (user_id) REFERENCES user (user_id), -- 修改为外键约束
-    FOREIGN KEY (application_id) REFERENCES loan_application (application_id)
+    FOREIGN KEY (application_id) REFERENCES loan_application (application_id),
+    CHECK ( due_amount >= 0 AND total_amount >= 0 AND current_term >= 0 AND current_term <= term )
 );
 
 #创建 还款记录表(Repayment_Record)
@@ -91,9 +97,10 @@ CREATE TABLE repayment_record
     plan_id        INT,
     payment_time   TIMESTAMP,
     payment_amount DECIMAL(10, 2),
-    payment_method VARCHAR(50),
+    payment_method VARCHAR(50) DEFAULT 'Wallet', -- Wallet, Alipay, Wechat
     FOREIGN KEY (user_id) REFERENCES user (user_id),
-    FOREIGN KEY (plan_id) REFERENCES repayment_plan (plan_id)
+    FOREIGN KEY (plan_id) REFERENCES repayment_plan (plan_id),
+    CHECK ( payment_amount >= 0 )
 );
 
 #创建 用户信用评分表(Credit_Score)
@@ -105,15 +112,18 @@ CREATE TABLE credit_score
     limit_amount       DECIMAL(10, 2),
     monthly_income     DECIMAL(10, 2),
     expenses           DECIMAL(10, 2),
-    employment_status  VARCHAR(50),
+    employment_status  VARCHAR(50)  DEFAULT 'Employed',-- Employed, Unemployed, Retired
     job_duration       INT,
-    education_level    VARCHAR(50),
+    education_level    VARCHAR(50)  DEFAULT 'Bachelor',-- Bachelor, Master, Doctor
     overdue_records    INT,
     assets_value       DECIMAL(15, 2),
     social_connections INT,
     legal_disputes     INT,
-    behavior_analysis  VARCHAR(255),
-    FOREIGN KEY (user_id) REFERENCES user (user_id)
+    behavior_analysis  VARCHAR(255) DEFAULT 'Stable',-- Stable, Unstable
+    FOREIGN KEY (user_id) REFERENCES user (user_id),
+    CHECK ( credit_score >= 0 AND limit_amount >= 0 AND monthly_income >= 0 AND expenses >= 0 AND
+            job_duration >= 0 AND overdue_records >= 0 AND assets_value >= 0 AND social_connections >= 0 AND
+            legal_disputes >= 0 )
 );
 
 INSERT INTO Credit_Score (user_id,
