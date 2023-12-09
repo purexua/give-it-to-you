@@ -97,13 +97,13 @@
         <template slot-scope="scope">
           <el-button
           size="mini"
-          @click = "addRecord(scope.row)"
+          @click = "showDialog(scope.row)"
           >我要还款</el-button>
       </template>
       </el-table-column>
     </el-table>
    <div style="position: relative;margin-top: 20px;margin-left: 80%;">
-    <el-button type = "success" @click="toggleSelection()">批量还款</el-button>
+    <el-button type = "success" @click="intermediary()">批量还款</el-button>
    </div>
     <div class="block" style="position: relative;margin-left: 20%;">
         <el-pagination
@@ -116,6 +116,22 @@
         :total="total">
         </el-pagination>
     </div>
+    <el-dialog
+        title="请选择付款方式"
+        :visible.sync="centerDialogVisible"
+        width="30%"
+        center>
+          <el-button-group>
+                  <el-button :type="selectedPaymentMethod === '微信' ? 'success' : ''" icon="el-icon-chat-dot-round"
+                      style="width: 200px;" @click="selectPaymentMethod('微信')">微信</el-button>
+                  <el-button :type="selectedPaymentMethod === '支付宝' ? 'primary' : ''" icon="el-icon-shopping-bag-2"
+                      style="width: 200px;" @click="selectPaymentMethod('支付宝')">支付宝</el-button>
+            </el-button-group>
+            <span slot="footer" class="dialog-footer">
+            <el-button @click="centerDialogVisible = false">取 消</el-button>
+            <el-button type="primary" @click="intermediary2(nowRow)">确 定</el-button>
+          </span>
+    </el-dialog>
    </div>
   </template>
   
@@ -127,25 +143,55 @@
         name: "RepaymentPlanView",
       data() {
         return {
+        nowRow:null,
+        centerDialogVisible:false,
         multipleSelection: [],
         tableData: [],
         total:null,
         currentPage:1,
         pageSize:5,
+        selectedPaymentMethod: '微信',
+        nowSelect:null
         }
       },
       methods: {
+        selectPaymentMethod(method) {
+            this.selectedPaymentMethod = method;
+        },
+        intermediary2(row)
+        {
+            if(this.nowSelect === 1)
+            {
+                this.addRecord(row);
+            }else if(this.nowSelect === 2){
+                this.toggleSelection();
+            }
+        },
+        intermediary()
+        {
+          this.centerDialogVisible = true;
+          this.nowSelect = 2
+        },
+        showDialog(e)
+        {
+            this.centerDialogVisible = true;
+            this.nowRow = e;
+            this.nowSelect = 1
+        },
         addRecord(row){
+          this.centerDialogVisible = false;
             let record = {
                 userId: this.user.userId,
                 planId: row.planId,
                 paymentTime: Date.now(),
                 paymentAmount: row.dueAmount,
-                paymentMethod: 'weixin'
+                paymentMethod: this.selectedPaymentMethod
             }
             axios.post('http://localhost:3919/serve8080/addRecord', record)
                 .then(response => {
                     console.log(response.data);
+                    this.$message.success(response.data.message);
+                    this.findAllPage();
                 })
                 .catch(error => {
                     console.error(error);
@@ -155,21 +201,10 @@
           return dayjs(cellValue).format('YYYY年MM月DD日');
         },
         toggleSelection() {
-          var balance = this.getBalance();
-          const selectedRows = this.$refs.multipleTable.selection; 
-          var num = 0;
+          let selectedRows = this.$refs.multipleTable.selection; 
           selectedRows.forEach(row => {
-                num += row.amountDue; 
+            this.addRecord(row)
           });
-          if(balance < num)
-          {
-            this.$message.error('无法全部还款');
-            return;
-          }
-          selectedRows.forEach(row => {
-            this.addInstallment(row, row.$index);
-          });
-          this.$message.success('部分还款成功');
       },
       handleSelectionChange(val) {
         this.multipleSelection = val;
