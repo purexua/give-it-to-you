@@ -34,12 +34,12 @@ INSERT INTO user (user_name, password, real_name, id_card, email, address, phone
 #创建 产品利率表 (Product_Interest_Rate)
 CREATE TABLE product_interest_rate
 (
-    rate_id            INT AUTO_INCREMENT PRIMARY KEY,
-    product_type       VARCHAR(50)  DEFAULT 'Personal Loan',
-    term               INT,
-    interest_rate      DECIMAL(5, 2),
-    loan_amount        DECIMAL(10, 2),                                         -- 金额字段，DECIMAL(总位数, 小数位数),
-    productDescription VARCHAR(255) DEFAULT 'No product description available',-- 产品描述
+    rate_id             INT AUTO_INCREMENT PRIMARY KEY,
+    product_type        VARCHAR(50)  DEFAULT 'Personal Loan',
+    term                INT,
+    interest_rate       DECIMAL(5, 2),
+    loan_amount         DECIMAL(10, 2),                                         -- 金额字段，DECIMAL(总位数, 小数位数),
+    product_description VARCHAR(255) DEFAULT 'No product description available',-- 产品描述
     CHECK ( interest_rate >= 0 AND interest_rate <= 100 AND loan_amount >= 0 )
 );
 
@@ -57,7 +57,7 @@ VALUES ('A-6', 15, 6, 500),
        ('C-24', 24, 45, 20000),
        ('C-24-vip', 90, 0, 20000);
 
-INSERT INTO product_interest_rate (product_type, term, interest_rate, loan_amount, productDescription)
+INSERT INTO product_interest_rate (product_type, term, interest_rate, loan_amount, product_description)
     VALUE ('D-6', 6, 15, 10000, 'purexu 大帅哥');
 
 #创建 贷款申请表(Loan_Application)
