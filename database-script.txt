@@ -25,20 +25,21 @@ CREATE TABLE user
     version       INT            DEFAULT 1
 );
 
-INSERT INTO user (user_name, password, real_name, id_card, email, address, phone_number)
-    VALUE ('purexu', '123456', 'xjh', '123456789012345678', '', '', '');
+INSERT INTO user (user_name, password, real_name, id_card, email, address, phone_number, wallet)
+    VALUE ('purexu', '123456', 'xjh', '123456789012345678', '', '', '', 1000000);
 
-INSERT INTO user (user_name, password, real_name, id_card, email, address, phone_number, role)
-    VALUE ('admin', '123456', 'admin', '123456789012345678', '', '', '', 'Admin');
+INSERT INTO user (user_name, password, real_name, id_card, email, address, phone_number, role, wallet)
+    VALUE ('admin', '123456', 'admin', '123456789012345678', '', '', '', 'Admin', 1000000);
 
 #创建 产品利率表 (Product_Interest_Rate)
 CREATE TABLE product_interest_rate
 (
-    rate_id       INT AUTO_INCREMENT PRIMARY KEY,
-    product_type  VARCHAR(50) DEFAULT 'Personal Loan',
-    term          INT,
-    interest_rate DECIMAL(5, 2),
-    loan_amount   DECIMAL(10, 2), -- 金额字段，DECIMAL(总位数, 小数位数)
+    rate_id            INT AUTO_INCREMENT PRIMARY KEY,
+    product_type       VARCHAR(50)  DEFAULT 'Personal Loan',
+    term               INT,
+    interest_rate      DECIMAL(5, 2),
+    loan_amount        DECIMAL(10, 2),                                         -- 金额字段，DECIMAL(总位数, 小数位数),
+    productDescription VARCHAR(255) DEFAULT 'No product description available',-- 产品描述
     CHECK ( interest_rate >= 0 AND interest_rate <= 100 AND loan_amount >= 0 )
 );
 
@@ -55,6 +56,9 @@ VALUES ('A-6', 15, 6, 500),
        ('C-12', 12, 30, 10000),
        ('C-24', 24, 45, 20000),
        ('C-24-vip', 90, 0, 20000);
+
+INSERT INTO product_interest_rate (product_type, term, interest_rate, loan_amount, productDescription)
+    VALUE ('D-6', 6, 15, 10000, 'purexu 大帅哥');
 
 #创建 贷款申请表(Loan_Application)
 CREATE TABLE loan_application

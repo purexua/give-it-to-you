@@ -16,6 +16,7 @@ import RepaymentRecordsView from '../views/user-home/RepaymentRecordsView.vue'
 import AdminIndex from '../views/admin-home/Index.vue'
 import AdminHome from '../views/admin-home/AdminHome.vue'
 import LoanApproval from '../views/admin-home/LoanApproval.vue'
+import ProductInterestRate from '../views/admin-home/ProductInterestRate.vue'
 
 Vue.use(VueRouter)
 
@@ -135,6 +136,14 @@ const router = new VueRouter({
                component: LoanApproval,
                meta: {
                   title: '贷款审批'
+               }
+            },
+            {
+               name: 'productManage',
+               path: 'product/manage',
+               component: ProductInterestRate,
+               meta: {
+                  title: '产品管理'
                }
             }
          ]

@@ -17,7 +17,9 @@
                     <el-menu-item index="2-1">
                         <router-link :to="{ name: 'loanApproval' }">贷款审批</router-link>
                     </el-menu-item>
-                    <el-menu-item index="2-2">贷款产品管理</el-menu-item>
+                    <el-menu-item index="2-2">
+                        <router-link :to="{ name: 'productManage' }">贷款产品管理</router-link>
+                    </el-menu-item>
                 </el-submenu>
                 <el-menu-item index="3">
                     <i class="el-icon-setting"></i>

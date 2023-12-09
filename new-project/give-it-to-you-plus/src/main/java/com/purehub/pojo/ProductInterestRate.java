@@ -14,4 +14,5 @@ public class ProductInterestRate {
   Integer term;
   Double interestRate;
   Double loanAmount;
+  String productDescription;
 }

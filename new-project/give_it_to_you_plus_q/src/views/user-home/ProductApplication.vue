@@ -30,6 +30,10 @@
           <el-input v-model.number="ruleForm.interestRate" autocomplete="off" disabled></el-input>
         </el-form-item>
 
+        <el-form-item label="产品描述" prop="productDescription">
+          <el-input v-model.number="ruleForm.productDescription" autocomplete="off" disabled></el-input>
+        </el-form-item>
+
         <el-form-item>
           <el-button type="primary" @click="submitForm('ruleForm')">提交</el-button>
           <el-button @click="resetForm('ruleForm')">重置</el-button>
@@ -62,6 +66,7 @@ export default {
         term: '',
         requestedAmount: '',
         interestRate: '',
+        productDescription: '',
       },
       rules: {
         productType: [
@@ -118,10 +123,12 @@ export default {
         this.ruleForm.term = selectedProduct.term;
         this.ruleForm.requestedAmount = selectedProduct.loanAmount;
         this.ruleForm.interestRate = selectedProduct.interestRate;
+        this.ruleForm.productDescription = selectedProduct.productDescription;
       } else {
         this.ruleForm.term = '';
         this.ruleForm.requestedAmount = '';
         this.ruleForm.interestRate = '';
+        this.ruleForm.productDescription = '';
       }
     }
   },
