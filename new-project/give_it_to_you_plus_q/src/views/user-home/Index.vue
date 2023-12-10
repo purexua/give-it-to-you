@@ -20,7 +20,9 @@
                             }">贷款申请</router-link>
                         </el-menu-item>
                         <el-menu-item index="2-2">
-                            个性化产品
+                            <router-link :to="{
+                               name:'personalProduct' 
+                            }">个性化产品</router-link>
                         </el-menu-item>
                     </el-menu-item-group>
                 </el-submenu>
@@ -88,6 +90,7 @@
 
 <script>
 import Header from '@/components/Header.vue';
+import router from '@/router';
 export default {
     name: 'Index',
     data() {
@@ -96,8 +99,9 @@ export default {
         };
     },
     components: {
-        Header,
-    },
+    Header,
+    router
+},
 }
 </script>
 

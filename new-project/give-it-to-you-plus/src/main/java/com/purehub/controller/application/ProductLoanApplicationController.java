@@ -26,6 +26,7 @@ public class ProductLoanApplicationController {
 
   @PostMapping("/application/personal")
   public String createPersonalLoanApplication(@RequestBody LoanApplication personalLoanApplication) {
+    personalLoanApplication.setApplicationTime(Timestamp.valueOf(LocalDateTime.now()));
     loanApplicationService.save(personalLoanApplication);
     System.out.println("### 创建贷款申请成功 - 个性化贷款申请");
     return "success";

@@ -1,7 +1,7 @@
 <template>
     <div class="personal-loan-page">
         <h1>个性化贷款页面</h1>
-        <span>你的额度：{{ userCreditScore.limitAmount }} 元</span>
+        <span>你的额度：{{ this.userLimit }} 元</span>
 
         <el-form :model="loanForm" ref="loanForm" label-position="top">
             <el-form-item label="贷款金额" prop="requestedAmount">
@@ -70,6 +70,7 @@ export default {
         submitForm() {
             // 检查是否超出用户额度
             const loanAmount = parseFloat(this.loanForm.requestedAmount);
+            console.log(this.userLimit)
             if (!isNaN(loanAmount) && loanAmount > this.userLimit) {
                 this.$message.error('贷款金额超过用户额度，无法提交。');
                 return;
@@ -157,7 +158,7 @@ export default {
         }
     },
     mounted() {
-        // this.userLimit = this.user.balance;
+        this.userLimit = this.userCreditScore.limitAmount;
         axios({
             method: 'get',
             url: `http://localhost:3919/serve8080/rate/personalProduct`,

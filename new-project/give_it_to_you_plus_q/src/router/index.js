@@ -17,6 +17,8 @@ import AdminIndex from '../views/admin-home/Index.vue'
 import AdminHome from '../views/admin-home/AdminHome.vue'
 import LoanApproval from '../views/admin-home/LoanApproval.vue'
 import ProductInterestRate from '../views/admin-home/ProductInterestRate.vue'
+import PersonalProduct from '../views/user-home/PersonalProduct'
+
 
 Vue.use(VueRouter)
 
@@ -94,6 +96,14 @@ const router = new VueRouter({
                meta: {
                   title: '产品申请'
                }
+            },
+            {
+               name: 'personalProduct',
+               path: '/personalProduct',
+               component: PersonalProduct,
+               meta: {
+                  title: '个性化产品页面'
+               },
             },
             {
                name: 'RepaymentPlan',
