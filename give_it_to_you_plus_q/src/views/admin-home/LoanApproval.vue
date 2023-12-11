@@ -88,9 +88,9 @@ export default {
         }
     },
     methods: {
-        handleApproved(index, row) {
-            this.$store.dispatch('creditInfo/getCreditScoreInfo', row.userId);
-            console.log('##',this.creditScoreInfo.limitAmount);
+        async handleApproved(index, row) {
+            await this.$store.dispatch('creditInfo/getCreditScoreInfo', row.userId);
+            console.log('##', this.creditScoreInfo.limitAmount);
             if (row.requestedAmount > this.creditScoreInfo.limitAmount) {
                 this.$message({
                     message: '申请金额超过信用额度',
