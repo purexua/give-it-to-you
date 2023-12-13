@@ -105,7 +105,7 @@ export default {
 }
 </script>
 
-<style lang="less">
+<style lang="less" scoped>
 .el-header {
     background-color: #B3C0D1;
     color: #333;
@@ -119,4 +119,5 @@ export default {
 a {
     text-decoration: none;
 }
+
 </style>

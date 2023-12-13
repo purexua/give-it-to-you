@@ -96,25 +96,25 @@ import  NavigationBar from '../../components/NavigationBar.vue'
             content:"2.jpg"
           },
           {
-            content:"2.jpg"
+            content:"3.jpg"
           },
           {
-            content:"3.png"
+            content:"66.jpg"
           },
           {
             content:"4.jpg"
           },
           {
-            content:"55.png"
+            content:"55.jpg"
           }
         ],
         cards: [
-        { image: require('../../assets/11.jpg'), content: '<ul><li><h2>信贷服务</h2><li><li><p>息费透明、利息可算<p></li><li>申请便捷、还款灵活</li><li><p>信息加密、安全保护<p></li></ul>', isHovered: false },
-        { image: require('../../assets/22.jpg'), content: '<ul><li><h2>理财服务</h2><li><li><p>精选合规金融机构产品<p></li><li>多重安全保障</li><li><p>产品丰富 操作便捷<p></li></ul>', isHovered: false },
-        { image: require('../../assets/33.png'), content: '<ul><li><h2>保险经纪服务</h2><li><li><p>大牌定制 安全放心<p></li><li>快捷理赔 专人服务</li><li><p>为自己、为爸妈、为子女增加一份安全保障<p></li></ul>', isHovered: false },
-        { image: require('../../assets/44.png'), content: '<ul><li><h2>支付服务</h2><li><li><p>连接海量商户与用户<p></li><li>高效安全便捷</li><li><p>提供全方位支付解决方案<p></li></ul>', isHovered: false },
-        { image: require('../../assets/55.png'), content: '<ul><li><h2>个人金融科技</h2><li><li><p>磐石一站式金科开放平台<p></li><li>智能语音机器人</li><li><p>与数百家银行及挂牌金融机构合作<p></li></ul>', isHovered: false },
-        { image: require('../../assets/33.png'), content: '<ul><li><h2>供应链金融科技</h2><li><li><p>一站式服务 操作便捷<p></li><li>降低欺诈风险</li><li><p>确保操作真实性<p></li></ul>', isHovered: false }
+        { image: require('../../assets/11.jpg'), content: '<h2>信贷服务</h2><p>息费透明、利息可算<p>申请便捷、还款灵活<p>信息加密、安全保护<p>', isHovered: false },
+        { image: require('../../assets/22.jpg'), content: '<h2>理财服务</h2><p>精选合规金融机构产品<p>多重安全保障<p>产品丰富 操作便捷<p>', isHovered: false },
+        { image: require('../../assets/33.jpg'), content: '<h2>保险经纪服务</h2><p>大牌定制 安全放心<p>快捷理赔 专人服务<p>为自己、为爸妈、为子女增加一份安全保障<p>', isHovered: false },
+        { image: require('../../assets/44.jpg'), content: '<h2>支付服务</h2><p>连接海量商户与用户<p>高效安全便捷<p>提供全方位支付解决方案<p>', isHovered: false },
+        { image: require('../../assets/55.jpg'), content: '<h2>个人金融科技</h2><p>磐石一站式金科开放平台<p>智能语音机器人<p>与数百家银行及挂牌金融机构合作<p>', isHovered: false },
+        { image: require('../../assets/3.jpg'), content: '<h2>供应链金融科技</h2><p>一站式服务 操作便捷<p>降低欺诈风险<p>确保操作真实性<p>', isHovered: false }
       ],
         }
     },
@@ -183,13 +183,6 @@ import  NavigationBar from '../../components/NavigationBar.vue'
   opacity: 0.4;
   box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.1);
   z-index: -1;
-}
-ul li{
-  position: relative;
-  left: -40px;
-}
-li {
-  list-style-type: none; /* 清除默认的列表样式 */
 }
 .card {
   position: relative;
