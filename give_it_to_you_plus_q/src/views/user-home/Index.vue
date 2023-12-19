@@ -19,6 +19,11 @@
                                 name: 'productApplication',
                             }">贷款申请</router-link>
                         </el-menu-item>
+                        <el-menu-item index="2-1">
+                            <router-link :to="{
+                                name: 'applicationRecord',
+                            }">申请记录</router-link>
+                        </el-menu-item>
                         <el-menu-item index="2-2">
                             <router-link :to="{
                                name:'personalProduct' 

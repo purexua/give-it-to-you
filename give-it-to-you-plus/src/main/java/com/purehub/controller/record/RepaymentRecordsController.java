@@ -1,10 +1,9 @@
 package com.purehub.controller.record;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
-import com.purehub.pojo.RepaymentPlan;
-import com.purehub.pojo.RepaymentRecord;
-import com.purehub.pojo.RepaymentResult;
-import com.purehub.pojo.User;
+import com.purehub.pojo.*;
+import com.purehub.service.application.LoanApplicationService;
+import com.purehub.service.credit.CreditScoreService;
 import com.purehub.service.plan.RepaymentPlanService;
 import com.purehub.service.user.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,6 +17,10 @@ import java.util.List;
 
 @RestController
 public class RepaymentRecordsController {
+    @Autowired
+    private CreditScoreService creditScoreService;
+    @Autowired
+    private LoanApplicationService loanApplicationService;
     @Autowired
     private RepaymentRecordService repaymentRecordsService;
     @Autowired
@@ -82,7 +85,21 @@ public class RepaymentRecordsController {
 
         }else if(repaymentPlan.getTerm() == repaymentPlan.getCurrentTerm())
         {
-            return repaymentPlanService.remove(queryWrapper);
+            //改额度
+            //获取需要改的额度
+            Integer applicationId = repaymentPlanService.getOne(queryWrapper).getApplicationId();
+
+            QueryWrapper<LoanApplication> queryWrapper1 = new QueryWrapper<>();
+            queryWrapper1.eq("application_id", applicationId);
+            Double amount = loanApplicationService.getOne(queryWrapper1).getRequestedAmount();
+
+            QueryWrapper<CreditScore> queryWrapper2 = new QueryWrapper<>();
+            queryWrapper2.eq("user_id", repaymentPlan.getUserId());
+
+            CreditScore creditScoreServiceOne = creditScoreService.getOne(queryWrapper2);
+            creditScoreServiceOne.setLimitAmount(creditScoreServiceOne.getLimitAmount() + amount);
+
+            return creditScoreService.update(creditScoreServiceOne,queryWrapper2) && repaymentPlanService.remove(queryWrapper);
         }else
         {
             return false;

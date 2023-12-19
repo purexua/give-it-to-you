@@ -45,7 +45,6 @@ export default {
       })
         .then(response => {
           this.tableData = response.data.data;
-          console.log(response.data.data);
           if (response.data.status === 1)
             this.$message.error('哎呦~出错啦');
         })

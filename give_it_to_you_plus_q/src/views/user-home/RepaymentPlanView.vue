@@ -20,34 +20,34 @@
                 <i class="el-icon-mobile-phone"></i>
                 总期数
               </template>
-              <span>{{ props.row.term }}</span>
+              <span>{{ props.row.term + '期' }}</span>
             </el-descriptions-item>
             <el-descriptions-item>
               <template slot="label">
                 <i class="el-icon-location-outline"></i>
                 当前期数
               </template>
-              <span>{{ props.row.currentTerm }}</span>
+              <span>{{'第'+ props.row.currentTerm + '期'}}</span>
             </el-descriptions-item>
             <el-descriptions-item>
               <template slot="label">
                 <i class="el-icon-tickets"></i>
                 当前需还
               </template>
-              <span>{{ props.row.dueAmount }}</span>
+              <span>{{ props.row.dueAmount + '元' }}</span>
             </el-descriptions-item>
             <el-descriptions-item>
               <template slot="label">
                 <i class="el-icon-office-building"></i>
                 总金额
               </template>
-              <span>{{ props.row.totalAmount }}</span>
+              <span>{{ props.row.totalAmount + '元' }}</span>
             </el-descriptions-item>
           </el-descriptions>
         </template>
       </el-table-column>
-      <el-table-column label="序号" type="index">
-      </el-table-column>
+      <!-- <el-table-column label="序号" type="index">
+      </el-table-column> -->
       <el-table-column label="申请Id">
         <template slot-scope="scope">
           <div slot="reference" class="name-wrapper">
@@ -62,7 +62,7 @@
       <el-table-column label="还款金额" sortable>
         <template slot-scope="scope">
           <div>
-            <span>{{ scope.row.dueAmount }}</span>
+            <span>{{ scope.row.dueAmount + '元' }}</span>
           </div>
         </template>
       </el-table-column>
@@ -152,7 +152,6 @@ export default {
       }
       axios.post('http://localhost:3919/serve8080/addRecord', record)
         .then(response => {
-          console.log(response.data);
           this.$message.success(response.data.message);
           this.findAllPage();
         })
@@ -200,7 +199,6 @@ export default {
         .then(response => {
           this.tableData = response.data.data.records;
           this.total = response.data.data.total;
-          console.log(response.data.data);
           if (response.data.status === 1)
             this.$message.error('哎呦~出错啦');
         })

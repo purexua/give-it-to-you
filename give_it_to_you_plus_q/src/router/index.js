@@ -18,6 +18,7 @@ import AdminHome from '../views/admin-home/AdminHome.vue'
 import LoanApproval from '../views/admin-home/LoanApproval.vue'
 import ProductInterestRate from '../views/admin-home/ProductInterestRate.vue'
 import PersonalProduct from '../views/user-home/PersonalProduct'
+import ApplicationRecord from '@/views/user-home/ApplicationRecord.vue'
 
 
 Vue.use(VueRouter)
@@ -95,6 +96,14 @@ const router = new VueRouter({
                component: ProductApplication,
                meta: {
                   title: '产品申请'
+               }
+            },
+            {
+               name: 'applicationRecord',
+               path: 'application/record',
+               component: ApplicationRecord,
+               meta: {
+                  title: '申请记录'
                }
             },
             {
