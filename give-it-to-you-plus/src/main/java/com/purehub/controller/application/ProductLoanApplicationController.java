@@ -9,6 +9,7 @@ import com.purehub.pojo.RepaymentResult;
 import com.purehub.pojo.User;
 import com.purehub.service.application.LoanApplicationService;
 import com.purehub.service.credit.CreditScoreService;
+import com.purehub.service.rate.ProductInterestRateService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -18,7 +19,8 @@ import java.util.List;
 
 @RestController
 public class ProductLoanApplicationController {
-
+  @Autowired
+  private ProductInterestRateService productInterestRateService;
   @Autowired
   private LoanApplicationService loanApplicationService;
   @Autowired
@@ -88,5 +90,12 @@ public class ProductLoanApplicationController {
     creditScoreServiceOne.setLimitAmount(creditScoreServiceOne.getLimitAmount() + loanApplicationServiceOne.getRequestedAmount());
     //更新额度&&删除记录
     return loanApplicationService.remove(queryWrapper) && creditScoreService.update(creditScoreServiceOne,queryWrapper1) ? new RepaymentResult().success(null,"撤回成功") : new RepaymentResult().error("撤回失败");
+  }
+  @GetMapping("application/getAllType")
+  public RepaymentResult getAllProductType()
+  {
+    if(productInterestRateService.list() == null)
+      return new RepaymentResult().error("获取产品失败");
+    return new RepaymentResult().success(productInterestRateService.list(),"获取产品成功");
   }
 }

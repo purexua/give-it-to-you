@@ -23,7 +23,7 @@
                 </el-submenu>
                 <el-menu-item index="3">
                     <i class="el-icon-setting"></i>
-                    <span slot="title">导航三</span>
+                    <router-link :to="{ name: 'dataShow' }">数据统计</router-link>
                 </el-menu-item>
             </el-menu>
         </el-aside>

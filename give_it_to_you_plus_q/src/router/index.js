@@ -19,6 +19,7 @@ import LoanApproval from '../views/admin-home/LoanApproval.vue'
 import ProductInterestRate from '../views/admin-home/ProductInterestRate.vue'
 import PersonalProduct from '../views/user-home/PersonalProduct'
 import ApplicationRecord from '@/views/user-home/ApplicationRecord.vue'
+import DataShow from '@/views/admin-home/DataShow.vue'
 
 
 Vue.use(VueRouter)
@@ -163,6 +164,15 @@ const router = new VueRouter({
                component: ProductInterestRate,
                meta: {
                   title: '产品管理'
+               }
+            }
+            ,
+            {
+               name: 'dataShow',
+               path: 'product/data',
+               component: DataShow,
+               meta: {
+                  title: '数据统计'
                }
             }
          ]
