@@ -1,9 +1,8 @@
 <template>
-  <div class="container">
-    <p>欢迎使用，给你呗 - 网络小额贷款。</p>
+    <div class="container">
     <el-dropdown class="icon" @command="handleCommand">
       <el-button type="text">
-        <el-avatar icon="el-icon-user-solid"></el-avatar>
+        <el-avatar icon="el-icon-user-solid" src="https://cube.elemecdn.com/0/88/03b0d39583f48206768a7534e55bcpng.png"></el-avatar>
       </el-button>
       <el-dropdown-menu slot="dropdown">
         <el-dropdown-item command="a">修改信息</el-dropdown-item>
@@ -39,6 +38,6 @@ p {
 .icon {
   position: absolute;
   right: 50px;
-  top: 22px;
+  top: 0px;
 }
 </style>

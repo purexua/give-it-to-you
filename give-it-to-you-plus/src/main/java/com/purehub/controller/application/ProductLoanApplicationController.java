@@ -3,10 +3,7 @@ package com.purehub.controller.application;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import com.purehub.pojo.CreditScore;
-import com.purehub.pojo.LoanApplication;
-import com.purehub.pojo.RepaymentResult;
-import com.purehub.pojo.User;
+import com.purehub.pojo.*;
 import com.purehub.service.application.LoanApplicationService;
 import com.purehub.service.credit.CreditScoreService;
 import com.purehub.service.rate.ProductInterestRateService;
@@ -15,7 +12,9 @@ import org.springframework.web.bind.annotation.*;
 
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 public class ProductLoanApplicationController {
@@ -96,6 +95,14 @@ public class ProductLoanApplicationController {
   {
     if(productInterestRateService.list() == null)
       return new RepaymentResult().error("获取产品失败");
+    return new RepaymentResult().success(productInterestRateService.list(),"获取产品成功");
+  }
+  @GetMapping("application/getAllTypeUser")
+  public RepaymentResult getAllProductTypeUser()
+  {
+    List<ProductInterestRate> productInterestRateList = productInterestRateService.list();
+    for (int i = 0; i < productInterestRateList.size(); i++) {
+    }
     return new RepaymentResult().success(productInterestRateService.list(),"获取产品成功");
   }
 }

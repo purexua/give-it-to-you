@@ -2,6 +2,14 @@
     <el-container>
         <el-aside width="250px">
             <el-menu default-active="1" class="el-menu-vertical-demo">
+
+                <el-menu-item index="0">
+                    <div style="display: flex; align-items: center;">
+                        <img :src="require('@/assets/logo-min-min.png')" class="rounded-image" style="width: 50px; height: 50px;" />
+                        <div style="margin-left: 10px; font-weight: bold;">给你呗金融平台</div>
+                    </div>
+                </el-menu-item>
+
                 <el-menu-item index="1">
                     <i class="el-icon-s-home"></i>
                     <span slot="title"><router-link to="/index/home">首页</router-link></span>
@@ -85,7 +93,7 @@
             </el-menu>
         </el-aside>
         <el-container>
-            <el-header height="80px">
+            <el-header height="50px">
                 <Header></Header>
             </el-header>
             <el-main><router-view></router-view></el-main>
@@ -112,9 +120,10 @@ export default {
 
 <style lang="less" scoped>
 .el-header {
-    background-color: #B3C0D1;
-    color: #333;
-    line-height: 60px;
+    background-color: #fff;
+    border-radius: 4px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    padding: 16px;
 }
 
 .el-aside {

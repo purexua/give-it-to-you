@@ -12,6 +12,10 @@ public class UserController {
   @Autowired
   private UserService userService;
 
+  @GetMapping("/count")
+  public long count() {
+    return userService.count();
+  }
   @GetMapping("/login")
   public User login(@RequestParam String userName) {
     //根据userName 查询单个用户

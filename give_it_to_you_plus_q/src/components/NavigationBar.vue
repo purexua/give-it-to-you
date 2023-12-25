@@ -3,8 +3,6 @@
         <div class="header">
             <img src="../assets/logo-plus.png" style="height: 75px; position: relative; left: 100px; margin-right: 230px;">
             <MenuList />
-            <el-button icon="el-icon-service" type="text" class="button-onlie">在线客服</el-button>
-            <el-button icon="el-icon-download" type="text" class="button-download">下载</el-button>
             <el-button icon="el-icon-user-solid" type="text" class="button-admin" @click="show">登录</el-button>
         </div>
     </div>
@@ -49,24 +47,9 @@ export default {
 .button-admin {
     position: absolute;
     top: 25px;
-    left: 89%;
+    left: 78%;
     color: white;
-    font-size: 20px;
+    font-size: 25px;
 }
 
-.button-download {
-    position: absolute;
-    top: 25px;
-    left: 82%;
-    color: white;
-    font-size: 20px;
-}
-
-.button-onlie {
-    position: absolute;
-    top: 25px;
-    left: 73%;
-    color: white;
-    font-size: 20px;
-}
 </style>

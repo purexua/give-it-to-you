@@ -26,7 +26,7 @@
     data() {
       return {
         timer:null,
-        num:2,
+        num:null,
         chartData: {
           labels: [],
           datasets: [
@@ -86,6 +86,7 @@
       };
     },
     mounted() {
+      this.usrNum();
       this.fetchChartData()
         .then(data => {
             let items = data.data; 
@@ -103,6 +104,15 @@
         });
     },
     methods: {
+      usrNum(){
+          axios.get('http://localhost:3919/serve8080/count') // 替换为实际的后端接口地址
+          .then(response => {
+            this.num = response.data
+          })
+          .catch(error => {
+            console.error('Failed to fetch chart data:', error);
+          });
+      },
       fetchChartData() {
         return axios.get('http://localhost:3919/serve8080/application/getAllType') // 替换为实际的后端接口地址
           .then(response => response.data)

@@ -14,6 +14,13 @@
       <el-table-column prop="paymentTime" label="支付日期" :formatter="formatDate" width="180">
       </el-table-column>
     </el-table>
+    <el-pagination
+      style="position: relative;margin-left: 80%;margin-top: 30px;"
+      background
+      layout="prev, pager, next"
+      :total="total"
+      @current-change="handleCurrentChange" :current-page="currentPage">
+    </el-pagination>
   </div>
 </template>
   
@@ -33,6 +40,10 @@ import axios from 'axios';
 export default {
   name: "RepaymentRecordsView",
   methods: {
+    handleCurrentChange(val) {
+      this.currentPage = val;
+      this.findAllRecords();
+    },
     formatDate(row, column, cellValue) {
       return dayjs(cellValue).format('YYYY-MM-DD HH:mm:ss');
     },
@@ -41,10 +52,13 @@ export default {
       axios.get('http://localhost:3919/serve8080/findAllRepaymentRecords', {
         params: {
           userId: userId,
+          current: this.currentPage,
+          size:10
         }
       })
         .then(response => {
-          this.tableData = response.data.data;
+          this.tableData = response.data.data.records;
+          this.total = response.data.data.total / 10
           if (response.data.status === 1)
             this.$message.error('哎呦~出错啦');
         })
@@ -55,7 +69,10 @@ export default {
   },
   data() {
     return {
-      tableData: []
+      tableData: [],
+      total: 1,
+      currentPage: 1,
+      pageSize: 10,
     }
   },
   computed: {

@@ -1,6 +1,8 @@
 package com.purehub.controller.record;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.purehub.pojo.*;
 import com.purehub.service.application.LoanApplicationService;
 import com.purehub.service.credit.CreditScoreService;
@@ -30,10 +32,18 @@ public class RepaymentRecordsController {
     private static RepaymentResult repaymentResult = new RepaymentResult();
 
     @GetMapping("/findAllRepaymentRecords")
-    public RepaymentResult findAllRecords(@RequestParam Integer userId)
+    public RepaymentResult findAllRecords(@RequestParam Integer userId,@RequestParam Integer current, @RequestParam Integer size)
     {
-        List<RepaymentRecord> repaymentRecordList = repaymentRecordsService.list();
-        return repaymentResult.success(repaymentRecordList, "获取所有还款记录成功");
+        QueryWrapper<RepaymentRecord> queryWrapper = new QueryWrapper<>();
+        queryWrapper.eq("user_id", userId);
+        try {
+            Page<RepaymentRecord> page = new Page<>(current, size); // 当前页码和每页记录数
+            IPage<RepaymentRecord> records = repaymentRecordsService.page(page, queryWrapper);
+            return repaymentResult.success(records, "操作成功");
+        } catch (Exception e) {
+            e.printStackTrace();
+            return repaymentResult.error("操作失败");
+        }
     }
     @PostMapping("/addRecord")
     public RepaymentResult findAllRecords(@RequestBody RepaymentRecord record)
