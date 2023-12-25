@@ -1,12 +1,13 @@
 <template>
     <el-container>
         <el-aside width="250px" style="background-color: #545c64;">
-            <el-menu default-active="2" class="el-menu-vertical-demo" background-color="#545c64" text-color="#fff"
-                active-text-color="#ffd04b">
+            <el-menu default-active="2" class="el-menu-vertical-demo" @open="handleOpen" @close="handleClose"
+                background-color="#545c64" text-color="#fff" active-text-color="#ffd04b">
                 <el-menu-item index="1">
                     <i class="el-icon-s-home"></i>
                     <span slot="title">
-                        <router-link :to="{ name: 'adminHome' }">首页</router-link>
+                        <router-link :to="{ name: 'adminHome' }" class="menu-link"
+                            style="text-decoration: none;">首页</router-link>
                     </span>
                 </el-menu-item>
                 <el-submenu index="2">
@@ -15,15 +16,18 @@
                         <span>贷款管理</span>
                     </template>
                     <el-menu-item index="2-1">
-                        <router-link :to="{ name: 'loanApproval' }">贷款审批</router-link>
+                        <router-link :to="{ name: 'loanApproval' }" class="menu-link"
+                            style="text-decoration: none;">贷款审批</router-link>
                     </el-menu-item>
                     <el-menu-item index="2-2">
-                        <router-link :to="{ name: 'productManage' }">贷款产品管理</router-link>
+                        <router-link :to="{ name: 'productManage' }" class="menu-link"
+                            style="text-decoration: none;">贷款产品管理</router-link>
                     </el-menu-item>
                 </el-submenu>
                 <el-menu-item index="3">
                     <i class="el-icon-setting"></i>
-                    <router-link :to="{ name: 'dataShow' }">数据统计</router-link>
+                    <router-link :to="{ name: 'dataShow' }" class="menu-link"
+                        style="text-decoration: none;">数据统计</router-link>
                 </el-menu-item>
             </el-menu>
         </el-aside>
@@ -60,4 +64,7 @@ export default {
     font-weight: bold;
     margin: 10px 0;
 }
-</style>
+
+.menu-link {
+    color: #fff;
+}</style>

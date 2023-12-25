@@ -88,16 +88,19 @@
       </el-pagination>
     </div>
     <el-dialog title="请选择付款方式" :visible.sync="centerDialogVisible" width="30%" center>
+
       <el-button-group>
         <el-button :type="selectedPaymentMethod === '微信' ? 'success' : ''" icon="el-icon-chat-dot-round"
-          style="width: 200px;" @click="selectPaymentMethod('微信')">微信</el-button>
+          style="width: 262px;" @click="selectPaymentMethod('微信')">微信</el-button>
         <el-button :type="selectedPaymentMethod === '支付宝' ? 'primary' : ''" icon="el-icon-shopping-bag-2"
-          style="width: 200px;" @click="selectPaymentMethod('支付宝')">支付宝</el-button>
+          style="width: 262px;" @click="selectPaymentMethod('支付宝')">支付宝</el-button>
       </el-button-group>
       <span slot="footer" class="dialog-footer">
         <el-button @click="centerDialogVisible = false">取 消</el-button>
         <el-button type="primary" @click="intermediary2(nowRow)">确 定</el-button>
       </span>
+
+
     </el-dialog>
   </div>
 </template>

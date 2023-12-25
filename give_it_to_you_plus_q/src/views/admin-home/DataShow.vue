@@ -7,8 +7,8 @@
             <span style="color: #666;">注册用户</span>
         </el-card>
         <el-card shadow="hover" style="width: 120px;margin-left: 100px;">
-            <h2>18</h2>
-            <span style="color: #666;"></span>
+            <h2>999</h2>
+            <span style="color: #666;">累计贷款服务数</span>
         </el-card>
      </div>
     </el-card>

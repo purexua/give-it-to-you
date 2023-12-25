@@ -3,7 +3,8 @@
         <el-row>
             <el-col :span="12" :xs="0"></el-col>
             <el-col :span="12" :xs="24">
-                <el-form class="login_form" :model="loginForm">
+                <el-form class="login_form" :model="loginForm" :label-position="labelPosition"
+                    :label-width="formLabelWidth">
                     <h1>Hello</h1>
                     <h2>给你呗网络小额贷款</h2>
                     <el-form-item>
@@ -140,6 +141,7 @@ export default {
             loading: false,
             dialogFormVisible: false,
             formLabelWidth: '120px',
+            labelPosition: 'top',
             ruleForm: {
                 userName: '',
                 password: '',
@@ -261,32 +263,34 @@ export default {
 .login_container {
     width: 100%;
     height: 100vh;
-    background: url('../../assets/images/background.jpg') no-repeat;
-    background-size: cover;
+    background-color: #f5f5f5;
 
     .login_form {
         position: relative;
         width: 80%;
         top: 30vh;
         left: 100%;
-        background: url("../../assets/images/login_form.png") no-repeat;
-        background-size: cover;
+        background-color: #fff;
         padding: 40px;
+        color: #333;
 
         h1 {
-            color: white;
+            color: #333;
             font-size: 40px;
         }
 
         h2 {
             font-size: 20px;
-            color: white;
+            color: #333;
             margin: 20px 0px;
         }
 
         .login_btn {
             display: inline-block;
             width: 45%;
+            background-color: #409EFF;
+            color: #fff;
+            border-color: #409EFF;
         }
 
         .btn_space {
