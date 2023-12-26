@@ -11,10 +11,9 @@
         <div class="overlay" style="box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.1)">
         <div>
             <h2>公司简介:</h2>
-            <p style=" margin-bottom: 20px;text-indent: 4em;">《原神》是由米哈游自研的一款全新开放世界冒险RPG。你将在游戏中探索一个被称作「提瓦特」的幻想世界。 </p>
-            <p style=" margin-bottom: 20px;text-indent: 4em;"> 在这广阔的世界中，你可以踏遍七国，邂逅性格各异、能力独特的同伴，与他们一同对抗强敌，踏上寻回血亲之路；</p>
-            <p style=" margin-bottom: 20px;text-indent: 4em;">也可以不带目的地漫游，沉浸在充满生机的世界里，让好奇心驱使自己发掘各个角落的奥秘⋯⋯ </p>
-            <p style=" margin-bottom: 20px;text-indent: 4em;">直到你与分离的血亲重聚，在终点见证一切事物的沉淀。</p>
+            <p style=" margin-bottom: 20px;text-indent: 4em;">开启财务自由之旅</p>
+            <p style=" margin-bottom: 20px;text-indent: 4em;">在我们的平台上，您可以轻松申请小额贷款，满足您的紧急资金需求</p>
+            <p style=" margin-bottom: 20px;text-indent: 4em;">我们提供简便、快捷的贷款服务，让您摆脱财务困境，实现梦想和计划</p>
         </div>
         </div>
         <div class="bottom" style="box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.1)">
@@ -63,7 +62,7 @@
             </div>
             <div class="div">
                 <h2>关联平台</h2>
-                <span>原神爱好者协会</span>
+                <span>purehub</span>
             </div>
             </div>
             <hr style="width: 1000px;margin-left: 150px;margin-top: 100px;">

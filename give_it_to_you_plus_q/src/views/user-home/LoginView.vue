@@ -135,8 +135,8 @@ export default {
         };
         return {
             loginForm: {
-                username: 'purexu',
-                password: '123456'
+                username: '',
+                password: ''
             },
             loading: false,
             dialogFormVisible: false,
