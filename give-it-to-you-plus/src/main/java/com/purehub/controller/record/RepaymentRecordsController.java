@@ -8,6 +8,8 @@ import com.purehub.service.application.LoanApplicationService;
 import com.purehub.service.credit.CreditScoreService;
 import com.purehub.service.plan.RepaymentPlanService;
 import com.purehub.service.user.UserService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.web.bind.annotation.*;
@@ -17,6 +19,7 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 
+@Tag(name = "还款相关接口")
 @RestController
 public class RepaymentRecordsController {
     @Autowired
@@ -31,6 +34,7 @@ public class RepaymentRecordsController {
     private RepaymentPlanService repaymentPlanService;
     private static RepaymentResult repaymentResult = new RepaymentResult();
 
+    @Operation(summary = "分页查询所有还款记录")
     @GetMapping("/findAllRepaymentRecords")
     public RepaymentResult findAllRecords(@RequestParam Integer userId,@RequestParam Integer current, @RequestParam Integer size)
     {
@@ -46,6 +50,7 @@ public class RepaymentRecordsController {
         }
     }
     @PostMapping("/addRecord")
+    @Operation(summary = "添加还款记录")
     public RepaymentResult findAllRecords(@RequestBody RepaymentRecord record)
     {
         //判断余额是否足够还款
@@ -60,6 +65,7 @@ public class RepaymentRecordsController {
             return insertFirstRecord(record);
         return updatePaymentDateAndActualAmount(record);
     }
+
 
     public RepaymentResult updatePaymentDateAndActualAmount(RepaymentRecord record){
 
