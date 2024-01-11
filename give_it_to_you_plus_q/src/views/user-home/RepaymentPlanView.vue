@@ -1,6 +1,30 @@
 <template>
   <div class="main">
-    <el-table :data="tableData" style="width: 100%" ref="multipleTable" @selection-change="handleSelectionChange()">
+    <div class="search-div">
+      <el-form label-width="70px" size="small">
+        <el-row>
+          <el-col :span="8">
+            <el-form-item label="关 键 字">
+              <el-input style="width: 95%" placeholder="ID/期数"></el-input>
+            </el-form-item>
+          </el-col>
+          <el-col :span="8">
+            <el-form-item label="操作时间">
+              <el-date-picker type="datetime" placeholder="选择开始时间" align="right" value-format="yyyy-MM-dd HH:mm:ss"
+                :picker-options="pickerOptions" style="margin-right: 10px;width: 100%;">
+              </el-date-picker>
+            </el-form-item>
+          </el-col>
+          <el-col :span="6">
+            <el-form-item>
+              <el-button type="primary" icon="el-icon-search" size="mini">搜索</el-button>
+            <el-button icon="el-icon-refresh" size="mini">重置</el-button>
+            </el-form-item>
+          </el-col>
+        </el-row>
+      </el-form>
+    </div>
+    <el-table v-loading="loading" :data="tableData" style="width: 100%" ref="multipleTable" @selection-change="handleSelectionChange()" border>
       <el-table-column type="selection" width="55">
       </el-table-column>
       <el-table-column type="expand">
@@ -27,7 +51,7 @@
                 <i class="el-icon-location-outline"></i>
                 当前期数
               </template>
-              <span>{{'第'+ props.row.currentTerm + '期'}}</span>
+              <span>{{ '第' + props.row.currentTerm + '期' }}</span>
             </el-descriptions-item>
             <el-descriptions-item>
               <template slot="label">
@@ -73,7 +97,7 @@
           </div>
         </template>
       </el-table-column>
-      <el-table-column>
+      <el-table-column label="操作">
         <template slot-scope="scope">
           <el-button size="mini" @click="showDialog(scope.row)">我要还款</el-button>
         </template>
@@ -113,6 +137,29 @@ export default {
   name: "RepaymentPlanView",
   data() {
     return {
+      pickerOptions: {
+        shortcuts: [{
+          text: '今天',
+          onClick(picker) {
+            picker.$emit('pick', new Date());
+          }
+        }, {
+          text: '昨天',
+          onClick(picker) {
+            const date = new Date();
+            date.setTime(date.getTime() - 3600 * 1000 * 24);
+            picker.$emit('pick', date);
+          }
+        }, {
+          text: '一周前',
+          onClick(picker) {
+            const date = new Date();
+            date.setTime(date.getTime() - 3600 * 1000 * 24 * 7);
+            picker.$emit('pick', date);
+          }
+        }]
+      },
+      loading:true,
       nowRow: null,
       centerDialogVisible: false,
       multipleSelection: [],
@@ -155,7 +202,11 @@ export default {
       }
       axios.post('http://localhost:3919/serve8080/addRecord', record)
         .then(response => {
-          this.$message.success(response.data.message);
+          this.$notify({
+          title: '成功',
+          message: response.data.message,
+          type: 'success'
+        });
           this.findAllPage();
         })
         .catch(error => {
@@ -200,6 +251,7 @@ export default {
         }
       })
         .then(response => {
+          this.loading = false;
           this.tableData = response.data.data.records;
           this.total = response.data.data.total;
           if (response.data.status === 1)

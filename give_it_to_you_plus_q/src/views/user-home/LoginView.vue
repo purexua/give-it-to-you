@@ -14,6 +14,15 @@
                         <el-input type="password" prefix-icon="el-icon-lock" v-model="loginForm.password"
                             show-password></el-input>
                     </el-form-item>
+                    <el-form-item prop="code">
+                        <el-input v-model="loginForm.uuid" auto-complete="off" placeholder="验证码" style="width: 63%"
+                            @keyup.enter.native="handleLogin">
+                            <svg-icon slot="prefix" icon-class="validCode" class="el-input__icon input-icon" />
+                        </el-input>
+                        <div class="login-code">
+                            <img :src="codeUrl" class="login-code-img" @click="refreshCode()" />
+                        </div>
+                    </el-form-item>
                     <el-form-item>
                         <el-button :loading="loading" class="login_btn" type="success" size="default"
                             @click="login">登录</el-button>
@@ -134,9 +143,12 @@ export default {
             }
         };
         return {
+            code: ' ',
+            codeUrl: ' ',
             loginForm: {
                 username: '',
-                password: ''
+                password: '',
+                uuid: ''
             },
             loading: false,
             dialogFormVisible: false,
@@ -176,7 +188,25 @@ export default {
             }
         }
     },
+    mounted() {
+        this.getcode()
+    },
     methods: {
+        getcode() {
+            axios({
+                method: 'get',
+                url: 'http://localhost:3919/serve8080/captcha',
+            }).then(res => {
+                console.log(res)
+                if (res.data.code === 200) {
+                    this.codeUrl = res.data.data.img;
+                    this.code = res.data.data.captcha;
+                }
+            })
+        },
+        refreshCode() {
+            this.getcode()
+        },
         login() {
             axios({
                 method: 'get',
@@ -192,6 +222,15 @@ export default {
                         type: 'error'
                     })
                 } else {
+                    if(this.loginForm.uuid !== this.code)
+                    {
+                        this.$message({
+                            message: '验证码错误',
+                            type: 'error'
+                        })
+                        this.getcode()
+                        return;
+                    }
                     if (res.data.password === this.loginForm.password) {
                         this.$store.commit('userInfo/SAVEUSERINFO', res.data)
                         if (res.data.role === 'Admin') {
@@ -260,15 +299,30 @@ export default {
 </script>
 
 <style lang="less" scoped>
+.login-code-img {
+    height: 38px;
+}
+
+.login-code {
+    width: 33%;
+    height: 38px;
+    float: right;
+
+    img {
+        cursor: pointer;
+        vertical-align: middle;
+    }
+}
+
 .login_container {
     width: 100%;
     height: 100vh;
-    background-color: #f5f5f5;
+    background-image: url("../../assets/login-background.jpg");
 
     .login_form {
         position: relative;
         width: 80%;
-        top: 30vh;
+        top: 20vh;
         left: 100%;
         background-color: #fff;
         padding: 40px;

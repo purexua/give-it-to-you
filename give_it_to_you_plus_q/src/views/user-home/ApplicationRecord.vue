@@ -18,7 +18,7 @@
             </el-table-column>
             <el-table-column label="申请金额" width="160">
                 <template slot-scope="scope">
-                    <span>{{ scope.row.requestedAmount + '元'}}</span>
+                    <span>{{ scope.row.requestedAmount + '元' }}</span>
                 </template>
             </el-table-column>
             <el-table-column label="利率" width="80" sortable>
@@ -34,24 +34,20 @@
             <el-table-column label="状态" width="140">
                 <template slot-scope="scope">
                     <el-tag style="display: flex; justify-content: center; align-items: center;">
-                    {{ scope.row.status != 'Approved' ? "Pending" : scope.row.status}}</el-tag>
+                        {{ scope.row.status != 'Approved' ? "Pending" : scope.row.status }}</el-tag>
                 </template>
             </el-table-column>
             <el-table-column label="操作" width="160">
                 <template slot-scope="scope">
-                    <el-button type="success" :disabled="scope.row.status === 'Approved'" @click="deleteRecord(scope.row.applicationId)">撤销申请</el-button>
+                    <el-button type="success" :disabled="scope.row.status === 'Approved'"
+                        @click="deleteRecord(scope.row.applicationId)">撤销申请</el-button>
                 </template>
             </el-table-column>
         </el-table>
         <div class="footer">
-            <el-pagination
-                @size-change="handleCurrentChange"
-                @current-change="handleCurrentChange"
-                :current-page="currentPage4"
-                :page-sizes="[5, 8, 10]"
-                :page-size="pageInfo.pageSize"
-                layout="total, sizes, prev, pager, next, jumper"
-                :total="pageInfo.total">
+            <el-pagination @size-change="handleCurrentChange" @current-change="handleCurrentChange"
+                :current-page.sync="pageInfo.pageNum" :page-sizes="[5, 8, 10]" :page-size.sync="pageInfo.pageSize"
+                layout="total, sizes, prev, pager, next, jumper" :total="pageInfo.total">
             </el-pagination>
         </div>
     </div>
@@ -65,49 +61,50 @@ export default {
     name: 'applicationRecord',
     data() {
         return {
-            applicationList:null,
+            applicationList: null,
             pageInfo: {
-                pageSize: 10,
+                pageSize: 5,
                 pageNum: 1,
                 total: 0,
             },
         }
     },
     methods: {
-        deleteRecord(val){
+        deleteRecord(val) {
             axios.get('http://localhost:3919/serve8080/application/deleterecord', {
                 params: {
                     applicationId: val
                 }
-            }) .then(response => {
+            }).then(response => {
                 this.findAllRecord();
-                })
+            })
                 .catch(error => {
-                console.log(error);
+                    console.log(error);
                 });
         },
-        handleCurrentChange(){
+        handleCurrentChange() {
             this.findAllRecord();
         },
         findAllRecord() {
-            const userId = this.user.userId;
-            const current = this.pageInfo.pageNum;
-            const size = this.pageInfo.pageSize;
+            let userId = this.user.userId;
+            let current = this.pageInfo.pageNum;
+            let size = this.pageInfo.pageSize;
+            console.log(this.pageInfo)
             axios.get('http://localhost:3919/serve8080/application/record', {
                 params: {
-                userId: userId,
-                current: current,
-                size: size
+                    userId: userId,
+                    current: current,
+                    size: size
                 }
             })
                 .then(response => {
-                this.applicationList = response.data.data.records;
-                this.pageInfo.total = response.data.data.total;
+                    this.applicationList = response.data.data.records;
+                    this.pageInfo.total = response.data.data.total;
                 })
                 .catch(error => {
-                console.log(error);
+                    console.log(error);
                 });
-            }
+        }
     },
     mounted() {
         this.findAllRecord()
@@ -127,11 +124,12 @@ export default {
 
 <style scoped>
 .main {
-  background-color: #fff;
-  border-radius: 4px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  padding: 16px;
+    background-color: #fff;
+    border-radius: 4px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    padding: 16px;
 }
+
 .footer {
     display: flex;
     justify-content: center;
