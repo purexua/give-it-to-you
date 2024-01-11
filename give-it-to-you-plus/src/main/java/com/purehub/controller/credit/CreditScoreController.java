@@ -4,6 +4,8 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.purehub.pojo.CreditScore;
 import com.purehub.service.credit.CreditScoreService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -11,12 +13,14 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
+@Tag(name = "信用相关接口")
 public class CreditScoreController {
 
   @Autowired
   private CreditScoreService creditScoreService;
 
   @GetMapping("/credit/score/info")
+  @Operation(summary = "获取用户分信息")
   public CreditScore getCreditScoreInfo(@RequestParam("userId") Integer userId) {
     QueryWrapper<CreditScore> creditScoreQueryWrapper = new QueryWrapper<>();
     creditScoreQueryWrapper.eq("user_id", userId);
@@ -24,6 +28,7 @@ public class CreditScoreController {
   }
 
   @PutMapping("/credit/limit/sub")
+  @Operation(summary = "减少用户额度")
   public String updateCreditScoreLimitAmountAfterLoan(@RequestParam("userId") Integer userId, @RequestParam("loanAmount") Double loanAmount) {
     QueryWrapper<CreditScore> creditScoreQueryWrapper = new QueryWrapper<>();
     creditScoreQueryWrapper.eq("user_id", userId);

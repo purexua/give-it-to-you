@@ -1,4 +1,4 @@
 -------------------------------------------------------------------------------
 Test set: com.purehub.GiveItToYouPlusApplicationTests
 -------------------------------------------------------------------------------
-Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 4.587 s -- in com.purehub.GiveItToYouPlusApplicationTests
+Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 4.655 s - in com.purehub.GiveItToYouPlusApplicationTests
