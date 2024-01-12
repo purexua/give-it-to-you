@@ -1,4 +1,7 @@
 spring:
+  jackson:
+    date-format: yyyy-MM-dd HH:mm:ss
+    time-zone: GMT+8
   datasource:
     # 连接池类型
     type: com.alibaba.druid.pool.DruidDataSource

@@ -146,8 +146,8 @@ export default {
             code: ' ',
             codeUrl: ' ',
             loginForm: {
-                username: '',
-                password: '',
+                username: 'purexu',
+                password: '123456',
                 uuid: ''
             },
             loading: false,

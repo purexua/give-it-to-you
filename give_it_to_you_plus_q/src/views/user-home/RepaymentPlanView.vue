@@ -4,21 +4,19 @@
       <el-form label-width="70px" size="small">
         <el-row>
           <el-col :span="8">
-            <el-form-item label="关 键 字">
-              <el-input style="width: 95%" placeholder="ID/期数"></el-input>
+            <el-form-item label="ID">
+              <el-input style="width: 95%" placeholder="ID" v-model = "uid"></el-input>
             </el-form-item>
           </el-col>
           <el-col :span="8">
-            <el-form-item label="操作时间">
-              <el-date-picker type="datetime" placeholder="选择开始时间" align="right" value-format="yyyy-MM-dd HH:mm:ss"
-                :picker-options="pickerOptions" style="margin-right: 10px;width: 100%;">
-              </el-date-picker>
+            <el-form-item label="当前期数">
+              <el-input style="width: 95%" placeholder="当前期数" v-model = "uterm"></el-input>
             </el-form-item>
           </el-col>
           <el-col :span="6">
             <el-form-item>
-              <el-button type="primary" icon="el-icon-search" size="mini">搜索</el-button>
-            <el-button icon="el-icon-refresh" size="mini">重置</el-button>
+              <el-button type="primary" icon="el-icon-search" size="mini" @click="search">搜索</el-button>
+            <el-button icon="el-icon-refresh" size="mini" @click="reset">重置</el-button>
             </el-form-item>
           </el-col>
         </el-row>
@@ -137,6 +135,8 @@ export default {
   name: "RepaymentPlanView",
   data() {
     return {
+      uid: null,
+      uterm: null,
       pickerOptions: {
         shortcuts: [{
           text: '今天',
@@ -172,6 +172,9 @@ export default {
     }
   },
   methods: {
+    search(){
+      this.findAllPage()
+    },
     selectPaymentMethod(method) {
       this.selectedPaymentMethod = method;
     },
@@ -190,6 +193,37 @@ export default {
       this.centerDialogVisible = true;
       this.nowRow = e;
       this.nowSelect = 1
+    },
+    addRecordBatch(val){
+      this.centerDialogVisible = false;
+      const data = []
+      val.forEach(item => 
+      {
+            let record = {
+            userId: this.user.userId,
+            planId: item.planId,
+            paymentTime: Date.now(),
+            paymentAmount: item.dueAmount,
+            paymentMethod: this.selectedPaymentMethod
+          }
+          data.push(record)
+      });
+      axios.post('http://localhost:3919/serve8080/addRecordBatch',data)
+        .then(response => {
+          this.$notify({
+          title: '成功',
+          message: response.data.message,
+          type: 'success'
+        });
+          this.findAllPage();
+        })
+        .catch(error => {
+          console.error(error);
+        });
+    },
+    reset(){
+        this.uid = ''
+        this.uterm = ''
     },
     addRecord(row) {
       this.centerDialogVisible = false;
@@ -218,9 +252,7 @@ export default {
     },
     toggleSelection() {
       let selectedRows = this.$refs.multipleTable.selection;
-      selectedRows.forEach(row => {
-        this.addRecord(row)
-      });
+      this.addRecordBatch(selectedRows)
     },
     handleSelectionChange(val) {
       this.multipleSelection = val;
@@ -247,7 +279,9 @@ export default {
         params: {
           userId: userId,
           current: current,
-          size: size
+          size: size,
+          currentTerm : this.uterm,
+          applicationId : this.uid
         }
       })
         .then(response => {

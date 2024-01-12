@@ -4,5 +4,17 @@
         "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <!-- namespace等于mapper接口类的全限定名,这样实现对应 -->
 <mapper namespace="com.purehub.mapper.RepaymentPlanMapper">
-
+    <select id="selectPage" resultType="com.purehub.pojo.RepaymentPlan">
+        select plan_id,user_id,term,total_amount,application_id,current_term,plan_start_time,is_paid,due_amount from
+        repayment_plan
+        <where>
+            <if test="currentTerm != null and currentTerm != '' ">
+                and current_term like concat('%',#{currentTerm},'%')
+            </if>
+            <if test="applicationId != null and applicationId != '' ">
+                and application_id like concat('%',#{applicationId},'%')
+            </if>
+        </where>
+        order by plan_id asc
+    </select>
 </mapper>

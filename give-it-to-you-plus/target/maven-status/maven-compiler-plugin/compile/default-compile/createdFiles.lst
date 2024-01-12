@@ -1,5 +1,4 @@
 com\purehub\pojo\CreditScore.class
-com\purehub\common\GlobalExceptionHandler.class
 com\purehub\mapper\LoanApplicationMapper.class
 com\purehub\mapper\RepaymentRecordMapper.class
 com\purehub\pojo\RepaymentRecord.class
@@ -22,6 +21,7 @@ com\purehub\GiveItToYouPlusApplication.class
 com\purehub\controller\log\SystemLogController.class
 com\purehub\mapper\SystemLogMapper.class
 com\purehub\pojo\User.class
+com\purehub\config\OpenApiConfig.class
 com\purehub\service\plan\RepaymentPlanService.class
 com\purehub\controller\user\UserController.class
 com\purehub\service\user\impl\UserServiceImpl.class
