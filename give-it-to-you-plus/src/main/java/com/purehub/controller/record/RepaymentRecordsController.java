@@ -88,9 +88,9 @@ public class RepaymentRecordsController {
     }
     @GetMapping ("/report")
     @Operation(summary = "生成还款记录报表")
-    public ResponseEntity<FileSystemResource> downloadReport() throws SQLException, IOException {
+    public ResponseEntity<FileSystemResource> downloadReport(@RequestParam Integer userId) throws SQLException, IOException {
 
-        ReportGenerator.generateReport();
+        ReportGenerator.generateReport(userId);
         // 报表文件路径
         String filePath = "./report.xlsx";
 

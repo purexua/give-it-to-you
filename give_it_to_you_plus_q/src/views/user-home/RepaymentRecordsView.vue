@@ -1,8 +1,6 @@
 <template>
     <div class="main">
-        <el-card style="height: 50px;">
-            <el-button type="text" style="margin-top: -50px;" @click="report()">一键生成记录报表</el-button>
-        </el-card><br>
+        <el-button type="text" @click="report()">一键生成记录报表</el-button>
         <el-table :data="tableData" style="width: 100%;" border v-loading="loading">
             <el-table-column type="index" label="序号" width="180">
             </el-table-column>
@@ -44,10 +42,14 @@ export default {
     name: "RepaymentRecordsView",
     methods: {
         report() {
+            const userId = this.user.userId;
             axios({
                 url: 'http://localhost:3919/serve8080/report',
                 method: 'GET',
-                responseType: 'blob'
+                responseType: 'blob',
+                params:{
+                    userId: userId
+                }
             })
                 .then(response => {
                     // 获取响应头中的文件名
