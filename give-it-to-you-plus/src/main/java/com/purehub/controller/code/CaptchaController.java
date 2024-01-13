@@ -23,7 +23,7 @@ import java.util.concurrent.TimeUnit;
 
 @RestController
 @Slf4j
-@Tag(name = "验证码")
+@Tag(name = "验证码相关接口")
 public class CaptchaController {
     @Autowired
     private RedisTemplate redisTemplate;

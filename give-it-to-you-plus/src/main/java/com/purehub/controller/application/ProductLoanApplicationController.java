@@ -9,6 +9,7 @@ import com.purehub.service.credit.CreditScoreService;
 import com.purehub.service.rate.ProductInterestRateService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import org.apache.ibatis.annotations.Delete;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -84,7 +85,7 @@ public class ProductLoanApplicationController {
     IPage<LoanApplication> pages = loanApplicationService.page(page,queryWrapper);
     return pages != null ? new RepaymentResult().success(pages,"成功获取所有的申请记录") : new RepaymentResult().error("获取失败");
   }
-  @GetMapping("/application/deleterecord")
+  @DeleteMapping("/application/deleterecord")
   @Operation(summary = "删除申请记录")
   public RepaymentResult deleteRecord(@RequestParam Integer applicationId) {
     //改申请表

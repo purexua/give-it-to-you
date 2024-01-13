@@ -1,22 +1,22 @@
 <template>
     <div class="main">
-        <el-table :data="applicationList" style="width: 100%">
-            <el-table-column label="申请 ID" width="160" sortable>
+        <el-table :data="applicationList" style="width: 100%" v-loading="loading" border>
+            <el-table-column label="申请 ID" width="100" sortable>
                 <template slot-scope="scope">
                     <span>{{ scope.row.applicationId }}</span>
                 </template>
             </el-table-column>
-            <el-table-column label="贷款类型" width="160">
+            <el-table-column label="贷款类型" width="140">
                 <template slot-scope="scope">
                     <span>{{ scope.row.loanType }}</span>
                 </template>
             </el-table-column>
-            <el-table-column label="贷款期数" width="160" sortable>
+            <el-table-column label="贷款期数" width="140" sortable>
                 <template slot-scope="scope">
                     <span>{{ scope.row.term + '期' }}</span>
                 </template>
             </el-table-column>
-            <el-table-column label="申请金额" width="160">
+            <el-table-column label="申请金额" width="140">
                 <template slot-scope="scope">
                     <span>{{ scope.row.requestedAmount + '元' }}</span>
                 </template>
@@ -61,6 +61,7 @@ export default {
     name: 'applicationRecord',
     data() {
         return {
+            loading: true,
             applicationList: null,
             pageInfo: {
                 pageSize: 5,
@@ -71,7 +72,7 @@ export default {
     },
     methods: {
         deleteRecord(val) {
-            axios.get('http://localhost:3919/serve8080/application/deleterecord', {
+            axios.delete('http://localhost:3919/serve8080/application/deleterecord', {
                 params: {
                     applicationId: val
                 }
@@ -98,6 +99,7 @@ export default {
                 }
             })
                 .then(response => {
+                    this.loading = false;
                     this.applicationList = response.data.data.records;
                     this.pageInfo.total = response.data.data.total;
                 })

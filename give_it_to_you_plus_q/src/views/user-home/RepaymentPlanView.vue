@@ -73,7 +73,7 @@
       <el-table-column label="申请Id">
         <template slot-scope="scope">
           <div slot="reference" class="name-wrapper">
-            <el-tag size="medium">{{ scope.row.applicationId }}</el-tag>
+            <el-tag size="medium">{{ scope.row.applicationId + generateRandomId(10) }}</el-tag>
           </div>
         </template>
       </el-table-column>
@@ -172,6 +172,15 @@ export default {
     }
   },
   methods: {
+    generateRandomId(length) {
+  let result = '';
+  const characters = '0123456789';
+  const charactersLength = characters.length;
+  for (let i = 0; i < length; i++) {
+    result += characters.charAt(Math.floor(Math.random() * charactersLength));
+  }
+  return result;
+},
     search(){
       this.findAllPage()
     },
