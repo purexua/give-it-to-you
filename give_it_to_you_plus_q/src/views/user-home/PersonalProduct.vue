@@ -255,6 +255,7 @@ export default {
     max-width: 400px;
     margin: auto;
     padding: 20px;
+    background-color: rgb(238, 226, 226);
 }
 
 /* Style the interest rate text as needed */

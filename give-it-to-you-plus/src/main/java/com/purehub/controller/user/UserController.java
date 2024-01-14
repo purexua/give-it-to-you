@@ -2,12 +2,15 @@ package com.purehub.controller.user;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.purehub.annotation.OperationLog;
 import com.purehub.pojo.User;
 import com.purehub.service.user.UserService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+
+import java.time.LocalDateTime;
 
 @RestController
 @Tag(name = "用户相关接口")
@@ -22,6 +25,7 @@ public class UserController {
   }
   @GetMapping("/login")
   @Operation(summary = "用户登录")
+  @OperationLog(action = "登录",logTime = "2000-03-06 10:10:50")
   public User login(@RequestParam String userName) {
     //根据userName 查询单个用户
     LambdaQueryWrapper<User> wrapper = new LambdaQueryWrapper<>();
